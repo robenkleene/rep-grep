@@ -44,8 +44,8 @@ w - match full words only
     /// use captured values like $1, $2, etc.
     pub replace_with: String,
 
-    /// The path to file(s). This is optional - sd can also read from STDIN.
-    ///{n}{n}Note: sd modifies files in-place by default. See documentation for
+    /// The path to file(s). This is optional - reap can also read from STDIN.
+    ///{n}{n}Note: reap modifies files in-place by default. See documentation for
     /// examples.
     pub files: Vec<std::path::PathBuf>,
 }

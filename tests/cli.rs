@@ -1,12 +1,12 @@
 #[cfg(test)]
-#[cfg(not(sd_cross_compile))] // Cross-compilation does not allow to spawn threads but `command.assert()` would do.
+#[cfg(not(reap_cross_compile))] // Cross-compilation does not allow to spawn threads but `command.assert()` would do.
 mod cli {
     use anyhow::Result;
     use assert_cmd::Command;
     use std::io::prelude::*;
 
-    fn sd() -> Command {
-        Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Error invoking sd")
+    fn reap() -> Command {
+        Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Error invoking reap")
     }
 
     fn assert_file(path: &std::path::Path, content: &str) {
@@ -31,7 +31,7 @@ mod cli {
         file.write(b"abc123def")?;
         let path = file.into_temp_path();
 
-        sd().args(&["abc\\d+", "", path.to_str().unwrap()])
+        reap().args(&["abc\\d+", "", path.to_str().unwrap()])
             .assert()
             .success();
         assert_file(&path.to_path_buf(), "def");
@@ -45,7 +45,7 @@ mod cli {
         file.write(b"a7c")?;
         let path = file.into_temp_path();
 
-        sd().args(&["a\\dc", "", path.to_str().unwrap()])
+        reap().args(&["a\\dc", "", path.to_str().unwrap()])
             .assert()
             .success();
         assert_file(&path.to_path_buf(), "");
@@ -63,7 +63,7 @@ mod cli {
         create_soft_link(&file, &link)?;
         std::fs::write(&file, "abc123def")?;
 
-        sd().args(&["abc\\d+", "", link.to_str().unwrap()])
+        reap().args(&["abc\\d+", "", link.to_str().unwrap()])
             .assert()
             .success();
 
@@ -78,7 +78,7 @@ mod cli {
         let mut file = tempfile::NamedTempFile::new()?;
         file.write(b"abc123def")?;
 
-        sd().args(&["-p", "abc\\d+", "", file.path().to_str().unwrap()])
+        reap().args(&["-p", "abc\\d+", "", file.path().to_str().unwrap()])
             .assert()
             .success()
             .stdout(format!(
@@ -94,7 +94,7 @@ mod cli {
 
     #[test]
     fn stdin() -> Result<()> {
-        sd().args(&["abc\\d+", ""])
+        reap().args(&["abc\\d+", ""])
             .write_stdin("abc123def")
             .assert()
             .success()

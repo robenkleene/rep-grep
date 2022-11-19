@@ -10,7 +10,7 @@ fn main() {
     fs::create_dir_all(&out_dir).unwrap();
 
     Shell::variants().iter().for_each(|shell| {
-        app.gen_completions("sd", Shell::from_str(shell).unwrap(), &out_dir);
+        app.gen_completions("reap", Shell::from_str(shell).unwrap(), &out_dir);
     });
 
     create_man_page();
@@ -18,7 +18,7 @@ fn main() {
 
 fn create_man_page() {
     use man::prelude::*;
-    let page = Manual::new("sd")
+    let page = Manual::new("reap")
         .flag(
             Flag::new()
                 .short("-p")
@@ -48,7 +48,7 @@ w - match full words only
             Example::new()
                 .text("String-literal mode")
                 .command(
-                    "echo 'lots((([]))) of special chars' | sd -s '((([])))' \
+                    "echo 'lots((([]))) of special chars' | reap -s '((([])))' \
                      ''",
                 )
                 .output("lots of special chars"),
@@ -56,35 +56,35 @@ w - match full words only
         .example(
             Example::new()
                 .text("Regex use. Let's trim some trailing whitespace")
-                .command("echo 'lorem ipsum 23   ' | sd '\\s+$' ''")
+                .command("echo 'lorem ipsum 23   ' | reap '\\s+$' ''")
                 .output("lorem ipsum 23"),
         )
         .example(
             Example::new()
                 .text("Indexed capture groups")
-                .command(r#"echo 'cargo +nightly watch' | sd '(\w+)\s+\+(\w+)\s+(\w+)' 'cmd: $1, channel: $2, subcmd: $3'"#)
+                .command(r#"echo 'cargo +nightly watch' | reap '(\w+)\s+\+(\w+)\s+(\w+)' 'cmd: $1, channel: $2, subcmd: $3'"#)
                 .output("cmd: cargo, channel: nightly, subcmd: watch")
         )
         .example(
             Example::new()
                 .text("Named capture groups")
-                .command(r#"echo "123.45" | sd '(?P<dollars>\d+)\.(?P<cents>\d+)' '$dollars dollars and $cents cents'"#)
+                .command(r#"echo "123.45" | reap '(?P<dollars>\d+)\.(?P<cents>\d+)' '$dollars dollars and $cents cents'"#)
                 .output("123 dollars and 45 cents")
         )
         .example(
             Example::new()
                 .text("Find & replace in file")
-                .command(r#"sd 'window.fetch' 'fetch' http.js"#)
+                .command(r#"reap 'window.fetch' 'fetch' http.js"#)
         )
         .example(
             Example::new()
                 .text("Find & replace from STDIN an emit to STDOUT")
-                .command(r#"sd 'window.fetch' 'fetch' < http.js"#)
+                .command(r#"reap 'window.fetch' 'fetch' < http.js"#)
         )
         .render();
 
     let mut man_path =
         std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
-    man_path.push("sd.1");
+    man_path.push("reap.1");
     std::fs::write(man_path, page).expect("Error writing man page");
 }
