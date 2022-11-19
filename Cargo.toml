@@ -1,14 +1,14 @@
 [package]
-name = "sd"
-version = "0.7.6"
+name = "reap"
+version = "0.0.1"
 edition = "2018"
-authors = ["Gregory <gregory.mkv@gmail.com>"]
+authors = ["Roben Kleene <contact@robenkleene.com>"]
 description = "An intuitive find & replace CLI"
 readme = "README.md"
-keywords = ["sed", "find", "replace", "regex"]
+keywords = ["sed", "find", "replace", "regex", "grep"]
 license = "MIT"
-homepage = "https://github.com/chmln/sd"
-repository = "https://github.com/chmln/sd.git"
+homepage = "https://github.com/robenkleene/reap"
+repository = "https://github.com/robenkleene/reap.git"
 categories = ["command-line-utilities", "text-processing", "development-tools"]
 
 [dependencies]
