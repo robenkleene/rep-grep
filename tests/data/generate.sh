@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-grep --line-number --with-filename Markdown markdown-syntax.md
+grep --line-number --with-filename Markdown markdown-syntax.md > grep.txt
