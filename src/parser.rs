@@ -13,8 +13,14 @@ pub(crate) struct Edit {
 #[derive(Debug)]
 #[derive(thiserror::Error)]
 pub enum Error {
-  #[error("No line, number, or text matches")]
+  #[error("No file, number, and text matches")]
   Match,
+  #[error("No file matches")]
+  MatchFile,
+  #[error("No number matches")]
+  MatchNumber,
+  #[error("No text matches")]
+  MatchText,
 }
 
 impl Edit {
@@ -51,19 +57,19 @@ impl Edit {
         };
         let file = match caps.get(1) {
             Some(file) => PathBuf::from(file.as_str()),
-            None => return Err(Error::Match),
+            None => return Err(Error::MatchFile),
         };
         let number = match caps.get(2) {
             Some(number) => number.as_str(),
-            None => return Err(Error::Match),
+            None => return Err(Error::MatchNumber),
         };
         let number = match number.parse::<u32>() {
             Ok(number) => number,
-            Err(_) => return Err(Error::Match),
+            Err(_) => return Err(Error::MatchNumber),
         };
         let mut text = match caps.get(3) {
             Some(text) => text.as_str().to_string(),
-            None => return Err(Error::Match),
+            None => return Err(Error::MatchText),
         };
 
         // Check for the optional column and discard it if present
