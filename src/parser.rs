@@ -2,13 +2,19 @@ use std::path::PathBuf;
 use regex::Regex;
 use std::io::BufReader;
 use std::io::prelude::*;
-use std::io::Error;
-use std::io::ErrorKind;
 
+#[derive(Debug)]
 pub(crate) struct Edit {
     file: PathBuf,
     text: String,
     number: u32
+}
+
+#[derive(Debug)]
+#[derive(thiserror::Error)]
+pub enum Error {
+  #[error("No line, number, or text matches")]
+  Match,
 }
 
 impl Edit {
@@ -41,23 +47,23 @@ impl Edit {
         let caps = re.captures(&line);
         let caps = match caps {
             Some(caps) => caps,
-            None => return Err(Error::new(ErrorKind::Other, "No line, number, or text matches")),
+            None => return Err(Error::Match),
         };
         let file = match caps.get(1) {
             Some(file) => PathBuf::from(file.as_str()),
-            None => return Err(Error::new(ErrorKind::Other, "No file match")),
+            None => return Err(Error::Match),
         };
         let number = match caps.get(2) {
             Some(number) => number.as_str(),
-            None => return Err(Error::new(ErrorKind::Other, "No number match")),
+            None => return Err(Error::Match),
         };
         let number = match number.parse::<u32>() {
             Ok(number) => number,
-            Err(_) => return Err(Error::new(ErrorKind::Other, "No number match")),
+            Err(_) => return Err(Error::Match),
         };
         let mut text = match caps.get(3) {
             Some(text) => text.as_str().to_string(),
-            None => return Err(Error::new(ErrorKind::Other, "No text match")),
+            None => return Err(Error::Match),
         };
 
         // Check for the optional column and discard it if present
@@ -84,8 +90,7 @@ mod tests {
 
     #[test]
     fn edit_from_line_none() {
-        let edit = edit_from_line("aaa".as_bytes());
-        assert_none!(edit);
+        let result = Edit::edit_from_line("aaa".to_string());
+        assert!(matches!(result, Err(Error::Match)));
     }
 }
-
