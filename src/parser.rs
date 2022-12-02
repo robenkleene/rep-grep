@@ -15,12 +15,6 @@ pub(crate) struct Edit {
 pub enum Error {
   #[error("No file, number, and text matches")]
   Match,
-  #[error("No file matches")]
-  MatchFile,
-  #[error("No number matches")]
-  MatchNumber,
-  #[error("No text matches")]
-  MatchText,
 }
 
 impl Edit {
@@ -57,19 +51,19 @@ impl Edit {
         };
         let file = match caps.get(1) {
             Some(file) => PathBuf::from(file.as_str()),
-            None => return Err(Error::MatchFile),
+            None => return Err(Error::Match),
         };
         let number = match caps.get(2) {
             Some(number) => number.as_str(),
-            None => return Err(Error::MatchNumber),
+            None => return Err(Error::Match),
         };
         let number = match number.parse::<u32>() {
             Ok(number) => number,
-            Err(_) => return Err(Error::MatchNumber),
+            Err(_) => return Err(Error::Match),
         };
         let mut text = match caps.get(3) {
             Some(text) => text.as_str().to_string(),
-            None => return Err(Error::MatchText),
+            None => return Err(Error::Match),
         };
 
         // Check for the optional column and discard it if present
@@ -95,8 +89,20 @@ mod tests {
     use super::*;
 
     #[test]
-    fn edit_from_line_none() {
+    fn edit_from_line_no_file() {
         let result = Edit::edit_from_line("aaa".to_string());
+        assert!(matches!(result, Err(Error::Match)));
+    }
+
+    #[test]
+    fn edit_from_line_no_number() {
+        let result = Edit::edit_from_line("aaa.txt:bbb:ccc".to_string());
+        assert!(matches!(result, Err(Error::Match)));
+    }
+
+    #[test]
+    fn edit_from_line_no_text() {
+        let result = Edit::edit_from_line("aaa.txt:1".to_string());
         assert!(matches!(result, Err(Error::Match)));
     }
 }
