@@ -105,4 +105,17 @@ mod tests {
         let result = Edit::edit_from_line("aaa.txt:1".to_string());
         assert!(matches!(result, Err(Error::Match)));
     }
+
+    #[test]
+    fn edit_from_line() {
+        let result = Edit::edit_from_line("aaa.txt:1:text".to_string());
+        assert!(matches!(result, Ok(_)));
+        let edit = match result {
+            Ok(result) => result,
+            Err(_) => panic!("Unexpected error"),
+        };
+        assert_eq!(edit.file, PathBuf::from("aaa.txt"));
+        assert_eq!(edit.number, 1);
+        assert_eq!(edit.text, "text");
+    }
 }
