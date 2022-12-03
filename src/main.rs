@@ -1,6 +1,7 @@
 mod cli;
 mod error;
 mod input;
+mod edit;
 pub(crate) mod replacer;
 pub(crate) mod utils;
 

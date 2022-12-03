@@ -1,5 +1,5 @@
---- markdown-syntax.md	2022-11-25 17:10:42.615213361 +0000
-+++ /dev/fd/63	2022-11-25 17:32:13.960370916 +0000
+--- a/markdown-syntax.md
++++ b/markdown-syntax.md
 @@ -1,12 +1,12 @@
 -Markdown: Syntax
 +Markup: Syntax
