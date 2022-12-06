@@ -5,9 +5,9 @@ use std::io::prelude::*;
 
 #[derive(Debug)]
 pub(crate) struct Edit {
-    file: PathBuf,
-    text: String,
-    number: u32
+    pub(crate) file: PathBuf,
+    pub(crate) text: String,
+    pub(crate) number: u32
 }
 
 #[derive(Debug)]
@@ -18,7 +18,7 @@ pub enum Error {
 }
 
 impl Edit {
-    fn new(file: PathBuf, text: String, number: u32) -> Edit {
+    pub(crate) fn new(file: PathBuf, text: String, number: u32) -> Edit {
         Edit { file, text, number }
     }
 
