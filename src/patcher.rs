@@ -1,7 +1,4 @@
 use crate::edit::Edit;
-use std::io::BufReader;
-use std::io::BufRead;
-use std::io::Read;
 use std::convert::TryInto;
 use std::convert::TryFrom;
 
@@ -22,9 +19,7 @@ impl Patcher {
         Self { edits }
     }
 
-    pub(crate) fn patch<R: Read>(&self, reader: BufReader<R>) -> Result<String, Error> {
-        let mut lines: Vec<String> = reader.lines().flatten().collect();
-
+    pub(crate) fn patch(&self, mut lines: Vec::<String>) -> Result<String, Error> {
         let len = lines.len();
         for edit in &self.edits {
             if edit.number > len.try_into().unwrap() {
