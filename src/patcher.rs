@@ -22,7 +22,7 @@ impl Patcher {
     pub(crate) fn patch(&self, mut lines: Vec<String>) -> Result<String, Error> {
         let len = lines.len();
         for edit in &self.edits {
-            if edit.number > len.try_into().unwrap() {
+            if edit.number >= len.try_into().unwrap() {
                 return Err(Error::LineNumber);
             }
             let index = usize::try_from(edit.number).unwrap();
@@ -37,6 +37,24 @@ mod tests {
     use super::*;
 
     #[test]
+    fn patch_bad_number() {
+        let patcher = Patcher::new(vec![
+            Edit {
+                file: PathBuf::from("a"),
+                number: 1,
+                text: "foo".to_string(),
+            },
+            Edit {
+                file: PathBuf::from("a"),
+                number: 2,
+                text: "bar".to_string(),
+            },
+        ]);
+        let lines = vec!["a".to_string(), "b".to_string()];
+        let result = patcher.patch(lines);
+        assert!(matches!(result, Err(Error::LineNumber)));
+    }
+
     fn patch() {
         let patcher = Patcher::new(vec![
             Edit {
