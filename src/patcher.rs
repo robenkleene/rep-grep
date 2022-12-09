@@ -1,7 +1,6 @@
 use crate::edit::Edit;
 use std::convert::TryFrom;
 use std::convert::TryInto;
-use std::path::PathBuf;
 
 #[derive(Debug)]
 pub(crate) struct Patcher {
