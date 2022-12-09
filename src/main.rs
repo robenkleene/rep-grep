@@ -23,6 +23,6 @@ fn main() -> Result<()> {
             options.replacements,
         )?,
     )
-    .run(options.preview)?;
+    .run()?;
     Ok(())
 }

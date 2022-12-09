@@ -9,7 +9,7 @@ impl App {
     pub(crate) fn new(replacer: Replacer) -> Self {
         Self { replacer }
     }
-    pub(crate) fn run(&self, preview: bool) -> Result<()> {
+    pub(crate) fn run(&self) -> Result<()> {
         let is_tty = atty::is(atty::Stream::Stdout);
         {
             let mut buffer = Vec::with_capacity(256);
