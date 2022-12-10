@@ -34,6 +34,7 @@ impl Patcher {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::PathBuf;
 
     #[test]
     fn patch_bad_number() {

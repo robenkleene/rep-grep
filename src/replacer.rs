@@ -1,6 +1,5 @@
 use crate::{utils, Error, Result};
 use regex::bytes::Regex;
-use std::{fs, fs::File, io::prelude::*, path::Path};
 
 pub(crate) struct Replacer {
     regex: Regex,
@@ -68,12 +67,6 @@ impl Replacer {
         self.regex.is_match(content)
     }
 
-    pub(crate) fn check_not_empty(mut file: File) -> Result<()> {
-        let mut buf: [u8; 1] = Default::default();
-        file.read_exact(&mut buf)?;
-        Ok(())
-    }
-
     pub(crate) fn replace<'a>(
         &'a self,
         content: &'a [u8],
@@ -121,40 +114,6 @@ impl Replacer {
         });
 
         return std::borrow::Cow::Owned(v);
-    }
-
-    pub(crate) fn replace_file(&self, path: &Path) -> Result<()> {
-        use memmap::{Mmap, MmapMut};
-        use std::ops::DerefMut;
-
-        if let Err(_) = Self::check_not_empty(File::open(path)?) {
-            return Ok(());
-        }
-
-        let source = File::open(path)?;
-        let meta = fs::metadata(path)?;
-        let mmap_source = unsafe { Mmap::map(&source)? };
-        let replaced = self.replace(&mmap_source);
-
-        let target = tempfile::NamedTempFile::new_in(
-            path.parent()
-                .ok_or_else(|| Error::InvalidPath(path.to_path_buf()))?,
-        )?;
-        let file = target.as_file();
-        file.set_len(replaced.len() as u64)?;
-        file.set_permissions(meta.permissions())?;
-
-        if !replaced.is_empty() {
-            let mut mmap_target = unsafe { MmapMut::map_mut(&file)? };
-            mmap_target.deref_mut().write_all(&replaced)?;
-            mmap_target.flush_async()?;
-        }
-
-        drop(mmap_source);
-        drop(source);
-
-        target.persist(fs::canonicalize(path)?)?;
-        Ok(())
     }
 }
 
