@@ -1,4 +1,4 @@
-use crate::{utils, Error, Result};
+use crate::{utils, Result};
 use regex::bytes::Regex;
 
 pub(crate) struct Replacer {
@@ -61,10 +61,6 @@ impl Replacer {
             is_literal,
             replacements: replacements.unwrap_or(0),
         })
-    }
-
-    pub(crate) fn has_matches(&self, content: &[u8]) -> bool {
-        self.regex.is_match(content)
     }
 
     pub(crate) fn replace<'a>(
