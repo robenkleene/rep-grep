@@ -6,7 +6,7 @@ mod patcher;
 pub(crate) mod replacer;
 pub(crate) mod utils;
 
-pub(crate) use self::input::{App, Source};
+pub(crate) use self::input::App;
 pub(crate) use error::{Error, Result};
 use replacer::Replacer;
 
@@ -14,16 +14,7 @@ fn main() -> Result<()> {
     use structopt::StructOpt;
     let options = cli::Options::from_args();
 
-    let source = if options.recursive {
-        Source::recursive()?
-    } else if options.files.len() > 0 {
-        Source::Files(options.files)
-    } else {
-        Source::Stdin
-    };
-
     App::new(
-        source,
         Replacer::new(
             options.find,
             options.replace_with,
@@ -32,6 +23,6 @@ fn main() -> Result<()> {
             options.replacements,
         )?,
     )
-    .run(options.preview)?;
+    .run()?;
     Ok(())
 }

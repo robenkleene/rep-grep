@@ -6,8 +6,6 @@ pub enum Error {
     File(#[from] std::io::Error),
     #[error("failed to move file: {0}")]
     TempfilePersist(#[from] tempfile::PersistError),
-    #[error("file doesn't have parent path: {0}")]
-    InvalidPath(std::path::PathBuf),
 }
 
 // pretty-print the error

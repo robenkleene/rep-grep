@@ -1,7 +1,6 @@
 use crate::edit::Edit;
 use std::convert::TryFrom;
 use std::convert::TryInto;
-use std::path::PathBuf;
 
 #[derive(Debug)]
 pub(crate) struct Patcher {
@@ -35,6 +34,7 @@ impl Patcher {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::PathBuf;
 
     #[test]
     fn patch_bad_number() {
