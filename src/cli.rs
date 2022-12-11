@@ -32,9 +32,9 @@ w - match full words only
     pub flags: Option<String>,
 
     /// The regexp or string (if -s) to search for.
-    pub find: String,
+    pub find: Option<String>,
 
     /// What to replace each match with. Unless in string mode, you may
     /// use captured values like $1, $2, etc.
-    pub replace_with: String,
+    pub replace_with: Option<String>,
 }
