@@ -2,13 +2,14 @@ use crate::{Replacer, Result};
 use std::io::prelude::*;
 
 pub(crate) struct App {
-    replacer: Replacer
+    replacer: Option<Replacer>
 }
 
 impl App {
-    pub(crate) fn new(replacer: Replacer) -> Self {
+    pub(crate) fn new(replacer: Option<Replacer>) -> Self {
         Self { replacer }
     }
+
     pub(crate) fn run(&self) -> Result<()> {
         let is_tty = atty::is(atty::Stream::Stdout);
         {
