@@ -21,11 +21,13 @@ impl App {
             let stdout = std::io::stdout();
             let mut handle = stdout.lock();
 
-            handle.write_all(&if is_tty {
-                self.replacer.replace_preview(&buffer)
-            } else {
-                self.replacer.replace(&buffer)
-            })?;
+            if let Some(replacer) = &self.replacer {
+                handle.write_all(&if is_tty {
+                    replacer.replace_preview(&buffer)
+                } else {
+                    replacer.replace(&buffer)
+                })?;
+            }
 
             Ok(())
         }
