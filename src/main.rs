@@ -7,7 +7,7 @@ pub(crate) mod replacer;
 pub(crate) mod utils;
 
 pub(crate) use self::input::App;
-pub(crate) use error::{Error, Result};
+pub(crate) use error::Result;
 use replacer::Replacer;
 
 fn main() -> Result<()> {
@@ -26,7 +26,7 @@ fn main() -> Result<()> {
         )
         .run()?;
     } else {
-        App::new().run()?;
+        App::new(None).run()?;
     }
 
     Ok(())
