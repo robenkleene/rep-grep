@@ -14,16 +14,20 @@ fn main() -> Result<()> {
     use structopt::StructOpt;
     let options = cli::Options::from_args();
 
-    App::new(
-        Some(Replacer::new(
-            options.find,
-            options.replace_with,
-            options.literal_mode,
-            options.flags,
-            options.replacements,
-        )?),
-    )
-    .run()?;
+    if let (Some(find), Some(replace_with)) = (options.find, options.replace_with) {
+        App::new(
+            Some(Replacer::new(
+                find,
+                replace_with,
+                options.literal_mode,
+                options.flags,
+                options.replacements,
+            )?),
+        )
+        .run()?;
+    } else {
+        App::new().run()?;
+    }
 
     Ok(())
 }
