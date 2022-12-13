@@ -15,14 +15,15 @@ fn main() -> Result<()> {
     let options = cli::Options::from_args();
 
     App::new(
-        Replacer::new(
+        Some(Replacer::new(
             options.find,
             options.replace_with,
             options.literal_mode,
             options.flags,
             options.replacements,
-        )?,
+        )?),
     )
     .run()?;
+
     Ok(())
 }
