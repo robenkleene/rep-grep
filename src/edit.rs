@@ -2,6 +2,7 @@ use std::path::PathBuf;
 use regex::Regex;
 use std::io::BufReader;
 use std::io::prelude::*;
+use std::collections::HashMap;
 
 #[derive(Debug)]
 pub(crate) struct Edit {
@@ -18,16 +19,17 @@ pub enum Error {
 }
 
 impl Edit {
+    
     pub(crate) fn new(file: PathBuf, text: String, number: u32) -> Edit {
         Edit { file, text, number }
     }
 
     pub(crate) fn parse<R> (
         reader: BufReader<R>
-    ) -> Result<Vec::<Edit>, std::io::Error>
+    ) -> Result<HashMap<PathBuf, Edit>, std::io::Error>
         where R: Read
     {
-        let mut edits = Vec::<Edit>::new();
+        let mut edits = HashMap::new();
         for line in reader.lines() {
             let line = match line {
                 Ok(line) => line,
@@ -37,7 +39,7 @@ impl Edit {
                 Ok(line) => line,
                 Err(_) => continue,
             };
-            edits.push(line);
+            edits.insert(line.file.clone(), line);
         }
         return Ok(edits);
     }
