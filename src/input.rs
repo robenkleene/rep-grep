@@ -1,5 +1,4 @@
-// use crate::{Replacer, Result, Edit, Patcher};
-use crate::{Replacer, Result};
+use crate::{Replacer, Result, Edit, Patcher, Writer};
 use std::io::prelude::*;
 
 pub(crate) struct App {
@@ -22,8 +21,7 @@ impl App {
             let stdout = std::io::stdout();
             let mut handle = stdout.lock();
 
-            // let edits = Edit::parse(&buffer);
-            // let patcher = Patcher::new(edits);
+            let edits = Edit::parse(&buffer);
 
             // TODO: Make a `writer` that takes the edits, iterates through the file
             // let writer
@@ -31,9 +29,9 @@ impl App {
 
             if let Some(replacer) = &self.replacer {
                 handle.write_all(&if is_tty {
-                    replacer.replace_preview(&buffer)
+                    writer.patch_preview(&buffer)
                 } else {
-                    replacer.replace(&buffer)
+                    writer.write_file(&buffer)
                 })?;
             }
 
