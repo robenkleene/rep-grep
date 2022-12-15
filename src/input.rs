@@ -1,3 +1,4 @@
+// use crate::{Replacer, Result, Edit, Patcher};
 use crate::{Replacer, Result};
 use std::io::prelude::*;
 
@@ -20,6 +21,13 @@ impl App {
 
             let stdout = std::io::stdout();
             let mut handle = stdout.lock();
+
+            // let edits = Edit::parse(&buffer);
+            // let patcher = Patcher::new(edits);
+
+            // TODO: Make a `writer` that takes the edits, iterates through the file
+            // let writer
+            // patcher.patch( // Files);
 
             if let Some(replacer) = &self.replacer {
                 handle.write_all(&if is_tty {
