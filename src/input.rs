@@ -21,18 +21,15 @@ impl App {
             let stdout = std::io::stdout();
             let mut handle = stdout.lock();
 
-            let edits = Edit::parse(&buffer);
-
-            // TODO: Make a `writer` that takes the edits, iterates through the file
-            // let writer
-            // patcher.patch( // Files);
-
-            handle.write_all(&if is_tty {
-                writer.patch_preview(&buffer)
-            } else {
-                writer.write_file(&buffer)
-            })?;
-            if let Some(replacer) = &self.replacer {
+            let pathToEdits = Edit::parse(&buffer);
+            for (path, edits) in pathToEdits {
+                let patcher = Patcher::new(edits, self.replacer);
+                let writer = Writer::new(&path, patcher);
+                handle.write_all(&if is_tty {
+                    writer.patch_preview()
+                } else {
+                    writer.write_file()
+                })?;
             }
 
             Ok(())

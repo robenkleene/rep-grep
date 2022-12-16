@@ -33,7 +33,7 @@ impl Writer {
         Ok(())
     }
 
-    pub(crate) fn patch_preview(&self, path: &Path) -> Result<()> {
+    pub(crate) fn patch_preview(&self) -> Result<()> {
         let stdout = std::io::stdout();
         let mut handle = stdout.lock();
         let print_path = paths.len() > 1;
@@ -61,7 +61,7 @@ impl Writer {
         Ok(())
     }
 
-    pub(crate) fn replace_file(&self, path: &Path) -> Result<()> {
+    pub(crate) fn write_file(&self) -> Result<()> {
         use memmap::{Mmap, MmapMut};
         use std::ops::DerefMut;
 
