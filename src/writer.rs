@@ -2,8 +2,8 @@ use crate::patcher::Patcher;
 
 #[derive(Debug)]
 pub(crate) struct Writer {
-    pub(crate) file: PathBuf,
-    pub(crate) patcher: Patcher,
+    file: PathBuf,
+    patcher: Patcher,
 }
 
 impl Writer {

@@ -27,12 +27,12 @@ impl App {
             // let writer
             // patcher.patch( // Files);
 
+            handle.write_all(&if is_tty {
+                writer.patch_preview(&buffer)
+            } else {
+                writer.write_file(&buffer)
+            })?;
             if let Some(replacer) = &self.replacer {
-                handle.write_all(&if is_tty {
-                    writer.patch_preview(&buffer)
-                } else {
-                    writer.write_file(&buffer)
-                })?;
             }
 
             Ok(())

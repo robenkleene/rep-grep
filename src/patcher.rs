@@ -5,6 +5,7 @@ use std::convert::TryInto;
 #[derive(Debug)]
 pub(crate) struct Patcher {
     edits: Vec<Edit>,
+    replacer: Option<Replacer>
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -14,8 +15,8 @@ pub enum Error {
 }
 
 impl Patcher {
-    pub(crate) fn new(edits: Vec<Edit>) -> Self {
-        Self { edits }
+    pub(crate) fn new(edits: Vec<Edit>, replacer: Option<Replacer>) -> Self {
+        Self { edits, replacer }
     }
 
     pub(crate) fn patch(&self, mut lines: Vec<String>) -> Result<String, Error> {
@@ -25,7 +26,11 @@ impl Patcher {
                 return Err(Error::LineNumber);
             }
             let index = usize::try_from(edit.number).unwrap();
-            lines[index] = edit.text.clone();
+            if let Some(replacer) = &self.replacer {
+                lines[index] = replacer.replace(edit.text.clone());
+            } else {
+                lines[index] = edit.text.clone();
+            }
         }
         return Ok(lines.join("\n"));
     }
@@ -49,7 +54,7 @@ mod tests {
                 number: 2,
                 text: "bar".to_string(),
             },
-        ]);
+        ], None);
         let lines = vec!["a".to_string(), "b".to_string()];
         let result = patcher.patch(lines);
         assert!(matches!(result, Err(Error::LineNumber)));
@@ -67,7 +72,7 @@ mod tests {
                 number: 2,
                 text: "bar".to_string(),
             },
-        ]);
+        ], None);
         let lines = vec!["a".to_string(), "b".to_string(), "c".to_string()];
         let result = patcher.patch(lines);
         assert!(result.is_ok());
