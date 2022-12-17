@@ -11,28 +11,6 @@ impl Writer {
         Self { file, patcher }
     }
 
-    pub(crate) fn write(&self) -> Result<()> {
-        let mut buffer = Vec::with_capacity(256);
-        let mut file = File::open(&self.file)?;
-        file.read_to_end(&mut buffer)?;
-
-        let mut writer = File::create(&self.file)?;
-        let mut offset = 0;
-
-        for edit in &self.edits {
-            let start = edit.start as usize;
-            let end = edit.end as usize;
-
-            writer.write_all(&buffer[offset..start])?;
-            writer.write_all(&edit.replacement)?;
-            offset = end;
-        }
-
-        writer.write_all(&buffer[offset..])?;
-
-        Ok(())
-    }
-
     pub(crate) fn patch_preview(&self) -> Result<()> {
         let stdout = std::io::stdout();
         let mut handle = stdout.lock();

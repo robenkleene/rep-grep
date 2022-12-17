@@ -10,28 +10,27 @@ impl App {
         Self { replacer }
     }
 
-    pub(crate) fn run(&self) -> Result<()> {
+    pub(crate) fn run(&self, preview: bool) -> Result<()> {
         let is_tty = atty::is(atty::Stream::Stdout);
+
         {
             let mut buffer = Vec::with_capacity(256);
             let stdin = std::io::stdin();
             let mut handle = stdin.lock();
             handle.read_to_end(&mut buffer)?;
 
-            let stdout = std::io::stdout();
-            let mut handle = stdout.lock();
-
-            let pathToEdits = Edit::parse(&buffer);
-            for (path, edits) in pathToEdits {
+            let pathToEdit = Edit::parse(&buffer);
+            if preview {
+                let stdout = std::io::stdout();
+                let mut handle = stdout.lock();
+                for (path, edits) in pathToEdit {
+                    handle.write_all(writer.patch_preview(is_tty))?;
+                }
+            } else {
                 let patcher = Patcher::new(edits, self.replacer);
                 let writer = Writer::new(&path, patcher);
-                handle.write_all(&if is_tty {
-                    writer.patch_preview()
-                } else {
-                    writer.write_file()
-                })?;
+                writer.write_file()
             }
-
             Ok(())
         }
     }

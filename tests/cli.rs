@@ -10,16 +10,16 @@ mod cli {
         Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Error invoking reap")
     }
 
-    // #[test]
-    // fn patch_preview() -> Result<()> {
-    //     let input = fs::read_to_string("tests/data/markup-grep.txt").expect("Error reading input");
-    //     let result = fs::read_to_string("tests/data/markdown-markup.patch").expect("Error reading input");
-    //     reap()
-    //         .current_dir("tests/data")
-    //         .write_stdin(input)
-    //         .assert()
-    //         .success()
-    //         .stdout(result);
-    //     Ok(())
-    // }
+    #[test]
+    fn patch_preview() -> Result<()> {
+        let input = fs::read_to_string("tests/data/markup-grep.txt").expect("Error reading input");
+        let result = fs::read_to_string("tests/data/markdown-markup.patch").expect("Error reading input");
+        reap()
+            .current_dir("tests/data")
+            .write_stdin(input)
+            .assert()
+            .success()
+            .stdout(result);
+        Ok(())
+    }
 }
