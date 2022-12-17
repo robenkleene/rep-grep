@@ -1,4 +1,4 @@
-use crate::{Replacer, Result, edit, patcher, writer};
+use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer};
 use std::io::prelude::*;
 
 pub(crate) struct App {
@@ -19,11 +19,11 @@ impl App {
             let mut handle = stdin.lock();
             handle.read_to_end(&mut buffer)?;
 
-            let pathToEdit = Edit::parse(&buffer);
+            let path_to_edit = Edit::parse(&buffer);
             if preview {
                 let stdout = std::io::stdout();
                 let mut handle = stdout.lock();
-                for (path, edits) in pathToEdit {
+                for (path, edits) in path_to_edit {
                     handle.write_all(writer.patch_preview(is_tty))?;
                 }
             } else {
