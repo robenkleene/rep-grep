@@ -1,4 +1,4 @@
-use crate::{Replacer, Result, Edit, Patcher, Writer};
+use crate::{Replacer, Result, edit, patcher, writer};
 use std::io::prelude::*;
 
 pub(crate) struct App {

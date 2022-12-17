@@ -1,8 +1,9 @@
 mod cli;
 mod error;
 mod input;
-pub(crate) mod edit;
+mod edit;
 mod patcher;
+mod writer;
 pub(crate) mod replacer;
 pub(crate) mod utils;
 

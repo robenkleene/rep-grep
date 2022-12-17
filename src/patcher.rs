@@ -1,4 +1,5 @@
-use crate::edit::{Edit, Replacer};
+use crate::edit::Edit;
+use crate::replacer::Replacer;
 use std::convert::TryFrom;
 use std::convert::TryInto;
 
