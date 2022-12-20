@@ -15,7 +15,6 @@ impl Writer {
     pub(crate) fn patch_preview(&self) -> Result<()> {
         let stdout = std::io::stdout();
         let mut handle = stdout.lock();
-        let print_path = paths.len() > 1;
 
         if let Err(_) = Replacer::check_not_empty(File::open(path)?)
         {
@@ -24,14 +23,6 @@ impl Writer {
         let file =
             unsafe { memmap::Mmap::map(&File::open(path)?)? };
         if self.replacer.has_matches(&file) {
-            if print_path {
-                writeln!(
-                    handle,
-                    "----- FILE {} -----",
-                    path.display()
-                )?;
-            }
-
             handle
                 .write_all(&self.patch(&file))?;
             writeln!(handle)?;

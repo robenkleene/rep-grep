@@ -24,12 +24,16 @@ impl App {
                 let stdout = std::io::stdout();
                 let mut handle = stdout.lock();
                 for (path, edits) in path_to_edit {
+                    let patcher = Patcher::new(edits, self.replacer);
+                    let writer = Writer::new(&path, patcher);
                     handle.write_all(writer.patch_preview(is_tty))?;
                 }
             } else {
-                let patcher = Patcher::new(edits, self.replacer);
-                let writer = Writer::new(&path, patcher);
-                writer.write_file()
+                for (path, edits) in path_to_edit {
+                    let patcher = Patcher::new(edits, self.replacer);
+                    let writer = Writer::new(&path, patcher);
+                    writer.write_file()
+                }
             }
             Ok(())
         }
