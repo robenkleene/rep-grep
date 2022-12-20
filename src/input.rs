@@ -11,8 +11,6 @@ impl App {
     }
 
     pub(crate) fn run(&self, preview: bool) -> Result<()> {
-        let is_tty = atty::is(atty::Stream::Stdout);
-
         {
             let mut buffer = Vec::with_capacity(256);
             let stdin = std::io::stdin();
@@ -20,18 +18,26 @@ impl App {
             handle.read_to_end(&mut buffer)?;
 
             let path_to_edit = Edit::parse(&buffer);
+            let patcher = Patcher::new(edits, self.replacer);
+            let writer = Writer::new(&file, patcher);
             if preview {
                 let stdout = std::io::stdout();
                 let mut handle = stdout.lock();
                 for (path, edits) in path_to_edit {
-                    let patcher = Patcher::new(edits, self.replacer);
-                    let writer = Writer::new(&path, patcher);
-                    handle.write_all(writer.patch_preview(is_tty))?;
+                    if let Err(_) = Replacer::check_not_empty(File::open(path)?) {
+                        return Ok(());
+                    }
+                    let file =
+                        unsafe { memmap::Mmap::map(&File::open(path)?)? };
+                    handle.write_all(writer.patch_preview())?;
                 }
             } else {
                 for (path, edits) in path_to_edit {
-                    let patcher = Patcher::new(edits, self.replacer);
-                    let writer = Writer::new(&path, patcher);
+                    if let Err(_) = Replacer::check_not_empty(File::open(path)?) {
+                        return Ok(());
+                    }
+                    let file =
+                        unsafe { memmap::Mmap::map(&File::open(path)?)? };
                     writer.write_file()
                 }
             }

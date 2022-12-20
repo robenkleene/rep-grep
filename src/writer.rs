@@ -12,23 +12,8 @@ impl Writer {
         Self { file, patcher }
     }
 
-    pub(crate) fn patch_preview(&self) -> Result<()> {
-        let stdout = std::io::stdout();
-        let mut handle = stdout.lock();
-
-        if let Err(_) = Replacer::check_not_empty(File::open(path)?)
-        {
-            return Ok(());
-        }
-        let file =
-            unsafe { memmap::Mmap::map(&File::open(path)?)? };
-        if self.replacer.has_matches(&file) {
-            handle
-                .write_all(&self.patch(&file))?;
-            writeln!(handle)?;
-        }
-
-        Ok(())
+    pub(crate) fn patch_preview(&self) -> Result<String, Error> {
+        &self.patcher.patch(&file)
     }
 
     pub(crate) fn write_file(&self) -> Result<()> {
