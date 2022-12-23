@@ -12,7 +12,7 @@ impl Writer {
         Self { file, patcher }
     }
 
-    pub(crate) fn patch_preview(&self) -> Result<String, Error> {
+    pub(crate) fn patch_preview(&self) -> Result<String, crate::patcher::Error> {
         &self.patcher.patch(&file)
     }
 
