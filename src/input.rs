@@ -17,29 +17,36 @@ impl App {
             let stdin = std::io::stdin();
             let mut handle = stdin.lock();
 
-            let path_to_edit = Edit::parse(&handle);
-            if preview {
-                let stdout = std::io::stdout();
-                let mut handle = stdout.lock();
-                for (path, edits) in path_to_edit.into_iter() {
-                    let patcher = Patcher::new(edits, self.replacer);
-                    let writer = Writer::new(path, patcher);
-                    if let Err(_) = Self::check_not_empty(File::open(path)?) {
-                        return Ok(());
+
+            match Edit::parse(&handle) {
+                Ok(path_to_edit) => { 
+                    if preview {
+                        let stdout = std::io::stdout();
+                        let mut handle = stdout.lock();
+                        for (path, edits) in path_to_edit.into_iter() {
+                            let patcher = Patcher::new(edits, self.replacer);
+                            let writer = Writer::new(path, patcher);
+                            if let Err(_) = Self::check_not_empty(File::open(path)?) {
+                                return Ok(())
+                            }
+                            handle.write_all(writer.patch_preview())?;
+                        }
+                    } else {
+                        for (path, edits) in path_to_edit {
+                            let patcher = Patcher::new(edits, self.replacer);
+                            let writer = Writer::new(path, patcher);
+                            if let Err(_) = Self::check_not_empty(File::open(path)?) {
+                                return Ok(());
+                            }
+                            writer.write_file()
+                        }
                     }
-                    handle.write_all(writer.patch_preview())?;
-                }
-            } else {
-                for (path, edits) in path_to_edit {
-                    let patcher = Patcher::new(edits, self.replacer);
-                    let writer = Writer::new(path, patcher);
-                    if let Err(_) = Self::check_not_empty(File::open(path)?) {
-                        return Ok(());
-                    }
-                    writer.write_file()
-                }
+                    Ok(())
+                },
+                Err(e) => {
+                    // FIXME:
+                },
             }
-            Ok(())
         }
     }
 
