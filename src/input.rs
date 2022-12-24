@@ -16,9 +16,8 @@ impl App {
             let mut buffer = Vec::with_capacity(256);
             let stdin = std::io::stdin();
             let mut handle = stdin.lock();
-            handle.read_to_end(&mut buffer)?;
 
-            let path_to_edit = Edit::parse(&buffer);
+            let path_to_edit = Edit::parse(&handle);
             if preview {
                 let stdout = std::io::stdout();
                 let mut handle = stdout.lock();

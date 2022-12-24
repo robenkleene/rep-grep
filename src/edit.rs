@@ -1,6 +1,6 @@
 use std::path::PathBuf;
+use std::io::StdinLock;
 use regex::Regex;
-use std::io::BufReader;
 use std::io::prelude::*;
 use std::collections::HashMap;
 
@@ -23,11 +23,9 @@ impl Edit {
         Edit { file, text, number }
     }
 
-    pub(crate) fn parse<R> (
-        reader: BufReader<R>
-    ) -> Result<HashMap<PathBuf, Edit>, std::io::Error>
-        where R: Read
-    {
+    pub(crate) fn parse (
+        reader: &StdinLock<'_>
+    ) -> Result<HashMap<PathBuf, Edit>, std::io::Error> {
         let mut edits = HashMap::new();
         for line in reader.lines() {
             let line = match line {

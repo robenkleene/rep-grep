@@ -1,6 +1,7 @@
 use crate::patcher::Patcher;
 use std::{fs, fs::File, io::prelude::*, path::PathBuf};
-use anyhow::Result;
+
+pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 #[derive(Debug)]
 pub(crate) struct Writer {
@@ -54,6 +55,12 @@ impl Writer {
         drop(source);
 
         target.persist(fs::canonicalize(self.path)?)?;
+        Ok(())
+    }
+
+    pub(crate) fn check_not_empty(mut file: File) -> Result<()> {
+        let mut buf: [u8; 1] = Default::default();
+        file.read_exact(&mut buf)?;
         Ok(())
     }
 }
