@@ -17,13 +17,12 @@ impl App {
             let stdin = std::io::stdin();
             let mut handle = stdin.lock();
 
-
             match Edit::parse(&handle) {
-                Ok(path_to_edit) => { 
+                Ok(path_to_edits) => {
                     if preview {
                         let stdout = std::io::stdout();
                         let mut handle = stdout.lock();
-                        for (path, edits) in path_to_edit.into_iter() {
+                        for (path, edits) in path_to_edits.into_iter() {
                             let patcher = Patcher::new(edits, self.replacer);
                             let writer = Writer::new(path, patcher);
                             if let Err(_) = Self::check_not_empty(File::open(path)?) {
@@ -32,7 +31,7 @@ impl App {
                             handle.write_all(writer.patch_preview())?;
                         }
                     } else {
-                        for (path, edits) in path_to_edit {
+                        for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer);
                             let writer = Writer::new(path, patcher);
                             if let Err(_) = Self::check_not_empty(File::open(path)?) {
