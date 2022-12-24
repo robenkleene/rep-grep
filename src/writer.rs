@@ -7,31 +7,37 @@ pub(crate) struct Writer {
     patcher: Patcher,
 }
 
+#[derive(Debug, thiserror::Error)]
+pub enum Error {
+    #[error("Invalid line number")]
+    InvalidPath(std::path::PathBuf),
+}
+
 impl Writer {
-    pub(crate) fn new(file: PathBuf, patcher: Patcher) -> Self {
-        Self { file, patcher }
+    pub(crate) fn new(path: PathBuf, patcher: Patcher) -> Self {
+        Self { path, patcher }
     }
 
     pub(crate) fn patch_preview(&self) -> Result<String, crate::patcher::Error> {
-        &self.patcher.patch(&file)
+        &self.patcher.patch(self.path)
     }
 
     pub(crate) fn write_file(&self) -> Result<()> {
         use memmap::{Mmap, MmapMut};
         use std::ops::DerefMut;
 
-        if let Err(_) = Self::check_not_empty(File::open(path)?) {
+        if let Err(_) = Self::check_not_empty(File::open(self.path)?) {
             return Ok(());
         }
 
-        let source = File::open(path)?;
-        let meta = fs::metadata(path)?;
+        let source = File::open(self.path)?;
+        let meta = fs::metadata(self.path)?;
         let mmap_source = unsafe { Mmap::map(&source)? };
         let replaced = self.patch(&mmap_source);
 
         let target = tempfile::NamedTempFile::new_in(
-            path.parent()
-                .ok_or_else(|| Error::InvalidPath(path.to_path_buf()))?,
+            self.path.parent()
+                .ok_or_else(|| Error::InvalidPath(self.path.to_path_buf()))?,
         )?;
         let file = target.as_file();
         file.set_len(replaced.len() as u64)?;
@@ -46,7 +52,7 @@ impl Writer {
         drop(mmap_source);
         drop(source);
 
-        target.persist(fs::canonicalize(path)?)?;
+        target.persist(fs::canonicalize(self.path)?)?;
         Ok(())
     }
 }
