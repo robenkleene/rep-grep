@@ -21,10 +21,10 @@ impl App {
             if preview {
                 let stdout = std::io::stdout();
                 let mut handle = stdout.lock();
-                for (path, edits) in path_to_edit {
+                for (path, edits) in path_to_edit.into_iter() {
                     let patcher = Patcher::new(edits, self.replacer);
                     let writer = Writer::new(path, patcher);
-                    if let Err(_) = Replacer::check_not_empty(File::open(path)?) {
+                    if let Err(_) = Self::check_not_empty(File::open(path)?) {
                         return Ok(());
                     }
                     handle.write_all(writer.patch_preview())?;
@@ -33,7 +33,7 @@ impl App {
                 for (path, edits) in path_to_edit {
                     let patcher = Patcher::new(edits, self.replacer);
                     let writer = Writer::new(path, patcher);
-                    if let Err(_) = Replacer::check_not_empty(File::open(path)?) {
+                    if let Err(_) = Self::check_not_empty(File::open(path)?) {
                         return Ok(());
                     }
                     writer.write_file()
@@ -41,5 +41,11 @@ impl App {
             }
             Ok(())
         }
+    }
+
+    pub(crate) fn check_not_empty(mut file: File) -> Result<()> {
+        let mut buf: [u8; 1] = Default::default();
+        file.read_exact(&mut buf)?;
+        Ok(())
     }
 }

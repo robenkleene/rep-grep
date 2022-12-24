@@ -28,10 +28,6 @@ impl Writer {
         use memmap::{Mmap, MmapMut};
         use std::ops::DerefMut;
 
-        if let Err(_) = Self::check_not_empty(File::open(self.path)?) {
-            return Ok(());
-        }
-
         let source = File::open(self.path)?;
         let meta = fs::metadata(self.path)?;
         let mmap_source = unsafe { Mmap::map(&source)? };
@@ -55,12 +51,6 @@ impl Writer {
         drop(source);
 
         target.persist(fs::canonicalize(self.path)?)?;
-        Ok(())
-    }
-
-    pub(crate) fn check_not_empty(mut file: File) -> Result<()> {
-        let mut buf: [u8; 1] = Default::default();
-        file.read_exact(&mut buf)?;
         Ok(())
     }
 }
