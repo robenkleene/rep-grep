@@ -1,5 +1,6 @@
 use crate::patcher::Patcher;
 use std::{fs, fs::File, io::prelude::*, path::PathBuf};
+use anyhow::Result;
 
 #[derive(Debug)]
 pub(crate) struct Writer {
