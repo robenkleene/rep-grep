@@ -41,7 +41,7 @@ impl App {
                             if let Err(_) = Self::check_not_empty(File::open(path)?) {
                                 return Ok(());
                             }
-                            writer.write_file()
+                            writer.write_file();
                         }
                     }
                     Ok(())
