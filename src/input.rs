@@ -28,7 +28,11 @@ impl App {
                             if let Err(_) = Self::check_not_empty(File::open(path)?) {
                                 return Ok(())
                             }
-                            handle.write_all(writer.patch_preview())?;
+                            let text = match writer.patch_preview() {
+                                Ok(text) => text,
+                                Err(_) => continue, // FIXME:
+                            };
+                            handle.write_all(text.as_bytes());
                         }
                     } else {
                         for (path, edits) in path_to_edits {
