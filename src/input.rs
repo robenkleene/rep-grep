@@ -13,7 +13,6 @@ impl App {
 
     pub(crate) fn run(&self, preview: bool) -> Result<()> {
         {
-            let mut buffer = Vec::with_capacity(256);
             let stdin = std::io::stdin();
             let mut handle = stdin.lock();
 
