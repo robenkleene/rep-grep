@@ -47,7 +47,7 @@ impl App {
                     Ok(())
                 },
                 Err(e) => {
-                    // FIXME:
+                    return Ok(()); // FIXME:
                 },
             }
         }
