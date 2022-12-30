@@ -26,7 +26,7 @@ impl Edit {
     pub(crate) fn parse (
         reader: &StdinLock<'_>
     ) -> Result<HashMap<PathBuf, Vec<Edit>>, std::io::Error> {
-        let mut edits = HashMap::new();
+        let mut path_to_edits = HashMap::new();
         for line in reader.lines() {
             let line = match line {
                 Ok(line) => line,
@@ -36,9 +36,13 @@ impl Edit {
                 Ok(line) => line,
                 Err(_) => continue,
             };
-            edits.insert(line.file.clone(), line);
+            let key = line.file.clone();
+            if !path_to_edits.contains_key(&key) {
+                path_to_edits.insert(key, Vec::new());
+            }
+            path_to_edits.get_mut(&key).unwrap().push(line);
         }
-        return Ok(edits);
+        return Ok(path_to_edits);
     }
 
     fn edit_from_line(line: String) -> Result<Edit, Error> {
