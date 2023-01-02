@@ -2,8 +2,8 @@ use crate::edit::Edit;
 use crate::replacer::Replacer;
 use std::convert::TryFrom;
 use std::convert::TryInto;
+use std::str;
 
-#[derive(Debug)]
 pub(crate) struct Patcher {
     edits: Vec<Edit>,
     replacer: Option<Replacer>
@@ -28,7 +28,13 @@ impl Patcher {
             }
             let index = usize::try_from(edit.number).unwrap();
             if let Some(replacer) = &self.replacer {
-                lines[index] = replacer.replace(edit.text.clone());
+                let replaced = &replacer.replace(edit.text.clone().as_bytes());
+                let result = str::from_utf8(replaced);
+                let text = match result {
+                    Ok(result) => result,
+                    Err(_) => panic!("Unexpected error"),
+                };
+                lines[index] = text.to_string();
             } else {
                 lines[index] = edit.text.clone();
             }
