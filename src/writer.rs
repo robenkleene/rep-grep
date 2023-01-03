@@ -4,7 +4,7 @@ use std::{fs, fs::File, io::prelude::*, path::PathBuf};
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 pub(crate) struct Writer {
-    file: PathBuf,
+    path: PathBuf,
     patcher: Patcher,
 }
 
