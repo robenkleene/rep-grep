@@ -1,6 +1,5 @@
 use crate::patcher::Patcher;
-use std::{fs, fs::File, io::prelude::*, path::PathBuf};
-
+use std::{fs, fs::File, io::prelude::*, path::PathBuf, io::BufReader};
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 pub(crate) struct Writer {
@@ -20,7 +19,13 @@ impl Writer {
     }
 
     pub(crate) fn patch_preview(&self) -> Result<String, crate::patcher::Error> {
-        &self.patcher.patch(self.path)
+        // TODO: Review error handling
+        let file = File::open(self.path).expect("Error opening file");
+        let buf = BufReader::new(file);
+        let lines = buf.lines()
+            .map(|l| l.expect("Error getting line"))
+            .collect();
+        &self.patcher.patch(lines);
     }
 
     pub(crate) fn write_file(&self) -> Result<()> {
