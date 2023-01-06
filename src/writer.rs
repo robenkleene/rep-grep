@@ -25,7 +25,7 @@ impl Writer {
         let lines = buf.lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
-        &self.patcher.patch(lines)?
+        Ok(self.patcher.patch(lines)?)
     }
 
     pub(crate) fn write_file(&self) -> Result<()> {
