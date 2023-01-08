@@ -37,7 +37,7 @@ impl Writer {
         let source = File::open(self.path)?;
         let meta = fs::metadata(self.path)?;
         let mmap_source = unsafe { Mmap::map(&source)? };
-        let replaced = self.patch(&mmap_source);
+        let replaced = self.patcher.patch(&mmap_source);
 
         let target = tempfile::NamedTempFile::new_in(
             self.path.parent()
