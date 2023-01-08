@@ -32,7 +32,7 @@ impl Patcher {
                 let result = str::from_utf8(replaced);
                 let text = match result {
                     Ok(result) => result,
-                    Err(_) => panic!("Unexpected error"),
+                    Err(_) => panic!("Unexpected error"), // FIXME:
                 };
                 lines[index] = text.to_string();
             } else {

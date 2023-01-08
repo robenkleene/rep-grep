@@ -40,7 +40,10 @@ impl Writer {
         let lines = mmap_source.lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
-        let replaced = self.patcher.patch(lines);
+        let replaced = match self.patcher.patch(lines) {
+            Ok(replaced) => replaced,
+            Err(_) => panic!("Unexpected error"), // FIXME:
+        };
 
         let target = tempfile::NamedTempFile::new_in(
             self.path.parent()
