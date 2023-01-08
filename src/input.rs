@@ -14,7 +14,7 @@ impl App {
     pub(crate) fn run(&self, preview: bool) -> Result<()> {
         {
             let stdin = std::io::stdin();
-            let mut handle = stdin.lock();
+            let handle = stdin.lock();
 
             match Edit::parse(&handle) {
                 Ok(path_to_edits) => {
@@ -45,7 +45,7 @@ impl App {
                     }
                     Ok(())
                 },
-                Err(e) => {
+                Err(_) => {
                     return Ok(()); // FIXME:
                 },
             }
