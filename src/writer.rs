@@ -11,6 +11,8 @@ pub(crate) struct Writer {
 pub enum Error {
     #[error("Invalid line number")]
     InvalidPath(std::path::PathBuf),
+    #[error(transparent)]
+    File(#[from] std::io::Error),
 }
 
 impl Writer {
