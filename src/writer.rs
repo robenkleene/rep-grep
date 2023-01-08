@@ -55,7 +55,7 @@ impl Writer {
 
         if !replaced.is_empty() {
             let mut mmap_target = unsafe { MmapMut::map_mut(&file)? };
-            mmap_target.deref_mut().write_all(&replaced)?;
+            mmap_target.deref_mut().write_all(&replaced.as_bytes())?;
             mmap_target.flush_async()?;
         }
 
