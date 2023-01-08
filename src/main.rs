@@ -25,9 +25,9 @@ fn main() -> Result<()> {
                 options.replacements,
             )?),
         )
-        .run()?;
+        .run(options.preview)?;
     } else {
-        App::new(None).run()?;
+        App::new(None).run(options.preview)?;
     }
 
     Ok(())

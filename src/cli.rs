@@ -7,6 +7,10 @@ use structopt::{clap::AppSettings, StructOpt};
     setting(AppSettings::UnifiedHelpMessage)
 )]
 pub(crate) struct Options {
+    #[structopt(short = "p", long = "preview")]
+    /// Output result into stdout and do not modify files.
+    pub preview: bool,
+
     #[structopt(short = "s", long = "string-mode")]
     /// Treat expressions as non-regex strings.
     pub literal_mode: bool,
