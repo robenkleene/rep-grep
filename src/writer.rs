@@ -13,6 +13,8 @@ pub enum Error {
     InvalidPath(std::path::PathBuf),
     #[error(transparent)]
     File(#[from] std::io::Error),
+    #[error("failed to move file: {0}")]
+    TempfilePersist(#[from] tempfile::PersistError),
 }
 
 impl Writer {
