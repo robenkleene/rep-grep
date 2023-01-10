@@ -22,7 +22,7 @@ impl App {
                         let stdout = std::io::stdout();
                         let mut handle = stdout.lock();
                         for (path, edits) in path_to_edits.into_iter() {
-                            let patcher = Patcher::new(edits, self.replacer);
+                            let patcher = Patcher::new(edits, self.replacer.as_ref());
                             let writer = Writer::new(path, patcher);
                             if let Err(_) = Self::check_not_empty(File::open(path)?) {
                                 return Ok(())
@@ -35,7 +35,7 @@ impl App {
                         }
                     } else {
                         for (path, edits) in path_to_edits {
-                            let patcher = Patcher::new(edits, self.replacer);
+                            let patcher = Patcher::new(edits, self.replacer.as_ref());
                             let writer = Writer::new(path, patcher);
                             if let Err(_) = Self::check_not_empty(File::open(path)?) {
                                 return Ok(());
