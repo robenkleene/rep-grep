@@ -16,7 +16,7 @@ impl App {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
 
-            match Edit::parse(&handle) {
+            match Edit::parse(handle) {
                 Ok(path_to_edits) => {
                     if preview {
                         let stdout = std::io::stdout();

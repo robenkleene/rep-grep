@@ -24,7 +24,7 @@ impl Edit {
     }
 
     pub(crate) fn parse (
-        reader: &StdinLock<'_>
+        reader: StdinLock<'_>
     ) -> Result<HashMap<PathBuf, Vec<Edit>>, std::io::Error> {
         let mut path_to_edits = HashMap::new();
         for line in reader.lines() {
