@@ -23,10 +23,10 @@ impl App {
                         let mut handle = stdout.lock();
                         for (path, edits) in path_to_edits.into_iter() {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
-                            let writer = Writer::new(path, patcher);
-                            if let Err(_) = Self::check_not_empty(File::open(path)?) {
+                            if let Err(_) = Self::check_not_empty(File::open(&path)?) {
                                 return Ok(())
                             }
+                            let writer = Writer::new(path, patcher);
                             let text = match writer.patch_preview() {
                                 Ok(text) => text,
                                 Err(_) => continue, // FIXME:
@@ -36,10 +36,10 @@ impl App {
                     } else {
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
-                            let writer = Writer::new(path, patcher);
-                            if let Err(_) = Self::check_not_empty(File::open(path)?) {
+                            if let Err(_) = Self::check_not_empty(File::open(&path)?) {
                                 return Ok(());
                             }
+                            let writer = Writer::new(path, patcher);
                             writer.write_file();
                         }
                     }
