@@ -5,7 +5,7 @@ use std::convert::TryInto;
 use std::str;
 
 pub(crate) struct Patcher<'a> {
-    edits: Vec<Edit>,
+    edits: Vec<&Edit>,
     replacer: Option<&'a Replacer>
 }
 
@@ -16,7 +16,7 @@ pub enum Error {
 }
 
 impl Patcher<'_> {
-    pub(crate) fn new<'a>(edits: Vec<Edit>, replacer: Option<&'a Replacer>) -> Self {
+    pub(crate) fn new<'a>(edits: Vec<&Edit>, replacer: Option<&'a Replacer>) -> Self {
         Self { edits, replacer }
     }
 
@@ -51,12 +51,12 @@ mod tests {
     #[test]
     fn patch_bad_number() {
         let patcher = Patcher::new(vec![
-            Edit {
+            &Edit {
                 file: PathBuf::from("a"),
                 number: 1,
                 text: "foo".to_string(),
             },
-            Edit {
+            &Edit {
                 file: PathBuf::from("a"),
                 number: 2,
                 text: "bar".to_string(),
@@ -69,12 +69,12 @@ mod tests {
 
     fn patch() {
         let patcher = Patcher::new(vec![
-            Edit {
+            &Edit {
                 file: PathBuf::from("a"),
                 number: 1,
                 text: "foo".to_string(),
             },
-            Edit {
+            &Edit {
                 file: PathBuf::from("a"),
                 number: 2,
                 text: "bar".to_string(),
