@@ -5,7 +5,7 @@ use std::convert::TryInto;
 use std::str;
 
 pub(crate) struct Patcher<'a> {
-    edits: Vec<&Edit>,
+    edits: Vec<&'a Edit>,
     replacer: Option<&'a Replacer>
 }
 
