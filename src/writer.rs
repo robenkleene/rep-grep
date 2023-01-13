@@ -3,7 +3,7 @@ use std::{fs, fs::File, io::prelude::*, path::PathBuf, io::BufReader};
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 pub(crate) struct Writer<'a> {
-    path: &'a PathBuf,
+    path: PathBuf,
     patcher: Patcher<'a>,
 }
 
@@ -18,7 +18,7 @@ pub enum Error {
 }
 
 impl Writer<'_> {
-    pub(crate) fn new(path: &PathBuf, patcher: Patcher) -> Self {
+    pub(crate) fn new(path: PathBuf, patcher: Patcher) -> Self {
         Self { path, patcher }
     }
 

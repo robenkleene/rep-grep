@@ -36,11 +36,11 @@ impl Edit {
                 Ok(line) => line,
                 Err(_) => continue,
             };
-            let key = line.file.clone();
-            if !path_to_edits.contains_key(&key) {
-                path_to_edits.insert(key, Vec::new());
+            let key = &line.file;
+            if !path_to_edits.contains_key(key) {
+                path_to_edits.insert(line.file.clone(), Vec::new());
             }
-            path_to_edits.get_mut(&key).unwrap().push(line);
+            path_to_edits.get_mut(key).unwrap().push(line);
         }
         return Ok(path_to_edits);
     }
