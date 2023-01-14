@@ -4,9 +4,9 @@ use std::convert::TryFrom;
 use std::convert::TryInto;
 use std::str;
 
-pub(crate) struct Patcher<'a> {
+pub(crate) struct Patcher {
     edits: Vec<Edit>,
-    replacer: Option<&'a Replacer>
+    replacer: Option<Replacer>
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -15,8 +15,8 @@ pub enum Error {
     LineNumber,
 }
 
-impl Patcher<'_> {
-    pub(crate) fn new<'a>(edits: Vec<Edit>, replacer: Option<&'a Replacer>) -> Self {
+impl Patcher {
+    pub(crate) fn new(edits: Vec<Edit>, replacer: Option<Replacer>) -> Self {
         Self { edits, replacer }
     }
 

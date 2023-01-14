@@ -2,9 +2,9 @@ use crate::patcher::Patcher;
 use std::{fs, fs::File, io::prelude::*, path::PathBuf, io::BufReader};
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
-pub(crate) struct Writer<'a> {
+pub(crate) struct Writer {
     path: PathBuf,
-    patcher: Patcher<'a>,
+    patcher: Patcher,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -17,7 +17,7 @@ pub enum Error {
     TempfilePersist(#[from] tempfile::PersistError),
 }
 
-impl Writer<'_> {
+impl Writer {
     pub(crate) fn new(path: PathBuf, patcher: Patcher) -> Self {
         Self { path, patcher }
     }
