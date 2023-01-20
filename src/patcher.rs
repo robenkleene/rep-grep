@@ -15,8 +15,8 @@ pub enum Error {
     LineNumber,
 }
 
-impl Patcher<'_> {
-    pub(crate) fn new<'a>(edits: Vec<Edit>, replacer: Option<&'a Replacer>) -> Self {
+impl<'a> Patcher<'a> {
+    pub(crate) fn new(edits: Vec<Edit>, replacer: Option<&'a Replacer>) -> Self {
         Self { edits, replacer }
     }
 
