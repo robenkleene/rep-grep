@@ -26,7 +26,7 @@ impl App {
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) {
                                 return Ok(())
                             }
-                            let writer = Writer::new(path, patcher);
+                            let writer = Writer::new(path, &patcher);
                             let text = match writer.patch_preview() {
                                 Ok(text) => text,
                                 Err(_) => continue, // FIXME:
@@ -39,7 +39,7 @@ impl App {
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) {
                                 return Ok(());
                             }
-                            let writer = Writer::new(path, patcher);
+                            let writer = Writer::new(path, &patcher);
                             writer.write_file();
                         }
                     }

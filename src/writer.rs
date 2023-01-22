@@ -4,7 +4,7 @@ pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 pub(crate) struct Writer<'a> {
     path: PathBuf,
-    patcher: Patcher<'a>,
+    patcher: &'a Patcher<'a>,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -17,8 +17,8 @@ pub enum Error {
     TempfilePersist(#[from] tempfile::PersistError),
 }
 
-impl Writer<'_> {
-    pub(crate) fn new(path: PathBuf, patcher: Patcher) -> Self {
+impl<'a> Writer<'a> {
+    pub(crate) fn new(path: PathBuf, patcher: &'a Patcher) -> Self {
         Self { path, patcher }
     }
 
