@@ -24,7 +24,7 @@ impl<'a> Writer<'a> {
 
     pub(crate) fn patch_preview(&self) -> Result<String, crate::patcher::Error> {
         // TODO: Review error handling
-        let file = File::open(self.path).expect("Error opening file");
+        let file = File::open(self.path.clone()).expect("Error opening file");
         let buf = BufReader::new(file);
         let lines = buf.lines()
             .map(|l| l.expect("Error getting line"))
@@ -36,8 +36,8 @@ impl<'a> Writer<'a> {
         use memmap::{Mmap, MmapMut};
         use std::ops::DerefMut;
 
-        let source = File::open(self.path)?;
-        let meta = fs::metadata(self.path)?;
+        let source = File::open(self.path.clone())?;
+        let meta = fs::metadata(self.path.clone())?;
         let mmap_source = unsafe { Mmap::map(&source)? };
         let lines = mmap_source.lines()
             .map(|l| l.expect("Error getting line"))
@@ -64,7 +64,7 @@ impl<'a> Writer<'a> {
         drop(mmap_source);
         drop(source);
 
-        target.persist(fs::canonicalize(self.path)?)?;
+        target.persist(fs::canonicalize(self.path.clone())?)?;
         Ok(())
     }
 }
