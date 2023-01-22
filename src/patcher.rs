@@ -28,7 +28,7 @@ impl<'a> Patcher<'a> {
             }
             let index = usize::try_from(edit.number).unwrap();
             if let Some(replacer) = &self.replacer {
-                let replaced = &replacer.replace(edit.text.clone().as_bytes());
+                let replaced = &replacer.replace(edit.text.as_bytes());
                 let result = str::from_utf8(replaced);
                 let text = match result {
                     Ok(result) => result,
