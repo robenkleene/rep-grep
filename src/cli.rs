@@ -7,9 +7,9 @@ use structopt::{clap::AppSettings, StructOpt};
     setting(AppSettings::UnifiedHelpMessage)
 )]
 pub(crate) struct Options {
-    #[structopt(short = "p", long = "preview")]
+    #[structopt(short = "w", long = "write")]
     /// Output result into stdout and do not modify files.
-    pub preview: bool,
+    pub write: bool,
 
     #[structopt(short = "s", long = "string-mode")]
     /// Treat expressions as non-regex strings.
