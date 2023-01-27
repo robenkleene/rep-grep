@@ -29,7 +29,7 @@ impl<'a> Writer<'a> {
         let lines = buf.lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
-        Ok(self.patcher.patch(lines)?)
+        Ok(self.patcher.patch_preview(lines)?)
     }
 
     pub(crate) fn write_file(&self) -> Result<()> {
