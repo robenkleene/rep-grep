@@ -11,11 +11,23 @@ mod cli {
     }
 
     #[test]
-    fn patch_preview() -> Result<()> {
+    fn patch_preview_markdown() -> Result<()> {
         let input = fs::read_to_string("tests/data/markup-grep.txt").expect("Error reading input");
         let result = fs::read_to_string("tests/data/markdown-markup.patch").expect("Error reading input");
         reap()
-            .current_dir("tests/data")
+            .current_dir("tests/data/markdown")
+            .write_stdin(input)
+            .assert()
+            .success()
+            .stdout(result);
+        Ok(())
+    }
+
+    fn patch_preview_simple() -> Result<()> {
+        let input = fs::read_to_string("tests/data/markup-grep.txt").expect("Error reading input");
+        let result = fs::read_to_string("tests/data/markdown-markup.patch").expect("Error reading input");
+        reap()
+            .current_dir("tests/data/simple")
             .write_stdin(input)
             .assert()
             .success()
