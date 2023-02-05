@@ -1,5 +1,7 @@
 use crate::patcher::Patcher;
 use std::{fs, fs::File, io::prelude::*, path::PathBuf, io::BufReader};
+use diffy::create_patch;
+
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 pub(crate) struct Writer<'a> {
@@ -29,7 +31,15 @@ impl<'a> Writer<'a> {
         let lines = buf.lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
-        Ok(self.patcher.patch_preview(lines)?)
+        let replaced = match self.patcher.patch(lines) {
+            Ok(replaced) => replaced,
+            Err(_) => panic!("Unexpected error"), // FIXME:
+        };
+        let original = lines.join("\n")
+        let patch = create_patch(original, modified);
+        // FIXME: Add option for color
+        let f = PatchFormatter::new().with_color();
+        return f.fmt_patch(&patch);
     }
 
     pub(crate) fn write_file(&self) -> Result<()> {

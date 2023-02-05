@@ -41,10 +41,6 @@ impl<'a> Patcher<'a> {
         }
         return Ok(lines.join("\n"));
     }
-
-    pub(crate) fn patch_preview(&self, mut lines: Vec<String>) -> Result<String, Error> {
-        return Ok("".to_string());
-    }
 }
 
 #[cfg(test)]
