@@ -34,7 +34,7 @@ impl<'a> Writer<'a> {
         let original = lines.join("\n");
         let modified = match self.patcher.patch(lines) {
             Ok(replaced) => replaced,
-            Err(_) => panic!("Unexpected error"), // FIXME:
+            Err(_) => panic!("Error patching lines"), // FIXME:
         };
         let patch = create_patch(&original, &modified);
         // FIXME: Add option for color
@@ -54,7 +54,7 @@ impl<'a> Writer<'a> {
             .collect();
         let replaced = match self.patcher.patch(lines) {
             Ok(replaced) => replaced,
-            Err(_) => panic!("Unexpected error"), // FIXME:
+            Err(_) => panic!("Error patching lines"), // FIXME:
         };
 
         let target = tempfile::NamedTempFile::new_in(

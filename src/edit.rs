@@ -115,7 +115,7 @@ mod tests {
         assert!(matches!(result, Ok(_)));
         let edit = match result {
             Ok(result) => result,
-            Err(_) => panic!("Unexpected error"),
+            Err(_) => panic!("Error getting edit from line"),
         };
         assert_eq!(edit.file, PathBuf::from("aaa.txt"));
         assert_eq!(edit.number, 1);
