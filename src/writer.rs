@@ -28,18 +28,18 @@ impl<'a> Writer<'a> {
         // TODO: Review error handling
         let file = File::open(self.path.clone()).expect("Error opening file");
         let buf = BufReader::new(file);
-        let lines = buf.lines()
+        let lines: Vec<String> = buf.lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
+        let original = lines.join("\n");
         let modified = match self.patcher.patch(lines) {
             Ok(replaced) => replaced,
             Err(_) => panic!("Unexpected error"), // FIXME:
         };
-        let original = lines.join("\n")
         let patch = create_patch(&original, &modified);
         // FIXME: Add option for color
         let f = PatchFormatter::new().with_color();
-        return Ok(f.fmt_patch(&patch));
+        return Ok(f.fmt_patch(&patch).to_string());
     }
 
     pub(crate) fn write_file(&self) -> Result<()> {
