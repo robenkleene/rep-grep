@@ -11,7 +11,7 @@ pub(crate) struct Writer<'a> {
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("Invalid line number")]
+    #[error("Invalid path")]
     InvalidPath(std::path::PathBuf),
     #[error(transparent)]
     File(#[from] std::io::Error),
@@ -34,7 +34,7 @@ impl<'a> Writer<'a> {
         let original = lines.join("\n");
         let modified = match self.patcher.patch(lines) {
             Ok(replaced) => replaced,
-            Err(_) => panic!("Error patching lines"), // FIXME:
+            Err(err) => panic!("Error patching lines: {}", err), // FIXME:
         };
         let patch = create_patch(&original, &modified);
         // FIXME: Add option for color
