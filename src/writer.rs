@@ -24,7 +24,7 @@ impl<'a> Writer<'a> {
         Self { path, patcher }
     }
 
-    pub(crate) fn patch_preview(&self) -> Result<String, crate::patcher::Error> {
+    pub(crate) fn patch_preview(&self, color: bool) -> Result<String, crate::patcher::Error> {
         // TODO: Review error handling
         let file = File::open(self.path.clone()).expect("Error opening file");
         let buf = BufReader::new(file);
@@ -37,8 +37,10 @@ impl<'a> Writer<'a> {
             Err(err) => panic!("Error patching lines: {}", err), // FIXME:
         };
         let patch = create_patch(&original, &modified);
-        // FIXME: Add option for color
-        let f = PatchFormatter::new().with_color();
+        let f = match color {
+            true => PatchFormatter::new().with_color(),
+            false => PatchFormatter::new(),
+        };
         return Ok(f.fmt_patch(&patch).to_string());
     }
 

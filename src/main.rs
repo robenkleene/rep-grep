@@ -25,9 +25,9 @@ fn main() -> Result<()> {
                 options.replacements,
             )?),
         )
-        .run(!options.write)?;
+        .run(!options.write, options.color)?;
     } else {
-        App::new(None).run(!options.write)?;
+        App::new(None).run(!options.write, options.color)?;
     }
 
     Ok(())

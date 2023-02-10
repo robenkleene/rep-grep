@@ -11,7 +11,7 @@ impl App {
         Self { replacer }
     }
 
-    pub(crate) fn run(&self, preview: bool) -> Result<()> {
+    pub(crate) fn run(&self, preview: bool, color: bool) -> Result<()> {
         {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
@@ -27,7 +27,7 @@ impl App {
                                 return Ok(())
                             }
                             let writer = Writer::new(path, &patcher);
-                            let text = match writer.patch_preview() {
+                            let text = match writer.patch_preview(color) {
                                 Ok(text) => text,
                                 Err(_) => continue, // FIXME:
                             };
