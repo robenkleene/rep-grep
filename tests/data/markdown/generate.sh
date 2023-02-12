@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+cd "$(dirname "$0")" || exit 1
+
 grep --line-number --with-filename Markdown markdown-syntax.md > markdown-grep.txt
 diff --unified markdown-syntax.md \
   <(sed s/Markdown/Markup/g markdown-syntax.md) > markdown-markup.patch || true

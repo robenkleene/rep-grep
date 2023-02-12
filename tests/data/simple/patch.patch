@@ -1,5 +1,6 @@
---- original
-+++ modified
-@@ -1 +1 @@
+--- a/original.md
++++ b/original.md
+@@ -1,2 +1,2 @@
 -Who put the bomp in the bomp bah bomp bah bomp
 +Who put the ram in the ram bah ram bah ram
+ 
