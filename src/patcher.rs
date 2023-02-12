@@ -59,7 +59,7 @@ mod tests {
             },
             Edit {
                 file: PathBuf::from("a"),
-                number: 2,
+                number: 3,
                 text: "bar".to_string(),
             },
         ], None);
