@@ -1,6 +1,6 @@
 use crate::patcher::Patcher;
 use std::{fs, fs::File, io::prelude::*, path::PathBuf, io::BufReader};
-use diffy::{create_patch, PatchFormatter};
+use diffy::{create_file_patch, PatchFormatter};
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
@@ -36,7 +36,11 @@ impl<'a> Writer<'a> {
             Ok(replaced) => replaced,
             Err(err) => panic!("Error patching lines: {}", err), // FIXME:
         };
-        let patch = create_patch(&original, &modified);
+        let filename = match self.path.to_str() {
+            Some(filename) => filename,
+            None => return Err(Error::InvalidPath(self.path)),
+        };
+        let patch = create_file_patch(&original, &modified, filename, filename);
         let f = match color {
             true => PatchFormatter::new().with_color(),
             false => PatchFormatter::new(),
