@@ -24,7 +24,7 @@ impl<'a> Writer<'a> {
         Self { path, patcher }
     }
 
-    pub(crate) fn patch_preview(&self, color: bool) -> Result<String, crate::patcher::Error> {
+    pub(crate) fn patch_preview(&self, color: bool) -> Result<String, crate::writer::Error> {
         // TODO: Review error handling
         let file = File::open(self.path.clone()).expect("Error opening file");
         let buf = BufReader::new(file);
@@ -38,7 +38,7 @@ impl<'a> Writer<'a> {
         };
         let filename = match self.path.to_str() {
             Some(filename) => filename,
-            None => return Err(Error::InvalidPath(self.path)),
+            None => return Err(Error::InvalidPath(self.path.clone())),
         };
         let patch = create_file_patch(&original, &modified, filename, filename);
         let f = match color {
