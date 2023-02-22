@@ -1,5 +1,5 @@
---- a/original.md
-+++ b/original.md
+--- a/original.txt
++++ b/original.txt
 @@ -1,2 +1,2 @@
 -Who put the bomp in the bomp bah bomp bah bomp
 +Who put the ram in the ram bah ram bah ram
