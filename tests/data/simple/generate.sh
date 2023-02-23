@@ -10,4 +10,5 @@ diff --unified original.txt \
 sed -i '' 's/bomp/ram/g' grep.txt
 sed -i '' '1s/.*/--- a\/original.txt/' patch.patch
 sed -i '' '2s/.*/+++ b\/original.txt/' patch.patch
+sed -i '' '3s/-1,2 +1,2/-1 +1/' patch.patch
 wc -l < grep.txt | xargs > grep-count.txt
