@@ -40,9 +40,9 @@ impl<'a> Writer<'a> {
             Some(filename) => filename,
             None => return Err(Error::InvalidPath(self.path.clone())),
         };
-        let original_filename = format!("a/{}", filename).as_str();
-        let modified_filename = format!("b/{}", filename).as_str();
-        let patch = create_file_patch(&original, &modified, original_filename, modified_filename);
+        let original_filename = format!("a/{}", filename);
+        let modified_filename = format!("b/{}", filename);
+        let patch = create_file_patch(&original, &modified, original_filename.as_str(), modified_filename.as_str());
         let f = match color {
             true => PatchFormatter::new().with_color(),
             false => PatchFormatter::new(),
