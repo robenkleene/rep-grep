@@ -8,7 +8,7 @@ use structopt::{clap::AppSettings, StructOpt};
 )]
 pub(crate) struct Options {
     #[structopt(short = "w", long = "write")]
-    /// Output result into stdout and do not modify files
+    /// Write the output to files directly (instead of outputting a patch)
     pub write: bool,
 
     #[structopt(short = "s", long = "string-mode")]
@@ -16,7 +16,7 @@ pub(crate) struct Options {
     pub literal_mode: bool,
 
     #[structopt(short = "n")]
-    /// Limit the number of replacements
+    /// Limit the number of replacements per line
     pub replacements: Option<usize>,
 
     #[structopt(long = "color")]
