@@ -21,18 +21,19 @@ impl<'a> Patcher<'a> {
     }
 
     pub(crate) fn patch(&self, mut lines: Vec<String>) -> Result<String, Error> {
-        let len = lines.len();
         for edit in &self.edits {
-            if edit.number >= len.try_into().unwrap() {
+            // Subtract `1` from the line number because line numbers start from `1` and array
+            // indices start from `0`
+            let index = usize::try_from(edit.number).unwrap() - 1;
+            if index >= lines.len().try_into().unwrap() {
                 return Err(Error::LineNumber);
             }
-            let index = usize::try_from(edit.number).unwrap();
             if let Some(replacer) = &self.replacer {
                 let replaced = &replacer.replace(edit.text.as_bytes());
                 let result = str::from_utf8(replaced);
                 let text = match result {
                     Ok(result) => result,
-                    Err(_) => panic!("Unexpected error"), // FIXME:
+                    Err(err) => panic!("Error replacing: {}", err), // FIXME:
                 };
                 lines[index] = text.to_string();
             } else {
@@ -40,10 +41,6 @@ impl<'a> Patcher<'a> {
             }
         }
         return Ok(lines.join("\n"));
-    }
-
-    pub(crate) fn patch_preview(&self, mut lines: Vec<String>) -> Result<String, Error> {
-        return Ok("".to_string());
     }
 }
 
@@ -62,7 +59,7 @@ mod tests {
             },
             Edit {
                 file: PathBuf::from("a"),
-                number: 2,
+                number: 3,
                 text: "bar".to_string(),
             },
         ], None);

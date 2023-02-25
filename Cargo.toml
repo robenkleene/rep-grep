@@ -23,6 +23,7 @@ globwalk = "0.8.1"
 atty = "0.2.14"
 ignore = "0.4.17"
 ansi_term = "0.12.1"
+diffy = { git = "https://github.com/robenkleene/diffy/", branch = "set-filenames" }
 
 [dev-dependencies]
 assert_cmd = "1.0.3"

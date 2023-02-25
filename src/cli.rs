@@ -8,22 +8,24 @@ use structopt::{clap::AppSettings, StructOpt};
 )]
 pub(crate) struct Options {
     #[structopt(short = "w", long = "write")]
-    /// Output result into stdout and do not modify files.
+    /// Output result into stdout and do not modify files
     pub write: bool,
 
     #[structopt(short = "s", long = "string-mode")]
-    /// Treat expressions as non-regex strings.
+    /// Treat expressions as non-regex strings
     pub literal_mode: bool,
-
-    #[structopt(short = "r")]
 
     #[structopt(short = "n")]
     /// Limit the number of replacements
     pub replacements: Option<usize>,
 
+    #[structopt(long = "color")]
+    /// Color output
+    pub color: bool,
+
     #[structopt(short = "f", long = "flags", verbatim_doc_comment)]
     #[rustfmt::skip]
-    /** Regex flags. May be combined (like `-f mc`).
+    /** Regex flags. May be combined (like `-f mc`)
 
 c - case-sensitive
 e - disable multi-line matching

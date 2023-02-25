@@ -1,5 +1,7 @@
 use crate::patcher::Patcher;
 use std::{fs, fs::File, io::prelude::*, path::PathBuf, io::BufReader};
+use diffy::{create_file_patch, PatchFormatter};
+
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 pub(crate) struct Writer<'a> {
@@ -9,7 +11,7 @@ pub(crate) struct Writer<'a> {
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("Invalid line number")]
+    #[error("Invalid path")]
     InvalidPath(std::path::PathBuf),
     #[error(transparent)]
     File(#[from] std::io::Error),
@@ -22,14 +24,30 @@ impl<'a> Writer<'a> {
         Self { path, patcher }
     }
 
-    pub(crate) fn patch_preview(&self) -> Result<String, crate::patcher::Error> {
+    pub(crate) fn patch_preview(&self, color: bool) -> Result<String, crate::writer::Error> {
         // TODO: Review error handling
         let file = File::open(self.path.clone()).expect("Error opening file");
         let buf = BufReader::new(file);
-        let lines = buf.lines()
+        let lines: Vec<String> = buf.lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
-        Ok(self.patcher.patch_preview(lines)?)
+        let original = lines.join("\n");
+        let modified = match self.patcher.patch(lines) {
+            Ok(replaced) => replaced,
+            Err(err) => panic!("Error patching lines: {}", err), // FIXME:
+        };
+        let filename = match self.path.to_str() {
+            Some(filename) => filename,
+            None => return Err(Error::InvalidPath(self.path.clone())),
+        };
+        let original_filename = format!("a/{}", filename);
+        let modified_filename = format!("b/{}", filename);
+        let patch = create_file_patch(&original, &modified, original_filename.as_str(), modified_filename.as_str());
+        let f = match color {
+            true => PatchFormatter::new().with_color(),
+            false => PatchFormatter::new(),
+        };
+        return Ok(f.fmt_patch(&patch).to_string());
     }
 
     pub(crate) fn write_file(&self) -> Result<()> {
@@ -44,7 +62,7 @@ impl<'a> Writer<'a> {
             .collect();
         let replaced = match self.patcher.patch(lines) {
             Ok(replaced) => replaced,
-            Err(_) => panic!("Unexpected error"), // FIXME:
+            Err(_) => panic!("Error patching lines"), // FIXME:
         };
 
         let target = tempfile::NamedTempFile::new_in(
