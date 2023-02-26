@@ -20,8 +20,12 @@ pub(crate) struct Options {
     pub replacements: Option<usize>,
 
     #[structopt(long = "color")]
-    /// Color output
+    /// Enable color (the default if the output is a TTY)
     pub color: bool,
+
+    #[structopt(long = "no-color")]
+    /// Disable color
+    pub no_color: bool,
 
     #[structopt(short = "f", long = "flags", verbatim_doc_comment)]
     #[rustfmt::skip]
