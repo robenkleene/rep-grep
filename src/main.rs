@@ -15,17 +15,17 @@ fn main() -> Result<()> {
     use structopt::StructOpt;
     let options = cli::Options::from_args();
 
+    let is_tty = atty::is(atty::Stream::Stdout);
+    let color = if options.color {
+        true
+    } else if options.no_color {
+        false
+    } else if is_tty {
+        true
+    } else {
+        false
+    };
     if let (Some(find), Some(replace_with)) = (options.find, options.replace_with) {
-        let is_tty = atty::is(atty::Stream::Stdout);
-        let color = if options.color {
-            true
-        } else if options.no_color {
-            false
-        } else if is_tty {
-            true
-        } else {
-            false
-        };
         App::new(
             Some(Replacer::new(
                 find,
@@ -37,7 +37,7 @@ fn main() -> Result<()> {
         )
         .run(!options.write, color)?;
     } else {
-        App::new(None).run(!options.write, options.color)?;
+        App::new(None).run(!options.write, color)?;
     }
 
     Ok(())
