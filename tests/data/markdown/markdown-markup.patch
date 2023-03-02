@@ -4,7 +4,7 @@
 -Markdown: Syntax
 +Markup: Syntax
  ================
- 
+
  <ul id="ProjectSubmenu">
 -    <li><a href="/projects/markdown/" title="Markdown Project Page">Main</a></li>
 -    <li><a href="/projects/markdown/basics" title="Markdown Basics">Basics</a></li>
@@ -16,24 +16,24 @@
 -    <li><a href="/projects/markdown/dingus" title="Online Markdown Web Form">Dingus</a></li>
 +    <li><a href="/projects/markdown/dingus" title="Online Markup Web Form">Dingus</a></li>
  </ul>
- 
- 
+
+
 @@ -31,7 +31,7 @@
      *   [Automatic Links](#autolink)
- 
- 
+
+
 -**Note:** This document is itself written using Markdown; you
 +**Note:** This document is itself written using Markup; you
  can [see the source for it by adding '.text' to the URL][src].
- 
+
    [src]: /projects/markdown/syntax.text
 @@ -42,15 +42,15 @@
- 
+
  <h3 id="philosophy">Philosophy</h3>
- 
+
 -Markdown is intended to be as easy-to-read and easy-to-write as is feasible.
 +Markup is intended to be as easy-to-read and easy-to-write as is feasible.
- 
+
 -Readability, however, is emphasized above all else. A Markdown-formatted
 +Readability, however, is emphasized above all else. A Markup-formatted
  document should be publishable as-is, as plain text, without looking
@@ -44,13 +44,13 @@
  [Grutatext] [5], and [EtText] [6] -- the single biggest source of
 -inspiration for Markdown's syntax is the format of plain text email.
 +inspiration for Markup's syntax is the format of plain text email.
- 
+
    [1]: http://docutils.sourceforge.net/mirror/setext.html
    [2]: http://www.aaronsw.com/2002/atx/
 @@ -59,10 +59,10 @@
    [5]: http://www.triptico.com/software/grutatxt.html
    [6]: http://ettext.taint.org/doc/
- 
+
 -To this end, Markdown's syntax is comprised entirely of punctuation
 +To this end, Markup's syntax is comprised entirely of punctuation
  characters, which punctuation characters have been carefully chosen so
@@ -59,15 +59,15 @@
 +look like \*emphasis\*. Markup lists look like, well, lists. Even
  blockquotes look like quoted passages of text, assuming you've ever
  used email.
- 
+
 @@ -70,30 +70,30 @@
- 
+
  <h3 id="html">Inline HTML</h3>
- 
+
 -Markdown's syntax is intended for one purpose: to be used as a
 +Markup's syntax is intended for one purpose: to be used as a
  format for *writing* for the web.
- 
+
 -Markdown is not a replacement for HTML, or even close to it. Its
 +Markup is not a replacement for HTML, or even close to it. Its
  syntax is very small, corresponding only to a very small subset of
@@ -80,36 +80,36 @@
 +edit prose. HTML is a *publishing* format; Markup is a *writing*
 +format. Thus, Markup's formatting syntax only addresses issues that
  can be conveyed in plain text.
- 
+
 -For any markup that is not covered by Markdown's syntax, you simply
 +For any markup that is not covered by Markup's syntax, you simply
  use HTML itself. There's no need to preface it or delimit it to
 -indicate that you're switching from Markdown to HTML; you just use
 +indicate that you're switching from Markup to HTML; you just use
  the tags.
- 
+
  The only restrictions are that block-level HTML elements -- e.g. `<div>`,
  `<table>`, `<pre>`, `<p>`, etc. -- must be separated from surrounding
  content by blank lines, and the start and end tags of the block should
 -not be indented with tabs or spaces. Markdown is smart enough not
 +not be indented with tabs or spaces. Markup is smart enough not
  to add extra (unwanted) `<p>` tags around HTML block-level tags.
- 
+
 -For example, to add an HTML table to a Markdown article:
 +For example, to add an HTML table to a Markup article:
- 
+
      This is a regular paragraph.
- 
+
 @@ -105,17 +105,17 @@
- 
+
      This is another regular paragraph.
- 
+
 -Note that Markdown formatting syntax is not processed within block-level
 -HTML tags. E.g., you can't use Markdown-style `*emphasis*` inside an
 +Note that Markup formatting syntax is not processed within block-level
 +HTML tags. E.g., you can't use Markup-style `*emphasis*` inside an
  HTML block.
- 
+
  Span-level HTML tags -- e.g. `<span>`, `<cite>`, or `<del>` -- can be
 -used anywhere in a Markdown paragraph, list item, or header. If you
 -want, you can even use HTML tags instead of Markdown formatting; e.g. if
@@ -118,48 +118,48 @@
 +want, you can even use HTML tags instead of Markup formatting; e.g. if
 +you'd prefer to use HTML `<a>` or `<img>` tags instead of Markup's
  link or image syntax, go right ahead.
- 
+
 -Unlike block-level HTML tags, Markdown syntax *is* processed within
 +Unlike block-level HTML tags, Markup syntax *is* processed within
  span-level tags.
- 
- 
+
+
 @@ -141,7 +141,7 @@
  forget, and is probably the single most common source of HTML validation
  errors in otherwise well-marked-up web sites.
- 
+
 -Markdown allows you to use these characters naturally, taking care of
 +Markup allows you to use these characters naturally, taking care of
  all the necessary escaping for you. If you use an ampersand as part of
  an HTML entity, it remains unchanged; otherwise it will be translated
  into `&amp;`.
 @@ -150,27 +150,27 @@
- 
+
      &copy;
- 
+
 -and Markdown will leave it alone. But if you write:
 +and Markup will leave it alone. But if you write:
- 
+
      AT&T
- 
+
 -Markdown will translate it to:
 +Markup will translate it to:
- 
+
      AT&amp;T
- 
+
 -Similarly, because Markdown supports [inline HTML](#html), if you use
 -angle brackets as delimiters for HTML tags, Markdown will treat them as
 +Similarly, because Markup supports [inline HTML](#html), if you use
 +angle brackets as delimiters for HTML tags, Markup will treat them as
  such. But if you write:
- 
+
      4 < 5
- 
+
 -Markdown will translate it to:
 +Markup will translate it to:
- 
+
      4 &lt; 5
- 
+
 -However, inside Markdown code spans and blocks, angle brackets and
 +However, inside Markup code spans and blocks, angle brackets and
  ampersands are *always* encoded automatically. This makes it easy to use
@@ -167,153 +167,153 @@
 +Markup to write about HTML code. (As opposed to raw HTML, which is a
  terrible format for writing about HTML syntax, because every single `<`
  and `&` in your example code needs to be escaped.)
- 
+
 @@ -189,17 +189,17 @@
  blank.) Normal paragraphs should not be indented with spaces or tabs.
- 
+
  The implication of the "one or more consecutive lines of text" rule is
 -that Markdown supports "hard-wrapped" text paragraphs. This differs
 +that Markup supports "hard-wrapped" text paragraphs. This differs
  significantly from most other text-to-HTML formatters (including Movable
  Type's "Convert Line Breaks" option) which translate every line break
  character in a paragraph into a `<br />` tag.
- 
+
 -When you *do* want to insert a `<br />` break tag using Markdown, you
 +When you *do* want to insert a `<br />` break tag using Markup, you
  end a line with two or more spaces, then type return.
- 
+
  Yes, this takes a tad more effort to create a `<br />`, but a simplistic
 -"every line break is a `<br />`" rule wouldn't work for Markdown.
 -Markdown's email-style [blockquoting][bq] and multi-paragraph [list items][l]
 +"every line break is a `<br />`" rule wouldn't work for Markup.
 +Markup's email-style [blockquoting][bq] and multi-paragraph [list items][l]
  work best -- and look better -- when you format them with hard breaks.
- 
+
    [bq]: #blockquote
 @@ -209,7 +209,7 @@
- 
+
  <h3 id="header">Headers</h3>
- 
+
 -Markdown supports two styles of headers, [Setext] [1] and [atx] [2].
 +Markup supports two styles of headers, [Setext] [1] and [atx] [2].
- 
+
  Setext-style headers are "underlined" using equal signs (for first-level
  headers) and dashes (for second-level headers). For example:
 @@ -246,9 +246,9 @@
- 
+
  <h3 id="blockquote">Blockquotes</h3>
- 
+
 -Markdown uses email-style `>` characters for blockquoting. If you're
 +Markup uses email-style `>` characters for blockquoting. If you're
  familiar with quoting passages of text in an email message, then you
 -know how to create a blockquote in Markdown. It looks best if you hard
 +know how to create a blockquote in Markup. It looks best if you hard
  wrap the text and put a `>` before every line:
- 
+
      > This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
 @@ -258,7 +258,7 @@
      > Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
      > id sem consectetuer libero luctus adipiscing.
- 
+
 -Markdown allows you to be lazy and only put the `>` before the first
 +Markup allows you to be lazy and only put the `>` before the first
  line of a hard-wrapped paragraph:
- 
+
      > This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
 @@ -277,7 +277,7 @@
      >
      > Back to the first level.
- 
+
 -Blockquotes can contain other Markdown elements, including headers, lists,
 +Blockquotes can contain other Markup elements, including headers, lists,
  and code blocks:
- 
+
  	> ## This is a header.
 @@ -296,7 +296,7 @@
- 
+
  <h3 id="list">Lists</h3>
- 
+
 -Markdown supports ordered (numbered) and unordered (bulleted) lists.
 +Markup supports ordered (numbered) and unordered (bulleted) lists.
- 
+
  Unordered lists use asterisks, pluses, and hyphens -- interchangably
  -- as list markers:
 @@ -324,8 +324,8 @@
      3.  Parish
- 
+
  It's important to note that the actual numbers you use to mark the
 -list have no effect on the HTML output Markdown produces. The HTML
 -Markdown produces from the above list is:
 +list have no effect on the HTML output Markup produces. The HTML
 +Markup produces from the above list is:
- 
+
      <ol>
      <li>Bird</li>
 @@ -333,7 +333,7 @@
      <li>Parish</li>
      </ol>
- 
+
 -If you instead wrote the list in Markdown like this:
 +If you instead wrote the list in Markup like this:
- 
+
      1.  Bird
      1.  McHale
 @@ -346,12 +346,12 @@
      8. Parish
- 
+
  you'd get the exact same HTML output. The point is, if you want to,
 -you can use ordinal numbers in your ordered Markdown lists, so that
 +you can use ordinal numbers in your ordered Markup lists, so that
  the numbers in your source match the numbers in your published HTML.
  But if you want to be lazy, you don't have to.
- 
+
  If you do use lazy list numbering, however, you should still start the
 -list with the number 1. At some point in the future, Markdown may support
 +list with the number 1. At some point in the future, Markup may support
  starting ordered lists at an arbitrary number.
- 
+
  List markers typically start at the left margin, but may be indented by
 @@ -374,7 +374,7 @@
      *   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
      Suspendisse id sem consectetuer libero luctus adipiscing.
- 
+
 -If list items are separated by blank lines, Markdown will wrap the
 +If list items are separated by blank lines, Markup will wrap the
  items in `<p>` tags in the HTML output. For example, this input:
- 
+
      *   Bird
 @@ -415,7 +415,7 @@
      2.  Suspendisse id sem consectetuer libero luctus adipiscing.
- 
+
  It looks nice if you indent every line of the subsequent
 -paragraphs, but here again, Markdown will allow you to be
 +paragraphs, but here again, Markup will allow you to be
  lazy:
- 
+
      *   This is a list item with two paragraphs.
 @@ -458,17 +458,17 @@
- 
+
  Pre-formatted code blocks are used for writing about programming or
  markup source code. Rather than forming normal paragraphs, the lines
 -of a code block are interpreted literally. Markdown wraps a code block
 +of a code block are interpreted literally. Markup wraps a code block
  in both `<pre>` and `<code>` tags.
- 
+
 -To produce a code block in Markdown, simply indent every line of the
 +To produce a code block in Markup, simply indent every line of the
  block by at least 4 spaces or 1 tab. For example, given this input:
- 
+
      This is a normal paragraph:
- 
+
          This is a code block.
- 
+
 -Markdown will generate:
 +Markup will generate:
- 
+
      <p>This is a normal paragraph:</p>
- 
+
 @@ -498,8 +498,8 @@
- 
+
  Within a code block, ampersands (`&`) and angle brackets (`<` and `>`)
  are automatically converted into HTML entities. This makes it very
 -easy to include example HTML source code using Markdown -- just paste
@@ -321,51 +321,51 @@
 +easy to include example HTML source code using Markup -- just paste
 +it and indent it, and Markup will handle the hassle of encoding the
  ampersands and angle brackets. For example, this:
- 
+
          <div class="footer">
 @@ -513,9 +513,9 @@
      &lt;/div&gt;
      </code></pre>
- 
+
 -Regular Markdown syntax is not processed within code blocks. E.g.,
 +Regular Markup syntax is not processed within code blocks. E.g.,
  asterisks are just literal asterisks within a code block. This means
 -it's also easy to use Markdown to write about Markdown's own syntax.
 +it's also easy to use Markup to write about Markup's own syntax.
- 
- 
- 
+
+
+
 @@ -543,7 +543,7 @@
- 
+
  <h3 id="link">Links</h3>
- 
+
 -Markdown supports two style of links: *inline* and *reference*.
 +Markup supports two style of links: *inline* and *reference*.
- 
+
  In both styles, the link text is delimited by [square brackets].
- 
+
 @@ -599,7 +599,7 @@
  	[foo]: http://example.com/  'Optional Title Here'
  	[foo]: http://example.com/  (Optional Title Here)
- 
+
 -**Note:** There is a known bug in Markdown.pl 1.0.1 which prevents
 +**Note:** There is a known bug in Markup.pl 1.0.1 which prevents
  single quotes from being used to delimit link titles.
- 
+
  The link URL may, optionally, be surrounded by angle brackets:
 @@ -612,7 +612,7 @@
      [id]: http://example.com/longish/path/to/resource/here
          "Optional Title Here"
- 
+
 -Link definitions are only used for creating links during Markdown
 +Link definitions are only used for creating links during Markup
  processing, and are stripped from your document in the HTML output.
- 
+
  Link definition names may consist of letters, numbers, spaces, and
 @@ -644,7 +644,7 @@
  	
  	[Daring Fireball]: http://daringfireball.net/
- 
+
 -Link definitions can be placed anywhere in your Markdown document. I
 +Link definitions can be placed anywhere in your Markup document. I
  tend to put them immediately after each paragraph in which they're
@@ -373,85 +373,85 @@
  document, sort of like footnotes.
 @@ -675,7 +675,7 @@
      or <a href="http://search.msn.com/" title="MSN Search">MSN</a>.</p>
- 
+
  For comparison, here is the same paragraph written using
 -Markdown's inline link style:
 +Markup's inline link style:
- 
+
      I get 10 times more traffic from [Google](http://google.com/ "Google")
      than from [Yahoo](http://search.yahoo.com/ "Yahoo Search") or
 @@ -689,7 +689,7 @@
  it's 234 characters. In the raw HTML, there's more markup than there
  is text.
- 
+
 -With Markdown's reference-style links, a source document much more
 +With Markup's reference-style links, a source document much more
  closely resembles the final output, as rendered in a browser. By
  allowing you to move the markup-related metadata out of the paragraph,
  you can add links without interrupting the narrative flow of your
 @@ -698,7 +698,7 @@
- 
+
  <h3 id="em">Emphasis</h3>
- 
+
 -Markdown treats asterisks (`*`) and underscores (`_`) as indicators of
 +Markup treats asterisks (`*`) and underscores (`_`) as indicators of
  emphasis. Text wrapped with one `*` or `_` will be wrapped with an
  HTML `<em>` tag; double `*`'s or `_`'s will be wrapped with an HTML
  `<strong>` tag. E.g., this input:
 @@ -776,7 +776,7 @@
- 
+
  With a code span, ampersands and angle brackets are encoded as HTML
  entities automatically, which makes it easy to include example HTML
 -tags. Markdown will turn this:
 +tags. Markup will turn this:
- 
+
      Please don't use any `<blink>` tags.
- 
+
 @@ -800,7 +800,7 @@
  Admittedly, it's fairly difficult to devise a "natural" syntax for
  placing images into a plain text document format.
- 
+
 -Markdown uses an image syntax that is intended to resemble the syntax
 +Markup uses an image syntax that is intended to resemble the syntax
  for links, allowing for two styles: *inline* and *reference*.
- 
+
  Inline image syntax looks like this:
 @@ -827,7 +827,7 @@
- 
+
      [id]: url/to/image  "Optional title attribute"
- 
+
 -As of this writing, Markdown has no syntax for specifying the
 +As of this writing, Markup has no syntax for specifying the
  dimensions of an image; if this is important to you, you can simply
  use regular HTML `<img>` tags.
- 
+
 @@ -839,18 +839,18 @@
- 
+
  <h3 id="autolink">Automatic Links</h3>
- 
+
 -Markdown supports a shortcut style for creating "automatic" links for URLs and email addresses: simply surround the URL or email address with angle brackets. What this means is that if you want to show the actual text of a URL or email address, and also have it be a clickable link, you can do this:
 +Markup supports a shortcut style for creating "automatic" links for URLs and email addresses: simply surround the URL or email address with angle brackets. What this means is that if you want to show the actual text of a URL or email address, and also have it be a clickable link, you can do this:
- 
+
      <http://example.com/>
      
 -Markdown will turn this into:
 +Markup will turn this into:
- 
+
      <a href="http://example.com/">http://example.com/</a>
- 
+
  Automatic links for email addresses work similarly, except that
 -Markdown will also perform a bit of randomized decimal and hex
 +Markup will also perform a bit of randomized decimal and hex
  entity-encoding to help obscure your address from address-harvesting
 -spambots. For example, Markdown will turn this:
 +spambots. For example, Markup will turn this:
- 
+
      <address@example.com>
- 
+
 @@ -872,15 +872,15 @@
- 
+
  <h3 id="backslash">Backslash Escapes</h3>
- 
+
 -Markdown allows you to use backslash escapes to generate literal
 -characters which would otherwise have special meaning in Markdown's
 +Markup allows you to use backslash escapes to generate literal
@@ -459,11 +459,11 @@
  formatting syntax. For example, if you wanted to surround a word
  with literal asterisks (instead of an HTML `<em>` tag), you can use
  backslashes before the asterisks, like this:
- 
+
      \*literal asterisks\*
- 
+
 -Markdown provides backslash escapes for the following characters:
 +Markup provides backslash escapes for the following characters:
- 
+
      \   backslash
      `   backtick
