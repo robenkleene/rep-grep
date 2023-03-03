@@ -291,7 +291,7 @@
  lazy:
 
      *   This is a list item with two paragraphs.
-@@ -458,17 +458,17 @@
+@@ -458,10 +458,10 @@
 
  Pre-formatted code blocks are used for writing about programming or
  markup source code. Rather than forming normal paragraphs, the lines
@@ -304,7 +304,7 @@
  block by at least 4 spaces or 1 tab. For example, given this input:
 
      This is a normal paragraph:
-
+@@ -468,7 +468,7 @@
          This is a code block.
 
 -Markdown will generate:
@@ -449,7 +449,7 @@
      <address@example.com>
 
 @@ -872,15 +872,15 @@
-
+@@ -872,8 +872,8 @@
  <h3 id="backslash">Backslash Escapes</h3>
 
 -Markdown allows you to use backslash escapes to generate literal
