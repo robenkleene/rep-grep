@@ -460,6 +460,7 @@
  formatting syntax. For example, if you wanted to surround a word
  with literal asterisks (instead of an HTML `<em>` tag), you can use
  backslashes before the asterisks, like this:
+@@ -880,7 +880,7 @@
 
      \*literal asterisks\*
 
