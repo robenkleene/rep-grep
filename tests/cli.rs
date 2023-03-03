@@ -12,7 +12,7 @@ mod cli {
 
     #[test]
     fn patch_preview_markdown() -> Result<()> {
-        let input = fs::read_to_string("tests/data/markdown/markup-grep.txt").expect("Error reading input");
+        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-grep.txt").expect("Error reading input");
         let result = fs::read_to_string("tests/data/markdown/markdown-markup.patch").expect("Error reading input");
         reap()
             .current_dir("tests/data/markdown")
