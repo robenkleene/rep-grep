@@ -12,7 +12,7 @@ sed -i '' '1s/.*/--- a\/markdown-syntax.md/' markdown-markup.patch
 sed -i '' '2s/.*/+++ b\/markdown-syntax.md/' markdown-markup.patch
 
 # Fix a couple of random diff differences
-sed -i '' '307s/.*/@@ -468,7 +468,7 @@/' markdown-markup.patch
+sed -i '' '307s/.*/@@ -468,7 +468,7 @@\n/' markdown-markup.patch
 sed -i '' '294s/.*/@@ -458,10 +458,10 @@/' markdown-markup.patch
 sed -i '' '452s/.*/@@ -872,8 +872,8 @@/' markdown-markup.patch
 

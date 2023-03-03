@@ -305,6 +305,7 @@
 
      This is a normal paragraph:
 @@ -468,7 +468,7 @@
+
          This is a code block.
 
 -Markdown will generate:
@@ -448,8 +449,8 @@
 
      <address@example.com>
 
-@@ -872,15 +872,15 @@
 @@ -872,8 +872,8 @@
+
  <h3 id="backslash">Backslash Escapes</h3>
 
 -Markdown allows you to use backslash escapes to generate literal
