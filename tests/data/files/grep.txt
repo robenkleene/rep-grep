@@ -1,0 +1,6 @@
+1.txt:1:stays stays stays changes changes stays
+2.txt:2:stays changes stays stays
+2.txt:4:stays stays stays changes
+3.txt:1:changes stays stays stays
+3.txt:2:stays stays changes changes
+3.txt:3:stays stays stays changes
