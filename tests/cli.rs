@@ -35,4 +35,31 @@ mod cli {
             .stdout(result);
         Ok(())
     }
+
+    #[test]
+    fn patch_preview_files_stdin() -> Result<()> {
+        let input = fs::read_to_string("tests/data/files/changes-to-altered.txt").expect("Error reading input");
+        let result = fs::read_to_string("tests/data/files/patch.patch").expect("Error reading input");
+        reap()
+            .current_dir("tests/data/files")
+            .write_stdin(input)
+            .assert()
+            .success()
+            .stdout(result);
+        Ok(())
+    }
+
+    #[test]
+    fn patch_preview_files_args() -> Result<()> {
+        let input = fs::read_to_string("tests/data/files/grep.txt").expect("Error reading input");
+        let result = fs::read_to_string("tests/data/files/patch.patch").expect("Error reading input");
+        reap()
+            .current_dir("tests/data/files")
+            .write_stdin(input)
+            .args(&["changes", "altered"])
+            .assert()
+            .success()
+            .stdout(result);
+        Ok(())
+    }
 }
