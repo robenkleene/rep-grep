@@ -1,11 +1,11 @@
---- 1.txt	2023-03-04 05:34:06
-+++ /dev/fd/63	2023-03-04 05:39:16
+--- a/1.txt
++++ b/1.txt
 @@ -1,2 +1,2 @@
 -stays stays stays changes changes stays
 +stays stays stays altered altered stays
  stays stays stays stays
---- 2.txt	2023-03-04 05:33:10
-+++ /dev/fd/63	2023-03-04 05:39:16
+--- a/2.txt
++++ b/2.txt
 @@ -1,4 +1,4 @@
  stays stays stays stays
 -stays changes stays stays
@@ -13,8 +13,8 @@
  stays stays stays stays
 -stays stays stays changes
 +stays stays stays altered
---- 3.txt	2023-03-04 05:33:46
-+++ /dev/fd/63	2023-03-04 05:39:16
+--- a/3.txt
++++ b/3.txt
 @@ -1,4 +1,4 @@
 -changes stays stays stays
 -stays stays changes changes
