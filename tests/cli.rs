@@ -38,7 +38,7 @@ mod cli {
 
     #[test]
     fn patch_preview_files_stdin() -> Result<()> {
-        let input = fs::read_to_string("tests/data/files/changes-to-altered.txt").expect("Error reading input");
+        let input = fs::read_to_string("tests/data/files/changes-to-altered-grep.txt").expect("Error reading input");
         let result = fs::read_to_string("tests/data/files/patch.patch").expect("Error reading input");
         reap()
             .current_dir("tests/data/files")
