@@ -17,6 +17,13 @@ sed -i '' '7s/.*/--- a\/2.txt/' patch.patch
 sed -i '' '8s/.*/+++ b\/2.txt/' patch.patch
 sed -i '' '16s/.*/--- a\/3.txt/' patch.patch
 sed -i '' '17s/.*/+++ b\/3.txt/' patch.patch
+
+# newline messages
+line_fix='7i\
+\\ No newline at end of file
+'
+sed -i '' "${line_fix}" patch.patch
+
 wc -l < 1.txt | xargs > 1-count.txt
 wc -l < 2.txt | xargs > 2-count.txt
 wc -l < 3.txt | xargs > 3-count.txt
