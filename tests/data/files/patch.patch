@@ -13,7 +13,9 @@
 +stays altered stays stays
  stays stays stays stays
 -stays stays stays changes
+\ No newline at end of file
 +stays stays stays altered
+\ No newline at end of file
 --- a/3.txt
 +++ b/3.txt
 @@ -1,4 +1,4 @@
@@ -24,3 +26,4 @@
 +stays stays altered altered
 +stays stays stays altered
  stays stays stays stays
+\ No newline at end of file

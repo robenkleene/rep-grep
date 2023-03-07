@@ -23,6 +23,18 @@ line_fix='7i\
 \\ No newline at end of file
 '
 sed -i '' "${line_fix}" patch.patch
+line_fix='16i\
+\\ No newline at end of file
+'
+sed -i '' "${line_fix}" patch.patch
+line_fix='18i\
+\\ No newline at end of file
+'
+sed -i '' "${line_fix}" patch.patch
+line_fix='$a\
+\\ No newline at end of file
+'
+sed -i '' "${line_fix}" patch.patch
 
 wc -l < 1.txt | xargs > 1-count.txt
 wc -l < 2.txt | xargs > 2-count.txt
