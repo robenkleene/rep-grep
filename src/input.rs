@@ -1,6 +1,7 @@
 use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer};
 use std::io::prelude::*;
 use std::fs::File;
+use itertools::Itertools;
 
 pub(crate) struct App {
     replacer: Option<Replacer>
@@ -21,12 +22,13 @@ impl App {
                     if preview {
                         let stdout = std::io::stdout();
                         let mut handle = stdout.lock();
-                        for (path, edits) in path_to_edits.into_iter() {
+                        for path in path_to_edits.keys().sorted() {
+                            let edits = &path_to_edits[path].to_vec();
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) {
                                 return Ok(())
                             }
-                            let writer = Writer::new(path, &patcher);
+                            let writer = Writer::new(path.to_path_buf(), &patcher);
                             let text = match writer.patch_preview(color) {
                                 Ok(text) => text,
                                 Err(_) => continue, // FIXME:
