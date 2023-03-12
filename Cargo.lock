@@ -464,7 +464,6 @@ dependencies = [
  "diffy",
  "globwalk",
  "ignore",
- "itertools",
  "man",
  "memmap",
  "rayon",
