@@ -2,7 +2,7 @@ use std::path::PathBuf;
 use std::io::StdinLock;
 use regex::Regex;
 use std::io::prelude::*;
-use std::collections::HashMap;
+use indexmap::IndexMap;
 
 #[derive(Debug)]
 pub(crate) struct Edit {
@@ -25,8 +25,8 @@ impl Edit {
 
     pub(crate) fn parse (
         reader: StdinLock<'_>
-    ) -> Result<HashMap<PathBuf, Vec<Edit>>, std::io::Error> {
-        let mut path_to_edits = HashMap::new();
+    ) -> Result<IndexMap<PathBuf, Vec<Edit>>, std::io::Error> {
+        let mut path_to_edits = IndexMap::new();
         for line in reader.lines() {
             let line = match line {
                 Ok(line) => line,
