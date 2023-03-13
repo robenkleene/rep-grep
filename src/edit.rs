@@ -1,7 +1,8 @@
 use std::path::PathBuf;
+use std::io::StdinLock;
 use regex::Regex;
-use std::io::BufReader;
 use std::io::prelude::*;
+use indexmap::IndexMap;
 
 #[derive(Debug)]
 pub(crate) struct Edit {
@@ -22,12 +23,10 @@ impl Edit {
         Edit { file, text, number }
     }
 
-    pub(crate) fn parse<R> (
-        reader: BufReader<R>
-    ) -> Result<Vec::<Edit>, std::io::Error>
-        where R: Read
-    {
-        let mut edits = Vec::<Edit>::new();
+    pub(crate) fn parse (
+        reader: StdinLock<'_>
+    ) -> Result<IndexMap<PathBuf, Vec<Edit>>, std::io::Error> {
+        let mut path_to_edits = IndexMap::new();
         for line in reader.lines() {
             let line = match line {
                 Ok(line) => line,
@@ -37,9 +36,13 @@ impl Edit {
                 Ok(line) => line,
                 Err(_) => continue,
             };
-            edits.push(line);
+            let key = &line.file;
+            if !path_to_edits.contains_key(key) {
+                path_to_edits.insert(line.file.clone(), Vec::new());
+            }
+            path_to_edits.get_mut(key).unwrap().push(line);
         }
-        return Ok(edits);
+        return Ok(path_to_edits);
     }
 
     fn edit_from_line(line: String) -> Result<Edit, Error> {
@@ -112,7 +115,7 @@ mod tests {
         assert!(matches!(result, Ok(_)));
         let edit = match result {
             Ok(result) => result,
-            Err(_) => panic!("Unexpected error"),
+            Err(_) => panic!("Error getting edit from line"),
         };
         assert_eq!(edit.file, PathBuf::from("aaa.txt"));
         assert_eq!(edit.number, 1);

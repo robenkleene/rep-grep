@@ -7,19 +7,29 @@ use structopt::{clap::AppSettings, StructOpt};
     setting(AppSettings::UnifiedHelpMessage)
 )]
 pub(crate) struct Options {
+    #[structopt(short = "w", long = "write")]
+    /// Write the output to files directly (instead of outputting a patch)
+    pub write: bool,
+
     #[structopt(short = "s", long = "string-mode")]
-    /// Treat expressions as non-regex strings.
+    /// Treat expressions as non-regex strings
     pub literal_mode: bool,
 
-    #[structopt(short = "r")]
-
     #[structopt(short = "n")]
-    /// Limit the number of replacements
+    /// Limit the number of replacements per line
     pub replacements: Option<usize>,
+
+    #[structopt(long = "color")]
+    /// Enable color (the default if the output is a TTY)
+    pub color: bool,
+
+    #[structopt(long = "no-color")]
+    /// Disable color
+    pub no_color: bool,
 
     #[structopt(short = "f", long = "flags", verbatim_doc_comment)]
     #[rustfmt::skip]
-    /** Regex flags. May be combined (like `-f mc`).
+    /** Regex flags. May be combined (like `-f mc`)
 
 c - case-sensitive
 e - disable multi-line matching
@@ -32,9 +42,9 @@ w - match full words only
     pub flags: Option<String>,
 
     /// The regexp or string (if -s) to search for.
-    pub find: String,
+    pub find: Option<String>,
 
     /// What to replace each match with. Unless in string mode, you may
     /// use captured values like $1, $2, etc.
-    pub replace_with: String,
+    pub replace_with: Option<String>,
 }

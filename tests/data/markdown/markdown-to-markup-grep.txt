@@ -1,0 +1,76 @@
+markdown-syntax.md:1:Markup: Syntax
+markdown-syntax.md:5:    <li><a href="/projects/markdown/" title="Markup Project Page">Main</a></li>
+markdown-syntax.md:6:    <li><a href="/projects/markdown/basics" title="Markup Basics">Basics</a></li>
+markdown-syntax.md:7:    <li><a class="selected" title="Markup Syntax Documentation">Syntax</a></li>
+markdown-syntax.md:9:    <li><a href="/projects/markdown/dingus" title="Online Markup Web Form">Dingus</a></li>
+markdown-syntax.md:34:**Note:** This document is itself written using Markup; you
+markdown-syntax.md:45:Markup is intended to be as easy-to-read and easy-to-write as is feasible.
+markdown-syntax.md:47:Readability, however, is emphasized above all else. A Markup-formatted
+markdown-syntax.md:50:Markup's syntax has been influenced by several existing text-to-HTML
+markdown-syntax.md:53:inspiration for Markup's syntax is the format of plain text email.
+markdown-syntax.md:62:To this end, Markup's syntax is comprised entirely of punctuation
+markdown-syntax.md:65:look like \*emphasis\*. Markup lists look like, well, lists. Even
+markdown-syntax.md:73:Markup's syntax is intended for one purpose: to be used as a
+markdown-syntax.md:76:Markup is not a replacement for HTML, or even close to it. Its
+markdown-syntax.md:80:insert. The idea for Markup is to make it easy to read, write, and
+markdown-syntax.md:81:edit prose. HTML is a *publishing* format; Markup is a *writing*
+markdown-syntax.md:82:format. Thus, Markup's formatting syntax only addresses issues that
+markdown-syntax.md:85:For any markup that is not covered by Markup's syntax, you simply
+markdown-syntax.md:87:indicate that you're switching from Markup to HTML; you just use
+markdown-syntax.md:93:not be indented with tabs or spaces. Markup is smart enough not
+markdown-syntax.md:96:For example, to add an HTML table to a Markup article:
+markdown-syntax.md:108:Note that Markup formatting syntax is not processed within block-level
+markdown-syntax.md:109:HTML tags. E.g., you can't use Markup-style `*emphasis*` inside an
+markdown-syntax.md:113:used anywhere in a Markup paragraph, list item, or header. If you
+markdown-syntax.md:114:want, you can even use HTML tags instead of Markup formatting; e.g. if
+markdown-syntax.md:115:you'd prefer to use HTML `<a>` or `<img>` tags instead of Markup's
+markdown-syntax.md:118:Unlike block-level HTML tags, Markup syntax *is* processed within
+markdown-syntax.md:144:Markup allows you to use these characters naturally, taking care of
+markdown-syntax.md:153:and Markup will leave it alone. But if you write:
+markdown-syntax.md:157:Markup will translate it to:
+markdown-syntax.md:161:Similarly, because Markup supports [inline HTML](#html), if you use
+markdown-syntax.md:162:angle brackets as delimiters for HTML tags, Markup will treat them as
+markdown-syntax.md:167:Markup will translate it to:
+markdown-syntax.md:171:However, inside Markup code spans and blocks, angle brackets and
+markdown-syntax.md:173:Markup to write about HTML code. (As opposed to raw HTML, which is a
+markdown-syntax.md:192:that Markup supports "hard-wrapped" text paragraphs. This differs
+markdown-syntax.md:197:When you *do* want to insert a `<br />` break tag using Markup, you
+markdown-syntax.md:201:"every line break is a `<br />`" rule wouldn't work for Markup.
+markdown-syntax.md:202:Markup's email-style [blockquoting][bq] and multi-paragraph [list items][l]
+markdown-syntax.md:212:Markup supports two styles of headers, [Setext] [1] and [atx] [2].
+markdown-syntax.md:249:Markup uses email-style `>` characters for blockquoting. If you're
+markdown-syntax.md:251:know how to create a blockquote in Markup. It looks best if you hard
+markdown-syntax.md:261:Markup allows you to be lazy and only put the `>` before the first
+markdown-syntax.md:280:Blockquotes can contain other Markup elements, including headers, lists,
+markdown-syntax.md:299:Markup supports ordered (numbered) and unordered (bulleted) lists.
+markdown-syntax.md:327:list have no effect on the HTML output Markup produces. The HTML
+markdown-syntax.md:328:Markup produces from the above list is:
+markdown-syntax.md:336:If you instead wrote the list in Markup like this:
+markdown-syntax.md:349:you can use ordinal numbers in your ordered Markup lists, so that
+markdown-syntax.md:354:list with the number 1. At some point in the future, Markup may support
+markdown-syntax.md:377:If list items are separated by blank lines, Markup will wrap the
+markdown-syntax.md:418:paragraphs, but here again, Markup will allow you to be
+markdown-syntax.md:461:of a code block are interpreted literally. Markup wraps a code block
+markdown-syntax.md:464:To produce a code block in Markup, simply indent every line of the
+markdown-syntax.md:471:Markup will generate:
+markdown-syntax.md:501:easy to include example HTML source code using Markup -- just paste
+markdown-syntax.md:502:it and indent it, and Markup will handle the hassle of encoding the
+markdown-syntax.md:516:Regular Markup syntax is not processed within code blocks. E.g.,
+markdown-syntax.md:518:it's also easy to use Markup to write about Markup's own syntax.
+markdown-syntax.md:546:Markup supports two style of links: *inline* and *reference*.
+markdown-syntax.md:602:**Note:** There is a known bug in Markup.pl 1.0.1 which prevents
+markdown-syntax.md:615:Link definitions are only used for creating links during Markup
+markdown-syntax.md:647:Link definitions can be placed anywhere in your Markup document. I
+markdown-syntax.md:678:Markup's inline link style:
+markdown-syntax.md:692:With Markup's reference-style links, a source document much more
+markdown-syntax.md:701:Markup treats asterisks (`*`) and underscores (`_`) as indicators of
+markdown-syntax.md:779:tags. Markup will turn this:
+markdown-syntax.md:803:Markup uses an image syntax that is intended to resemble the syntax
+markdown-syntax.md:830:As of this writing, Markup has no syntax for specifying the
+markdown-syntax.md:842:Markup supports a shortcut style for creating "automatic" links for URLs and email addresses: simply surround the URL or email address with angle brackets. What this means is that if you want to show the actual text of a URL or email address, and also have it be a clickable link, you can do this:
+markdown-syntax.md:846:Markup will turn this into:
+markdown-syntax.md:851:Markup will also perform a bit of randomized decimal and hex
+markdown-syntax.md:853:spambots. For example, Markup will turn this:
+markdown-syntax.md:875:Markup allows you to use backslash escapes to generate literal
+markdown-syntax.md:876:characters which would otherwise have special meaning in Markup's
+markdown-syntax.md:883:Markup provides backslash escapes for the following characters:
