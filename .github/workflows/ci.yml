@@ -8,6 +8,27 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
+      - name: IRC notification
+        uses: Gottox/irc-message-action@v2
+        timeout-minutes: 1
+        continue-on-error: true
+        if: github.actor == 'robenkleene'
+        with:
+          channel: '#robenkleene-development'
+          nickname: bot-${{ github.run_id }}
+          message: |-
+            ${{ github.event.repository.name }} ${{ github.job }} started ${{ github.actor }} pushed ${{ github.event.ref }} ${{ github.event.compare }}
       - uses: actions/checkout@v3
       - run: cargo test
+      - name: IRC notification
+        uses: Gottox/irc-message-action@v2
+        timeout-minutes: 1
+        continue-on-error: true
+        if: github.actor == 'robenkleene'
+        with:
+          channel: '#robenkleene-development'
+          nickname: bot-${{ github.run_id }}
+          message: |-
+            ${{ github.event.repository.name }} ${{ github.job }} finished ${{ github.actor }} pushed ${{ github.event.ref }} ${{ github.event.compare }}
