@@ -11,7 +11,7 @@ pub(crate) struct Options {
     /// 
     /** Write the output to files directly (instead of outputting a patch)
 
-If this flag is not present and a patch is output, then the default pager is `less`. You can change pager by setting the environment variables REAP_PAGER, BAT_PAGER, or PAGER (and that is their order of priority). This option overrides all environment variables above.
+If this flag is not present and a patch is output, then the default pager is `less`. You can change pager by setting the environment variables REAP_PAGER or PAGER (and that is their order of priority). This option overrides all environment variables above.
     */
     pub write: bool,
 
