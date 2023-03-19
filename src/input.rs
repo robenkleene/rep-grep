@@ -1,4 +1,4 @@
-use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer};
+use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer, output::Output};
 use std::io::prelude::*;
 use std::fs::File;
 
@@ -13,8 +13,7 @@ impl App {
 
     pub(crate) fn run(&self, preview: bool, color: bool, pagers: (Option<String>, Option<String>)) -> Result<()> {
         {
-            let stdin = std::io::stdin();
-            let handle = stdin.lock();
+            let handle = Output::handle();
 
             match Edit::parse(handle) {
                 Ok(path_to_edits) => {

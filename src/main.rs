@@ -4,6 +4,7 @@ mod input;
 mod edit;
 mod patcher;
 mod writer;
+mod output;
 pub(crate) mod replacer;
 pub(crate) mod utils;
 
