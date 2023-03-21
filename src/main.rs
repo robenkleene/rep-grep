@@ -28,10 +28,7 @@ fn main() -> Result<()> {
         false
     };
 
-    let pagers = (
-        env::var("REAP_PAGER").ok(),
-        env::var("PAGER").ok(),
-        );
+    let pager = env::var("REAP_PAGER").ok();
 
     if let (Some(find), Some(replace_with)) = (options.find, options.replace_with) {
         App::new(
@@ -43,9 +40,9 @@ fn main() -> Result<()> {
                 options.replacements,
             )?),
         )
-        .run(!options.write, color, pagers)?;
+        .run(!options.write, color, pager)?;
     } else {
-        App::new(None).run(!options.write, color, pagers)?;
+        App::new(None).run(!options.write, color, pager)?;
     }
 
     Ok(())

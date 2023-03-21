@@ -11,7 +11,7 @@ impl App {
         Self { replacer }
     }
 
-    pub(crate) fn run(&self, preview: bool, color: bool, pagers: (Option<String>, Option<String>)) -> Result<()> {
+    pub(crate) fn run(&self, preview: bool, color: bool, pager: Option<String>) -> Result<()> {
         {
             let handle = Output::handle();
 
