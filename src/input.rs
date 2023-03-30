@@ -22,7 +22,7 @@ impl App {
                         let mut handle = stdout.lock();
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
-                            if let Err(_) = Self::check_not_empty(File::open(&path)?) {
+                            if let Err(_) = Self::check_not_empty(File::open(&path)?) { // FIXME:
                                 return Ok(())
                             }
                             let writer = Writer::new(path.to_path_buf(), &patcher);
