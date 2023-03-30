@@ -13,7 +13,10 @@ impl App {
 
     pub(crate) fn run(&self, preview: bool, color: bool, pager: Option<String>) -> Result<()> {
         {
-            let handle = Output::handle(pager);
+            let handle = match Output::handle(pager) {
+                Ok(handle) => handle,
+                Err(_) => return Ok(()), // FIXME:
+            };
 
             match Edit::parse(handle) {
                 Ok(path_to_edits) => {

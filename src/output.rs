@@ -12,8 +12,10 @@ pub enum Error {
 impl Output {
     pub(crate) fn handle(pager: Option<String>) -> Result<StdinLock<'static>, crate::output::Error> {
         let pager = pager.unwrap_or_else(|| String::from("less"));
-        let pagerflags =
-            shell_words::split(&pager).ok_or_else(|| Error::ParseError(pager))?;
+        let pagerflags = match shell_words::split(&pager) {
+            Ok(pagerflags) => pagerflags,
+            Err(err) => return Err(Error::ParseError(pager)),
+        };
 
         let stdin = std::io::stdin();
         Ok(stdin.lock())
