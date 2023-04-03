@@ -32,13 +32,13 @@ impl Output {
 
                 let is_less = pager_path.file_stem() == Some(&OsString::from("less"));
                 let process = if is_less {
-                    make_process_from_less_path(
+                    Self::make_process_from_less_path(
                         pager_path,
                         args,
                         quit_if_one_screen,
                     )
                 } else {
-                    make_process_from_pager_path(pager_path, args)
+                    Self::make_process_from_pager_path(pager_path, args)
                 };
                 if let Some(mut process) = process {
                     process
