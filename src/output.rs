@@ -1,13 +1,18 @@
 use std::ffi::OsString;
 use std::io::StdinLock;
 use std::path::PathBuf;
-use std::process::Command;
-use std::process::Output;
-use std::process::Stdio;
+use std::process::{Child, Command, Stdio, Output};
+
+use super::less::retrieve_less_version;
 
 enum Error {
     #[error("Could not parse pager command")]
     ParseError(String),
+}
+
+pub enum OutputType {
+    Pager(Child),
+    Stdout(io::Stdout),
 }
 
 impl Output {
@@ -20,6 +25,7 @@ impl Output {
         pager: Option<String>,
         quit_if_one_screen: bool,
     ) -> Result<()> {
+        let replace_arguments_to_less = pager.is_none();
         let pager = pager.unwrap_or_else(|| String::from("less"));
         let pagerflags = match shell_words::split(&pager) {
             Ok(pagerflags) => pagerflags,
@@ -35,6 +41,7 @@ impl Output {
                     Self::make_process_from_less_path(
                         pager_path,
                         args,
+                        replace_arguments_to_less,
                         quit_if_one_screen,
                     )
                 } else {
@@ -57,6 +64,7 @@ impl Output {
     fn make_process_from_less_path(
         less_path: PathBuf,
         args: &[String],
+        replace_arguments_to_less: bool,
         quit_if_one_screen: bool,
     ) -> Option<Command> {
         if let Ok(less_path) = grep_cli::resolve_binary(less_path) {
