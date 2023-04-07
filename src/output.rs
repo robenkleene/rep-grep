@@ -104,13 +104,12 @@ impl Output {
     }
 
     fn make_process_from_pager_path(pager_path: PathBuf, args: &[String]) -> Option<Command> {
-        if pager_path.file_stem() == Some(&OsString::from("delta")) {
-            fatal(
+        if pager_path.file_stem() == Some(&OsString::from("reap")) {
+            panic!(
                 "\
     It looks like you have set delta as the value of $PAGER. \
     This would result in a non-terminating recursion. \
-    delta is not an appropriate value for $PAGER \
-    (but it is an appropriate value for $GIT_PAGER).",
+    delta is not an appropriate value for $PAGER.",
             );
         }
         if let Ok(pager_path) = grep_cli::resolve_binary(pager_path) {
