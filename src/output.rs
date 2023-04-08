@@ -2,7 +2,7 @@ use std::ffi::OsString;
 use std::io::StdinLock;
 use std::io::{self, Write};
 use std::path::PathBuf;
-use std::process::{Child, Command, Stdio, Output};
+use std::process::{Child, Command, Stdio};
 
 use super::less::retrieve_less_version;
 
@@ -18,7 +18,7 @@ pub enum OutputType {
     Stdout(io::Stdout),
 }
 
-impl Output {
+impl OutputType {
     pub(crate) fn handle(pager: Option<String>) -> Result<StdinLock<'static>, crate::output::Error> {
         let stdin = std::io::stdin();
         Ok(stdin.lock())
@@ -27,7 +27,7 @@ impl Output {
     fn try_pager(
         pager: Option<String>,
         quit_if_one_screen: bool,
-    ) -> Result<()> {
+    ) -> Result<Self>  {
         let replace_arguments_to_less = pager.is_none();
         let pager = pager.unwrap_or_else(|| String::from("less"));
         let pagerflags = match shell_words::split(&pager) {

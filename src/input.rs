@@ -1,4 +1,4 @@
-use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer, output::Output};
+use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer, output::OutputType};
 use std::io::prelude::*;
 use std::fs::File;
 
@@ -13,7 +13,7 @@ impl App {
 
     pub(crate) fn run(&self, preview: bool, color: bool, pager: Option<String>) -> Result<()> {
         {
-            let handle = match Output::handle(pager) {
+            let handle = match OutputType::handle(pager) {
                 Ok(handle) => handle,
                 Err(_) => return Ok(()), // FIXME:
             };
