@@ -1,10 +1,13 @@
 use std::ffi::OsString;
 use std::io::StdinLock;
+use std::io::{self, Write};
 use std::path::PathBuf;
 use std::process::{Child, Command, Stdio, Output};
 
 use super::less::retrieve_less_version;
 
+#[derive(Debug)]
+#[derive(thiserror::Error)]
 enum Error {
     #[error("Could not parse pager command")]
     ParseError(String),
