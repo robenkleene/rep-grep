@@ -63,6 +63,10 @@ impl OutputType {
         })
     }
 
+    fn stdout() -> Self {
+        OutputType::Stdout(io::stdout())
+    }
+
     fn make_process_from_less_path(
         less_path: PathBuf,
         args: &[String],
