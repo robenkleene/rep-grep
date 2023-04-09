@@ -1,6 +1,5 @@
 use std::ffi::OsString;
-use std::io::StdinLock;
-use std::io::{self, Write};
+use std::io::{self, StdinLock};
 use std::path::PathBuf;
 use std::process::{Child, Command, Stdio};
 
@@ -27,7 +26,7 @@ impl OutputType {
     fn try_pager(
         pager: Option<String>,
         quit_if_one_screen: bool,
-    ) -> Result<Self>  {
+    ) -> Result<Self, Error>  {
         let replace_arguments_to_less = pager.is_none();
         let pager = pager.unwrap_or_else(|| String::from("less"));
         let pagerflags = match shell_words::split(&pager) {
