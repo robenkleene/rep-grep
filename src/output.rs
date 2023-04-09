@@ -7,9 +7,17 @@ use super::less::retrieve_less_version;
 
 #[derive(Debug)]
 #[derive(thiserror::Error)]
-enum Error {
+pub enum Error {
     #[error("Could not parse pager command")]
     ParseError(String),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[allow(dead_code)]
+pub enum PagingMode {
+    Always,
+    QuitIfOneScreen,
+    Never,
 }
 
 pub enum OutputType {
@@ -19,6 +27,8 @@ pub enum OutputType {
 
 impl OutputType {
     pub(crate) fn handle(pager: Option<String>) -> Result<StdinLock<'static>, crate::output::Error> {
+        let _ = OutputType::try_pager(pager, true);
+        // FIXME: Return result of `try_pager`
         let stdin = std::io::stdin();
         Ok(stdin.lock())
     }
@@ -31,7 +41,7 @@ impl OutputType {
         let pager = pager.unwrap_or_else(|| String::from("less"));
         let pagerflags = match shell_words::split(&pager) {
             Ok(pagerflags) => pagerflags,
-            Err(err) => return Err(Error::ParseError(pager)),
+            Err(_) => return Err(Error::ParseError(pager)),
         };
 
         Ok(match pagerflags.split_first() {
