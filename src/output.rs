@@ -26,11 +26,8 @@ pub enum OutputType {
 }
 
 impl OutputType {
-    pub(crate) fn handle(pager: Option<String>) -> Result<StdinLock<'static>, crate::output::Error> {
-        let _ = OutputType::try_pager(pager, true);
-        // FIXME: Return result of `try_pager`
-        let stdin = std::io::stdin();
-        Ok(stdin.lock())
+    pub(crate) fn handle(pager: Option<String>) -> Result<Self, crate::output::Error> {
+        OutputType::try_pager(pager, true)
     }
 
     fn try_pager(
@@ -75,6 +72,16 @@ impl OutputType {
 
     fn stdout() -> Self {
         OutputType::Stdout(io::stdout())
+    }
+
+    pub fn handle(&mut self) -> Result<&mut dyn Write> {
+        Ok(match *self {
+            OutputType::Pager(ref mut command) => command
+                .stdin
+                .as_mut()
+                .chain_err(|| "Could not open stdin for pager")?,
+            OutputType::Stdout(ref mut handle) => handle,
+        })
     }
 
     fn make_process_from_less_path(
