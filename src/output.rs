@@ -1,5 +1,5 @@
 use std::ffi::OsString;
-use std::io::{self, StdinLock};
+use std::io::{self, Write};
 use std::path::PathBuf;
 use std::process::{Child, Command, Stdio};
 
@@ -26,10 +26,6 @@ pub enum OutputType {
 }
 
 impl OutputType {
-    pub(crate) fn handle(pager: Option<String>) -> Result<Self, crate::output::Error> {
-        OutputType::try_pager(pager, true)
-    }
-
     fn try_pager(
         pager: Option<String>,
         quit_if_one_screen: bool,
@@ -74,7 +70,7 @@ impl OutputType {
         OutputType::Stdout(io::stdout())
     }
 
-    pub fn handle(&mut self) -> Result<&mut dyn Write> {
+    pub fn handle(&mut self) -> Result<&mut dyn Write, crate::output::Error> {
         Ok(match *self {
             OutputType::Pager(ref mut command) => command
                 .stdin
