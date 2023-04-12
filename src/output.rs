@@ -26,16 +26,7 @@ pub enum OutputType {
 }
 
 impl OutputType {
-    pub fn from_mode(
-        pager: Option<String>,
-    ) -> Result<Self> {
-        Ok(match mode {
-            OutputType::try_pager(pager, true)?,
-            _ => OutputType::stdout(),
-        })
-    }
-
-    fn try_pager(
+    fn for_pager(
         pager: Option<String>,
         quit_if_one_screen: bool,
     ) -> Result<Self, Error>  {
