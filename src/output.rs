@@ -10,6 +10,7 @@ use super::less::retrieve_less_version;
 pub enum Error {
     #[error("Could not parse pager command")]
     ParseError(String),
+    PagerError(String),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -72,10 +73,10 @@ impl OutputType {
 
     pub fn handle(&mut self) -> Result<&mut dyn Write, crate::output::Error> {
         Ok(match *self {
-            OutputType::Pager(ref mut command) => command
-                .stdin
-                .as_mut()
-                .chain_err(|| "Could not open stdin for pager")?,
+            match OutputType::Pager(ref mut command) => command.stdin.as_mut() {
+                Ok(handle) => handle,
+                Err(_) => Err(Error::PagerError("Could not open STDIN for pager")),
+            }
             OutputType::Stdout(ref mut handle) => handle,
         })
     }
