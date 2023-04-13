@@ -72,12 +72,13 @@ impl OutputType {
     }
 
     pub fn handle(&mut self) -> Result<&mut dyn Write, crate::output::Error> {
-        Ok(match *self {
+        match *self {
             OutputType::Pager(ref mut command) => {
+                // TODO: Need to break out the `Ok` vs `Err` here
                 command.stdin.as_mut().unwrap_or_else(|| return Err(Error::PagerError("Could not open STDIN for pager".to_owned())))
             },
-            OutputType::Stdout(ref mut handle) => handle,
-        })
+            OutputType::Stdout(ref mut handle) => Ok(handle),
+        }
     }
 
     fn make_process_from_less_path(
