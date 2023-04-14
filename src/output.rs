@@ -75,7 +75,10 @@ impl OutputType {
         match *self {
             OutputType::Pager(ref mut command) => {
                 // TODO: Need to break out the `Ok` vs `Err` here
-                command.stdin.as_mut().unwrap_or_else(|| return Err(Error::PagerError("Could not open STDIN for pager".to_owned())))
+                match command.stdin.as_mut() {
+                    Some(stdin) => Ok(stdin),
+                    None => return Err(Error::PagerError("Could not open STDIN for pager".to_owned())),
+                };
             },
             OutputType::Stdout(ref mut handle) => Ok(handle),
         }
