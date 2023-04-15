@@ -28,7 +28,7 @@ pub enum OutputType {
 }
 
 impl OutputType {
-    fn for_pager(
+    pub fn for_pager(
         pager: Option<String>,
         quit_if_one_screen: bool,
     ) -> Result<Self, Error>  {

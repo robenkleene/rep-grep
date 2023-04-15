@@ -13,7 +13,12 @@ impl App {
 
     pub(crate) fn run(&self, preview: bool, color: bool, pager: Option<String>) -> Result<()> {
         {
-            let handle = match OutputType::handle(pager) {
+            let output = match OutputType::for_pager(pager, true) {
+                Ok(output) => output,
+                Err(_) => return Ok(()), // FIXME:
+            };
+
+            let handle = match output.handle() {
                 Ok(handle) => handle,
                 Err(_) => return Ok(()), // FIXME:
             };
