@@ -24,31 +24,35 @@ impl App {
                             Err(_) => return Ok(()), // FIXME:
                         };
 
-                        let mut handle = match output.handle() {
+                        let handle = match output.handle() {
                             Ok(handle) => handle,
                             Err(_) => return Ok(()), // FIXME:
                         };
 
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
-                            if let Err(_) = Self::check_not_empty(File::open(&path)?) { // FIXME:
-                                return Ok(())
+                            if let Err(_) = Self::check_not_empty(File::open(&path)?) {
+                                continue // FIXME:
                             }
                             let writer = Writer::new(path.to_path_buf(), &patcher);
                             let text = match writer.patch_preview(color) {
                                 Ok(text) => text,
                                 Err(_) => continue, // FIXME:
                             };
-                            handle.write_all(text.as_bytes());
+                            if let Err(_) = handle.write_all(text.as_bytes()) {
+                                return Ok(()); // FIXME:
+                            }
                         }
                     } else {
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) {
-                                return Ok(());
+                                return Ok(()); // FIXME:
                             }
                             let writer = Writer::new(path, &patcher);
-                            writer.write_file();
+                            if let Err(_) = writer.write_file() {
+                                return Ok(()); // FIXME:
+                            }
                         }
                     }
                     Ok(())
