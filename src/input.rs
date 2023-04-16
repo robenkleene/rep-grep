@@ -13,21 +13,22 @@ impl App {
 
     pub(crate) fn run(&self, preview: bool, color: bool, pager: Option<String>) -> Result<()> {
         {
-            let output = match OutputType::for_pager(pager, true) {
-                Ok(output) => output,
-                Err(_) => return Ok(()), // FIXME:
-            };
-
-            let handle = match output.handle() {
-                Ok(handle) => handle,
-                Err(_) => return Ok(()), // FIXME:
-            };
+            let stdin = std::io::stdin();
+            let handle = stdin.lock();
 
             match Edit::parse(handle) {
                 Ok(path_to_edits) => {
                     if preview {
-                        let stdout = std::io::stdout();
-                        let mut handle = stdout.lock();
+                        let mut output = match OutputType::for_pager(pager, true) {
+                            Ok(output) => output,
+                            Err(_) => return Ok(()), // FIXME:
+                        };
+
+                        let mut handle = match output.handle() {
+                            Ok(handle) => handle,
+                            Err(_) => return Ok(()), // FIXME:
+                        };
+
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) { // FIXME:
