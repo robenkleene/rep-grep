@@ -73,12 +73,12 @@ mod tests {
         let patcher = Patcher::new(vec![
             Edit {
                 file: PathBuf::from("f"),
-                number: 1,
+                number: 2,
                 text: "foo".to_string(),
             },
             Edit {
                 file: PathBuf::from("f"),
-                number: 2,
+                number: 3,
                 text: "bar".to_string(),
             },
         ], None);
