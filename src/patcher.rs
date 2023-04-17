@@ -53,12 +53,12 @@ mod tests {
     fn patch_bad_number() {
         let patcher = Patcher::new(vec![
             Edit {
-                file: PathBuf::from("a"),
+                file: PathBuf::from("f"),
                 number: 1,
                 text: "foo".to_string(),
             },
             Edit {
-                file: PathBuf::from("a"),
+                file: PathBuf::from("f"),
                 number: 3,
                 text: "bar".to_string(),
             },
@@ -72,12 +72,12 @@ mod tests {
     fn patch() {
         let patcher = Patcher::new(vec![
             Edit {
-                file: PathBuf::from("a"),
+                file: PathBuf::from("f"),
                 number: 1,
                 text: "foo".to_string(),
             },
             Edit {
-                file: PathBuf::from("a"),
+                file: PathBuf::from("f"),
                 number: 2,
                 text: "bar".to_string(),
             },
