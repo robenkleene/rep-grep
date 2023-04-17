@@ -68,6 +68,7 @@ mod tests {
         assert!(matches!(result, Err(Error::LineNumber)));
     }
 
+    #[test]
     fn patch() {
         let patcher = Patcher::new(vec![
             Edit {
