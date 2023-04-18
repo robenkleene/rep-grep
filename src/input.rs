@@ -19,12 +19,12 @@ impl App {
             match Edit::parse(handle) {
                 Ok(path_to_edits) => {
                     if preview {
-                        let mut output = match OutputType::for_pager(pager, true) {
-                            Ok(output) => output,
+                        let mut output_type = match OutputType::for_pager(pager, true) {
+                            Ok(output_type) => output_type,
                             Err(_) => return Ok(()), // FIXME:
                         };
 
-                        let handle = match output.handle() {
+                        let handle = match output_type.handle() {
                             Ok(handle) => handle,
                             Err(_) => return Ok(()), // FIXME:
                         };
