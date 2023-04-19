@@ -1,4 +1,5 @@
 use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer, output::OutputType};
+use std::io::Write;
 use std::io::prelude::*;
 use std::fs::File;
 
@@ -39,9 +40,8 @@ impl App {
                                 Ok(text) => text,
                                 Err(_) => continue, // FIXME:
                             };
-                            if let Err(_) = handle.write_all(text.as_bytes()) {
-                                return Ok(()); // FIXME:
-                            }
+
+                            write!(handle, "{}", text)?;
                         }
                     } else {
                         for (path, edits) in path_to_edits {
