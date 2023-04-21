@@ -25,8 +25,8 @@ impl App {
                             Err(_) => return Ok(()), // FIXME:
                         };
 
-                        let handle = match output_type.handle() {
-                            Ok(handle) => handle,
+                        let write = match output_type.handle() {
+                            Ok(write) => write,
                             Err(_) => return Ok(()), // FIXME:
                         };
 
@@ -41,7 +41,7 @@ impl App {
                                 Err(_) => continue, // FIXME:
                             };
 
-                            write!(handle, "{}", text)?;
+                            write!(write, "{}", text)?;
                         }
                     } else {
                         for (path, edits) in path_to_edits {
