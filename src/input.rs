@@ -17,19 +17,20 @@ impl App {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
 
+            // FIXME: This should only happen for `if preview`
+            let mut output_type = match OutputType::for_pager(pager, true) {
+                Ok(output_type) => output_type,
+                Err(_) => return Ok(()), // FIXME:
+            };
+
+            let write = match output_type.handle() {
+                Ok(write) => write,
+                Err(_) => return Ok(()), // FIXME:
+            };
+
             match Edit::parse(handle) {
                 Ok(path_to_edits) => {
                     if preview {
-                        let mut output_type = match OutputType::for_pager(pager, true) {
-                            Ok(output_type) => output_type,
-                            Err(_) => return Ok(()), // FIXME:
-                        };
-
-                        let write = match output_type.handle() {
-                            Ok(write) => write,
-                            Err(_) => return Ok(()), // FIXME:
-                        };
-
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) {
