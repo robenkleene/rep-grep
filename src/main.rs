@@ -10,6 +10,7 @@ pub(crate) mod replacer;
 pub(crate) mod utils;
 mod less;
 
+use std::process;
 use std::env;
 pub(crate) use self::input::App;
 pub(crate) use error::Result;
@@ -52,5 +53,6 @@ fn main() -> Result<()> {
         App::new(None).run(!options.write, color, pager)?;
     }
 
+    process::exit(0);
     Ok(())
 }
