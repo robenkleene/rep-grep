@@ -16,7 +16,7 @@ impl App {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
 
-            // FIXME: This should only happen for `if preview`
+            // FIXME: Instantiating `output_type` and `write` should only happen if `preview` is true
             let mut output_type = match OutputType::for_pager(pager, true) {
                 Ok(output_type) => output_type,
                 Err(_) => return Ok(()), // FIXME:
