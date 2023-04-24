@@ -54,5 +54,4 @@ fn main() -> Result<()> {
     }
 
     process::exit(0);
-    Ok(())
 }
