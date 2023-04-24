@@ -1,5 +1,4 @@
 use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer, output::OutputType};
-use std::io::Write;
 use std::io::prelude::*;
 use std::fs::File;
 
