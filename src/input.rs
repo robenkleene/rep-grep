@@ -55,13 +55,14 @@ impl App {
                             }
                         }
                     }
-                    Ok(())
                 },
                 Err(_) => {
                     return Ok(()); // FIXME:
                 },
             }
+            drop(write);
         }
+        Ok(())
     }
 
     pub(crate) fn check_not_empty(mut file: File) -> Result<()> {

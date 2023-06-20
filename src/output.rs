@@ -44,6 +44,7 @@ impl OutputType {
                 let pager_path = PathBuf::from(pager_name);
 
                 let is_less = pager_path.file_stem() == Some(&OsString::from("less"));
+                // FIXME: When return fails, `quit_if_one_screen = true`, `replace_arguments_to_less = true`, `is_less = true`
                 let process = if is_less {
                     Self::make_process_from_less_path(
                         pager_path,
@@ -54,6 +55,7 @@ impl OutputType {
                 } else {
                     Self::make_process_from_pager_path(pager_path, args)
                 };
+                // FIXME: Commenting out this and just returning `OutputType::stdout()` fixes the problem
                 if let Some(mut process) = process {
                     process
                         .stdin(Stdio::piped())
@@ -141,6 +143,14 @@ impl OutputType {
             Some(p)
         } else {
             None
+        }
+    }
+}
+
+impl Drop for OutputType {
+    fn drop(&mut self) {
+        if let OutputType::Pager(ref mut command) = *self {
+            let _ = command.wait();
         }
     }
 }
