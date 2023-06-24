@@ -1,4 +1,4 @@
-use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer};
+use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer, output::OutputType};
 use std::io::prelude::*;
 use std::fs::File;
 
@@ -11,45 +11,58 @@ impl App {
         Self { replacer }
     }
 
-    pub(crate) fn run(&self, preview: bool, color: bool) -> Result<()> {
+    pub(crate) fn run(&self, preview: bool, color: bool, pager: Option<String>) -> Result<()> {
         {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
 
+            // FIXME: Instantiating `output_type` and `write` should only happen if `preview` is true
+            let mut output_type = match OutputType::for_pager(pager, true) {
+                Ok(output_type) => output_type,
+                Err(_) => return Ok(()), // FIXME:
+            };
+
+            let write = match output_type.handle() {
+                Ok(write) => write,
+                Err(_) => return Ok(()), // FIXME:
+            };
+
             match Edit::parse(handle) {
                 Ok(path_to_edits) => {
                     if preview {
-                        let stdout = std::io::stdout();
-                        let mut handle = stdout.lock();
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) {
-                                return Ok(())
+                                continue // FIXME:
                             }
                             let writer = Writer::new(path.to_path_buf(), &patcher);
                             let text = match writer.patch_preview(color) {
                                 Ok(text) => text,
                                 Err(_) => continue, // FIXME:
                             };
-                            handle.write_all(text.as_bytes());
+
+                            write!(write, "{}", text)?;
                         }
                     } else {
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) {
-                                return Ok(());
+                                return Ok(()); // FIXME:
                             }
                             let writer = Writer::new(path, &patcher);
-                            writer.write_file();
+                            if let Err(_) = writer.write_file() {
+                                return Ok(()); // FIXME:
+                            }
                         }
                     }
-                    Ok(())
                 },
                 Err(_) => {
                     return Ok(()); // FIXME:
                 },
             }
+            drop(write);
         }
+        Ok(())
     }
 
     pub(crate) fn check_not_empty(mut file: File) -> Result<()> {

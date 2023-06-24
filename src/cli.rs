@@ -8,7 +8,12 @@ use structopt::{clap::AppSettings, StructOpt};
 )]
 pub(crate) struct Options {
     #[structopt(short = "w", long = "write")]
-    /// Write the output to files directly (instead of outputting a patch)
+    /// 
+    /** Write the output to files directly (instead of outputting a patch)
+
+If this flag is not present, and a patch is output, then the default pager is `less`. The
+environment variable REAP_PAGER can be used to override the pager.
+    */
     pub write: bool,
 
     #[structopt(short = "s", long = "string-mode")]
