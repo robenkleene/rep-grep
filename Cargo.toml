@@ -1,6 +1,6 @@
 [package]
 name = "reap-grep"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2018"
 authors = ["Roben Kleene <contact@robenkleene.com>"]
 description = "wgrep/write-grep CLI"
@@ -10,6 +10,10 @@ license = "MIT"
 homepage = "https://github.com/robenkleene/reap"
 repository = "https://github.com/robenkleene/reap.git"
 categories = ["command-line-utilities", "text-processing", "development-tools"]
+
+[[bin]]
+name = "rep"
+path = "src/main.rs"
 
 [dependencies]
 regex = "1.4.3"

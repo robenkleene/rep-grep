@@ -512,7 +512,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "reap"
+name = "reap-grep"
 version = "0.0.1"
 dependencies = [
  "ansi_term",
