@@ -1,5 +1,5 @@
 [package]
-name = "reap-grep"
+name = "rep-grep"
 version = "0.0.2"
 edition = "2018"
 authors = ["Roben Kleene <contact@robenkleene.com>"]
