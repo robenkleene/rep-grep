@@ -1,6 +1,6 @@
 use crate::patcher::Patcher;
 use std::{fs, fs::File, io::prelude::*, path::PathBuf, io::BufReader};
-use diffy::{create_file_patch, PatchFormatter};
+use diffy_fork_filenames::{create_file_patch, PatchFormatter};
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 

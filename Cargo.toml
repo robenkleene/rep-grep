@@ -23,7 +23,7 @@ globwalk = "0.8.1"
 atty = "0.2.14"
 ignore = "0.4.17"
 ansi_term = "0.12.1"
-diffy = { git = "https://github.com/robenkleene/diffy/", branch = "set-filenames" }
+diffy-fork-filenames = "0.4.0"
 indexmap = "1.9.2"
 shell-words = "1.1.0"
 grep-cli = "0.1.7"
