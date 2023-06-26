@@ -7,7 +7,7 @@ mod cli {
     use std::fs;
 
     fn reap() -> Command {
-        Command::cargo_bin(env!("CARGO_PKG_NAME")).expect("Error invoking reap")
+        Command::cargo_bin("rep").expect("Error invoking reap")
     }
 
     #[test]
