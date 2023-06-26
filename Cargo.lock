@@ -512,31 +512,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "reap"
-version = "0.0.1"
-dependencies = [
- "ansi_term",
- "anyhow",
- "assert_cmd",
- "atty",
- "ctrlc",
- "diffy-fork-filenames",
- "globwalk",
- "grep-cli",
- "ignore",
- "indexmap",
- "man",
- "memmap",
- "rayon",
- "regex",
- "shell-words",
- "structopt",
- "tempfile",
- "thiserror",
- "unescape",
-]
-
-[[package]]
 name = "redox_syscall"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -575,6 +550,31 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3acd125665422973a33ac9d3dd2df85edad0f4ae9b00dafb1a05e43a9f5ef8e7"
 dependencies = [
  "winapi",
+]
+
+[[package]]
+name = "rep-grep"
+version = "0.0.2"
+dependencies = [
+ "ansi_term",
+ "anyhow",
+ "assert_cmd",
+ "atty",
+ "ctrlc",
+ "diffy-fork-filenames",
+ "globwalk",
+ "grep-cli",
+ "ignore",
+ "indexmap",
+ "man",
+ "memmap",
+ "rayon",
+ "regex",
+ "shell-words",
+ "structopt",
+ "tempfile",
+ "thiserror",
+ "unescape",
 ]
 
 [[package]]
