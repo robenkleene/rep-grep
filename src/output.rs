@@ -129,7 +129,7 @@ impl OutputType {
     }
 
     fn make_process_from_pager_path(pager_path: PathBuf, args: &[String]) -> Option<Command> {
-        if pager_path.file_stem() == Some(&OsString::from("reap")) {
+        if pager_path.file_stem() == Some(&OsString::from("rep")) {
             panic!(
                 "\
     It looks like you have set delta as the value of $PAGER. \
