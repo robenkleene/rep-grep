@@ -7,8 +7,8 @@ description = "wgrep/write-grep CLI"
 readme = "README.md"
 keywords = ["sed", "find", "replace", "regex", "grep"]
 license = "MIT"
-homepage = "https://github.com/robenkleene/reap"
-repository = "https://github.com/robenkleene/reap.git"
+homepage = "https://github.com/robenkleene/rep-grep"
+repository = "https://github.com/robenkleene/rep-grep.git"
 categories = ["command-line-utilities", "text-processing", "development-tools"]
 
 [[bin]]
