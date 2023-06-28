@@ -62,4 +62,20 @@ mod cli {
             .stdout(result);
         Ok(())
     }
+
+    #[test]
+    fn write_line_endings() -> Result<()> {
+        let input = fs::read_to_string("tests/data/line-endings/grep.txt").expect("Error reading input");
+        let tmp_dir = tempdir()?;
+        let line_ending_file_path = tmp_dir.path().join("my-temporary-note.txt");
+        // TODO: Copy the test files to the temp directory
+        rep()
+            .current_dir(tmp_dir.path())
+            .write_stdin(input)
+            .args(&["foo", "bar", "-w"])
+            .assert()
+            .success()
+        // TODO: Check the line ending status of the files
+        Ok(())
+    }
 }
