@@ -66,9 +66,13 @@ mod cli {
     #[test]
     fn write_line_endings() -> Result<()> {
         let input = fs::read_to_string("tests/data/line-endings/grep.txt").expect("Error reading input");
+        // let ending_path = Path::new("tests/data/line-endings/ending.txt");
+        // let noending_path = Path::new("tests/data/line-endings/noending.txt");
         let tmp_dir = tempfile::tempdir()?;
         let tmp_dir_path = tmp_dir.path();
         println!("tmp_dir_path = {}", tmp_dir_path.display());
+        // fs::copy(ending_path, tmp_dir_path" + "/ending.txt").expect("Error copying file");
+        // fs::copy(noending_path, tmp_dir_path).expect("Error copying file");
         // TODO: Copy the test files to the temp directory
         // rep()
         //     .current_dir(tmp_dir.path())
