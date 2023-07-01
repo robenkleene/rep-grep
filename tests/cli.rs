@@ -73,8 +73,10 @@ mod cli {
         let noending_file_name = noending_path.file_name().expect("Error getting filename");
         let tmp_dir = tempfile::tempdir()?;
         let tmp_dir_path = tmp_dir.path();
-        fs::copy(ending_path, tmp_dir_path.join(ending_file_name)).expect("Error copying file");
-        fs::copy(noending_path, tmp_dir_path.join(noending_file_name)).expect("Error copying file");
+        let ending_file_name_dst = tmp_dir_path.join(ending_file_name);
+        let noending_file_name_dst = tmp_dir_path.join(noending_file_name);
+        fs::copy(ending_path, ending_file_name_dst).expect("Error copying file");
+        fs::copy(noending_path, noending_file_name_dst).expect("Error copying file");
         rep()
             .current_dir(tmp_dir_path)
             .write_stdin(input)
