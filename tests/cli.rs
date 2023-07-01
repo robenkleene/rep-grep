@@ -5,7 +5,10 @@ mod cli {
     use anyhow::Result;
     use assert_cmd::Command;
     use std::fs;
-    use std::path::Path;
+    use std::fs::File;
+    use std::path::{Path, PathBuf};
+    use std::io::Read;
+    use std::io::Seek;
 
     fn rep() -> Command {
         Command::cargo_bin("rep").expect("Error invoking rep")
@@ -83,6 +86,22 @@ mod cli {
             .args(&["foo", "bar", "-w"])
             .assert()
             .success();
+        fn has_eol(path: &PathBuf) -> std::io::Result<bool> {
+            let mut file = File::open(&path)?;
+            let mut buffer = [0; 1];
+
+            match file.seek(std::io::SeekFrom::End(-1)) {
+                Ok(_) => (),
+                // Empty file
+                Err(_) => return Ok(false),
+            }
+
+            file.read(&mut buffer[..])?;
+            if buffer == [b'\n'] {
+                return Ok(true);
+            };
+            Ok(false)
+        }
         // TODO: Check the line ending status of the files
         Ok(())
     }
