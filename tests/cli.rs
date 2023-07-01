@@ -5,6 +5,7 @@ mod cli {
     use anyhow::Result;
     use assert_cmd::Command;
     use std::fs;
+    use std::path::Path;
 
     fn rep() -> Command {
         Command::cargo_bin("rep").expect("Error invoking rep")
@@ -66,13 +67,15 @@ mod cli {
     #[test]
     fn write_line_endings() -> Result<()> {
         let input = fs::read_to_string("tests/data/line-endings/grep.txt").expect("Error reading input");
-        // let ending_path = Path::new("tests/data/line-endings/ending.txt");
-        // let noending_path = Path::new("tests/data/line-endings/noending.txt");
+        let ending_path = Path::new("tests/data/line-endings/ending.txt");
+        let noending_path = Path::new("tests/data/line-endings/noending.txt");
+        let ending_file_name = ending_path.file_name().expect("Error getting filename");
+        let noending_file_name = noending_path.file_name().expect("Error getting filename");
         let tmp_dir = tempfile::tempdir()?;
         let tmp_dir_path = tmp_dir.path();
         println!("tmp_dir_path = {}", tmp_dir_path.display());
-        // fs::copy(ending_path, tmp_dir_path" + "/ending.txt").expect("Error copying file");
-        // fs::copy(noending_path, tmp_dir_path).expect("Error copying file");
+        fs::copy(ending_path, tmp_dir_path.join(ending_file_name)).expect("Error copying file");
+        fs::copy(noending_path, tmp_dir_path.join(noending_file_name)).expect("Error copying file");
         // TODO: Copy the test files to the temp directory
         // rep()
         //     .current_dir(tmp_dir.path())
