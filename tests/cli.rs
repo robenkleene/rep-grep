@@ -75,13 +75,12 @@ mod cli {
         let tmp_dir_path = tmp_dir.path();
         fs::copy(ending_path, tmp_dir_path.join(ending_file_name)).expect("Error copying file");
         fs::copy(noending_path, tmp_dir_path.join(noending_file_name)).expect("Error copying file");
-        // TODO: Copy the test files to the temp directory
-        // rep()
-        //     .current_dir(tmp_dir.path())
-        //     .write_stdin(input)
-        //     .args(&["foo", "bar", "-w"])
-        //     .assert()
-        //     .success()
+        rep()
+            .current_dir(tmp_dir_path)
+            .write_stdin(input)
+            .args(&["foo", "bar", "-w"])
+            .assert()
+            .success();
         // TODO: Check the line ending status of the files
         Ok(())
     }
