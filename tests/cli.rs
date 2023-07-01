@@ -73,7 +73,6 @@ mod cli {
         let noending_file_name = noending_path.file_name().expect("Error getting filename");
         let tmp_dir = tempfile::tempdir()?;
         let tmp_dir_path = tmp_dir.path();
-        println!("tmp_dir_path = {}", tmp_dir_path.display());
         fs::copy(ending_path, tmp_dir_path.join(ending_file_name)).expect("Error copying file");
         fs::copy(noending_path, tmp_dir_path.join(noending_file_name)).expect("Error copying file");
         // TODO: Copy the test files to the temp directory
