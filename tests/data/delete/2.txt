@@ -1,4 +1,4 @@
 stays stays stays stays
-stays changes stays stays
+delete
 stays stays stays stays
-stays stays stays changes
+delete
