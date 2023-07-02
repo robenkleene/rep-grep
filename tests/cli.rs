@@ -102,15 +102,14 @@ mod cli {
             };
             Ok(false)
         }
-        let ending_result = has_eol(&ending_path.to_path_buf());
-        let noending_result = has_eol(&noending_path.to_path_buf());
-        let ending_dst_result = has_eol(&ending_path_dst.to_path_buf());
-        let noending_dst_result = has_eol(&noending_path_dst.to_path_buf());
-        println!("ending_result = {:?}", ending_result);
-        println!("noending_result = {:?}", noending_result);
-        println!("ending_dst_result = {:?}", ending_dst_result);
-        println!("noending_dst_result = {:?}", noending_dst_result);
-        // TODO: Convert println to assert tests
+        let ending_result = has_eol(&ending_path.to_path_buf())?;
+        let noending_result = has_eol(&noending_path.to_path_buf())?;
+        let ending_dst_result = has_eol(&ending_path_dst.to_path_buf())?;
+        let noending_dst_result = has_eol(&noending_path_dst.to_path_buf())?;
+        assert!(ending_result);
+        assert!(!noending_result);
+        assert_eq!(ending_result, ending_dst_result);
+        assert_eq!(noending_result, noending_dst_result);
         Ok(())
     }
 }
