@@ -16,6 +16,10 @@ environment variable REP_PAGER can be used to override the pager.
     */
     pub write: bool,
 
+    #[structopt(short = "d", long = "delete-lines")]
+    /// Delete matching lines
+    pub delete: bool,
+
     #[structopt(short = "s", long = "string-mode")]
     /// Treat expressions as non-regex strings
     pub literal_mode: bool,

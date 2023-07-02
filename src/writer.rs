@@ -32,7 +32,7 @@ impl<'a> Writer<'a> {
             .map(|l| l.expect("Error getting line"))
             .collect();
         let original = lines.join("\n");
-        let modified = match self.patcher.patch(lines, false, delete) {
+        let modified = match self.patcher.patch(lines, delete) {
             Ok(replaced) => replaced,
             Err(err) => panic!("Error patching lines: {}", err), // FIXME:
         };
