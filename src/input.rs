@@ -11,7 +11,7 @@ impl App {
         Self { replacer }
     }
 
-    pub(crate) fn run(&self, preview: bool, color: bool, pager: Option<String>) -> Result<()> {
+    pub(crate) fn run(&self, preview: bool, delete: bool, color: bool, pager: Option<String>) -> Result<()> {
         {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
