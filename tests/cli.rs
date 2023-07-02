@@ -76,10 +76,10 @@ mod cli {
         let noending_file_name = noending_path.file_name().expect("Error getting filename");
         let tmp_dir = tempfile::tempdir()?;
         let tmp_dir_path = tmp_dir.path();
-        let ending_file_name_dst = tmp_dir_path.join(ending_file_name);
-        let noending_file_name_dst = tmp_dir_path.join(noending_file_name);
-        fs::copy(ending_path, ending_file_name_dst).expect("Error copying file");
-        fs::copy(noending_path, noending_file_name_dst).expect("Error copying file");
+        let ending_path_dst = tmp_dir_path.join(ending_file_name);
+        let noending_path_dst = tmp_dir_path.join(noending_file_name);
+        fs::copy(ending_path, &ending_path_dst).expect("Error copying file");
+        fs::copy(noending_path, &noending_path_dst).expect("Error copying file");
         rep()
             .current_dir(tmp_dir_path)
             .write_stdin(input)
@@ -102,7 +102,15 @@ mod cli {
             };
             Ok(false)
         }
-        // TODO: Check the line ending status of the files
+        let ending_result = has_eol(&ending_path.to_path_buf());
+        let noending_result = has_eol(&noending_path.to_path_buf());
+        let ending_dst_result = has_eol(&ending_path_dst.to_path_buf());
+        let noending_dst_result = has_eol(&noending_path_dst.to_path_buf());
+        println!("ending_result = {:?}", ending_result);
+        println!("noending_result = {:?}", noending_result);
+        println!("ending_dst_result = {:?}", ending_dst_result);
+        println!("noending_dst_result = {:?}", noending_dst_result);
+        // TODO: Convert println to assert tests
         Ok(())
     }
 }
