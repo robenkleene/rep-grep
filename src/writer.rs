@@ -24,7 +24,7 @@ impl<'a> Writer<'a> {
         Self { path, patcher }
     }
 
-    pub(crate) fn patch_preview(&self, color: bool) -> Result<String, crate::writer::Error> {
+    pub(crate) fn patch_preview(&self, color: bool, delete: bool) -> Result<String, crate::writer::Error> {
         // TODO: Review error handling
         let file = File::open(self.path.clone()).expect("Error opening file");
         let buf = BufReader::new(file);
@@ -32,7 +32,7 @@ impl<'a> Writer<'a> {
             .map(|l| l.expect("Error getting line"))
             .collect();
         let original = lines.join("\n");
-        let modified = match self.patcher.patch(lines) {
+        let modified = match self.patcher.patch(lines, false, delete) {
             Ok(replaced) => replaced,
             Err(err) => panic!("Error patching lines: {}", err), // FIXME:
         };
@@ -50,7 +50,7 @@ impl<'a> Writer<'a> {
         return Ok(f.fmt_patch(&patch).to_string());
     }
 
-    pub(crate) fn write_file(&self) -> Result<()> {
+    pub(crate) fn write_file(&self, delete: bool) -> Result<()> {
         use memmap::{Mmap, MmapMut};
         use std::ops::DerefMut;
 
@@ -60,7 +60,7 @@ impl<'a> Writer<'a> {
         let lines = mmap_source.lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
-        let mut replaced = match self.patcher.patch(lines) {
+        let mut replaced = match self.patcher.patch(lines, delete) {
             Ok(replaced) => replaced,
             Err(_) => panic!("Error patching lines"), // FIXME:
         };

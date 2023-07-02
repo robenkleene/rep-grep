@@ -20,13 +20,16 @@ impl<'a> Patcher<'a> {
         Self { edits, replacer }
     }
 
-    pub(crate) fn patch(&self, mut lines: Vec<String>) -> Result<String, Error> {
+    pub(crate) fn patch(&self, mut lines: Vec<String>, delete: bool) -> Result<String, Error> {
         for edit in &self.edits {
             // Subtract `1` from the line number because line numbers start from `1` and array
             // indices start from `0`
             let index = usize::try_from(edit.number).unwrap() - 1;
             if index >= lines.len().try_into().unwrap() {
                 return Err(Error::LineNumber);
+            }
+            if delete {
+                lines.remove(index);
             }
             if let Some(replacer) = &self.replacer {
                 let replaced = &replacer.replace(edit.text.as_bytes());
@@ -64,7 +67,7 @@ mod tests {
             },
         ], None);
         let lines = vec!["a".to_string(), "b".to_string()];
-        let result = patcher.patch(lines);
+        let result = patcher.patch(lines, false);
         assert!(matches!(result, Err(Error::LineNumber)));
     }
 
@@ -83,7 +86,7 @@ mod tests {
             },
         ], None);
         let lines = vec!["a".to_string(), "b".to_string(), "c".to_string()];
-        let result = patcher.patch(lines);
+        let result = patcher.patch(lines, false);
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), "a\nfoo\nbar");
     }
