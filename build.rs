@@ -32,6 +32,12 @@ environment variable REP_PAGER can be used to override the pager.
         ))
         .flag(
             Flag::new()
+                .short("-d")
+                .long("--delete-lines")
+                .help("Delete matching lines."),
+        )
+        .flag(
+            Flag::new()
                 .short("-s")
                 .long("--string-mode")
                 .help("Treat expressions as non-regex strings."),
