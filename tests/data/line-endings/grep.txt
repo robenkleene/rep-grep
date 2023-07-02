@@ -1,0 +1,2 @@
+noending.txt:1:foo
+ending.txt:1:foo
