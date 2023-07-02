@@ -36,6 +36,22 @@ environment variable REP_PAGER can be used to override the pager.
                 .long("--string-mode")
                 .help("Treat expressions as non-regex strings."),
         )
+        .flag(
+            Flag::new()
+                .long("--no-color")
+                .help("Disable color."),
+        )
+        .flag(
+            Flag::new()
+                .long("--color")
+                .help("Enable color (the default if the output is a TTY)."),
+        )
+        .flag(
+            Flag::new()
+                .short("-V")
+                .long("--version")
+                .help("Prints version information."),
+        )
         .flag(Flag::new().short("-f").long("--flags").help(
             r#"Treat expressions as non-regex strings.
 /** Regex flags. May be combined (like `-f mc`).
@@ -48,44 +64,6 @@ w - match full words only
         ))
         .arg(Arg::new("find"))
         .arg(Arg::new("replace_with"))
-        .arg(Arg::new("[FILES]"))
-        .example(
-            Example::new()
-                .text("String-literal mode")
-                .command(
-                    "echo 'lots((([]))) of special chars' | rep -s '((([])))' \
-                     ''",
-                )
-                .output("lots of special chars"),
-        )
-        .example(
-            Example::new()
-                .text("Regex use. Let's trim some trailing whitespace")
-                .command("echo 'lorem ipsum 23   ' | rep '\\s+$' ''")
-                .output("lorem ipsum 23"),
-        )
-        .example(
-            Example::new()
-                .text("Indexed capture groups")
-                .command(r#"echo 'cargo +nightly watch' | rep '(\w+)\s+\+(\w+)\s+(\w+)' 'cmd: $1, channel: $2, subcmd: $3'"#)
-                .output("cmd: cargo, channel: nightly, subcmd: watch")
-        )
-        .example(
-            Example::new()
-                .text("Named capture groups")
-                .command(r#"echo "123.45" | rep '(?P<dollars>\d+)\.(?P<cents>\d+)' '$dollars dollars and $cents cents'"#)
-                .output("123 dollars and 45 cents")
-        )
-        .example(
-            Example::new()
-                .text("Find & replace in file")
-                .command(r#"rep 'window.fetch' 'fetch' http.js"#)
-        )
-        .example(
-            Example::new()
-                .text("Find & replace from STDIN an emit to STDOUT")
-                .command(r#"rep 'window.fetch' 'fetch' < http.js"#)
-        )
         .render();
 
     let mut man_path =
