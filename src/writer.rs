@@ -60,10 +60,13 @@ impl<'a> Writer<'a> {
         let lines = mmap_source.lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
-        let replaced = match self.patcher.patch(lines) {
+        let mut replaced = match self.patcher.patch(lines) {
             Ok(replaced) => replaced,
             Err(_) => panic!("Error patching lines"), // FIXME:
         };
+        if mmap_source.ends_with("\n".as_bytes()) {
+            replaced.push_str("\n");
+        }
 
         let target = tempfile::NamedTempFile::new_in(
             self.path.parent()
