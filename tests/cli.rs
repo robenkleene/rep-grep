@@ -112,4 +112,18 @@ mod cli {
         assert_eq!(noending_result, noending_dst_result);
         Ok(())
     }
+
+    #[test]
+    fn patch_preview_delete() -> Result<()> {
+        let input = fs::read_to_string("tests/data/delete/grep.txt").expect("Error reading input");
+        let result = fs::read_to_string("tests/data/delete/patch.patch").expect("Error reading input");
+        rep()
+            .current_dir("tests/data/delete")
+            .write_stdin(input)
+            .args(&["-d"])
+            .assert()
+            .success()
+            .stdout(result);
+        Ok(())
+    }
 }
