@@ -17,4 +17,18 @@ sed -i.bak '6s#.*#--- a/2.txt#' patch.patch
 sed -i.bak '7s#.*#+++ b/2.txt#' patch.patch
 sed -i.bak '13s#.*#--- a/3.txt#' patch.patch
 sed -i.bak '14s#.*#+++ b/3.txt#' patch.patch
+
+# newline messages
+line_fix='6i\
+\\ No newline at end of file
+'
+sed -i.bak "${line_fix}" patch.patch
+line_fix='14i\
+\\ No newline at end of file
+'
+sed -i.bak "${line_fix}" patch.patch
+line_fix='$a\
+\\ No newline at end of file
+'
+sed -i.bak "${line_fix}" patch.patch
 rm patch.patch.bak
