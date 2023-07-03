@@ -11,8 +11,8 @@ pub(crate) struct Patcher<'a> {
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("Invalid line number")]
-    LineNumber,
+    #[error("Invalid line number {0}")]
+    LineNumber(u32),
 }
 
 impl<'a> Patcher<'a> {
@@ -26,7 +26,7 @@ impl<'a> Patcher<'a> {
             // indices start from `0`
             let index = usize::try_from(edit.number).unwrap() - 1;
             if index >= lines.len().try_into().unwrap() {
-                return Err(Error::LineNumber);
+                return Err(Error::LineNumber(edit.number));
             }
             if delete {
                 lines.remove(index);
@@ -68,7 +68,7 @@ mod tests {
         ], None);
         let lines = vec!["a".to_string(), "b".to_string()];
         let result = patcher.patch(lines, false);
-        assert!(matches!(result, Err(Error::LineNumber)));
+        assert!(matches!(result, Err(Error::LineNumber(3))));
     }
 
     #[test]
