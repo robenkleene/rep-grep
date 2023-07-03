@@ -22,7 +22,7 @@ impl<'a> Patcher<'a> {
 
     pub(crate) fn patch(&self, mut lines: Vec<String>, delete: bool) -> Result<String, Error> {
         if delete {
-            let indexes: Vec<u32> = self.edits.into_iter().map(|e| e.number)
+            let indexes: Vec<u32> = &self.edits.into_iter().map(|e| e.number)
                 .rev()
                 .collect();
             // Subtract `1` from the line number because line numbers start from `1` and array
