@@ -21,15 +21,27 @@ impl<'a> Patcher<'a> {
     }
 
     pub(crate) fn patch(&self, mut lines: Vec<String>, delete: bool) -> Result<String, Error> {
+        if delete {
+            let indexes: Vec<u32> = self.edits.into_iter().map(|e| e.number)
+                .rev()
+                .collect();
+            // Subtract `1` from the line number because line numbers start from `1` and array
+            // indices start from `0`
+            for index in indexes {
+                let index_size = usize::try_from(index).unwrap() - 1;
+                if index_size >= lines.len().try_into().unwrap() {
+                    return Err(Error::LineNumber(index));
+                }
+                lines.remove(index_size);
+            }
+            return Ok(lines.join("\n"));
+        }
         for edit in &self.edits {
             // Subtract `1` from the line number because line numbers start from `1` and array
             // indices start from `0`
             let index = usize::try_from(edit.number).unwrap() - 1;
             if index >= lines.len().try_into().unwrap() {
                 return Err(Error::LineNumber(edit.number));
-            }
-            if delete {
-                lines.remove(index);
             }
             if let Some(replacer) = &self.replacer {
                 let replaced = &replacer.replace(edit.text.as_bytes());
