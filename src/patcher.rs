@@ -22,15 +22,16 @@ impl<'a> Patcher<'a> {
 
     pub(crate) fn patch(&self, mut lines: Vec<String>, delete: bool) -> Result<String, Error> {
         if delete {
-            let indexes: &Vec<u32> = &self.edits.into_iter().map(|e| e.number)
+            let indexes: &Vec<u32> = &self.edits.iter().map(|e| e.number)
                 .rev()
                 .collect();
             // Subtract `1` from the line number because line numbers start from `1` and array
             // indices start from `0`
             for index in indexes {
-                let index_size = usize::try_from(index).unwrap() - 1;
+                let index_cloned = index.clone();
+                let index_size = usize::try_from(index_cloned).unwrap() - 1;
                 if index_size >= lines.len().try_into().unwrap() {
-                    return Err(Error::LineNumber(index));
+                    return Err(Error::LineNumber(index_cloned));
                 }
                 lines.remove(index_size);
             }
