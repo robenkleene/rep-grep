@@ -11,8 +11,8 @@ pub(crate) struct Patcher<'a> {
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("Invalid line number")]
-    LineNumber,
+    #[error("Invalid line number {0}")]
+    LineNumber(u32),
 }
 
 impl<'a> Patcher<'a> {
@@ -20,13 +20,29 @@ impl<'a> Patcher<'a> {
         Self { edits, replacer }
     }
 
-    pub(crate) fn patch(&self, mut lines: Vec<String>) -> Result<String, Error> {
+    pub(crate) fn patch(&self, mut lines: Vec<String>, delete: bool) -> Result<String, Error> {
+        if delete {
+            let indexes: &Vec<u32> = &self.edits.iter().map(|e| e.number)
+                .rev()
+                .collect();
+            // Subtract `1` from the line number because line numbers start from `1` and array
+            // indices start from `0`
+            for index in indexes {
+                let index_cloned = index.clone();
+                let index_size = usize::try_from(index_cloned).unwrap() - 1;
+                if index_size >= lines.len().try_into().unwrap() {
+                    return Err(Error::LineNumber(index_cloned));
+                }
+                lines.remove(index_size);
+            }
+            return Ok(lines.join("\n"));
+        }
         for edit in &self.edits {
             // Subtract `1` from the line number because line numbers start from `1` and array
             // indices start from `0`
             let index = usize::try_from(edit.number).unwrap() - 1;
             if index >= lines.len().try_into().unwrap() {
-                return Err(Error::LineNumber);
+                return Err(Error::LineNumber(edit.number));
             }
             if let Some(replacer) = &self.replacer {
                 let replaced = &replacer.replace(edit.text.as_bytes());
@@ -64,8 +80,8 @@ mod tests {
             },
         ], None);
         let lines = vec!["a".to_string(), "b".to_string()];
-        let result = patcher.patch(lines);
-        assert!(matches!(result, Err(Error::LineNumber)));
+        let result = patcher.patch(lines, false);
+        assert!(matches!(result, Err(Error::LineNumber(3))));
     }
 
     #[test]
@@ -83,7 +99,7 @@ mod tests {
             },
         ], None);
         let lines = vec!["a".to_string(), "b".to_string(), "c".to_string()];
-        let result = patcher.patch(lines);
+        let result = patcher.patch(lines, false);
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), "a\nfoo\nbar");
     }

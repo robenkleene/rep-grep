@@ -48,9 +48,9 @@ fn main() -> Result<()> {
                 options.replacements,
             )?),
         )
-        .run(!options.write, color, pager)?;
+        .run(!options.write, options.delete, color, pager)?;
     } else {
-        App::new(None).run(!options.write, color, pager)?;
+        App::new(None).run(!options.write, options.delete, color, pager)?;
     }
 
     process::exit(0);

@@ -11,7 +11,7 @@ impl App {
         Self { replacer }
     }
 
-    pub(crate) fn run(&self, preview: bool, color: bool, pager: Option<String>) -> Result<()> {
+    pub(crate) fn run(&self, preview: bool, delete: bool, color: bool, pager: Option<String>) -> Result<()> {
         {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
@@ -36,7 +36,7 @@ impl App {
                                 continue // FIXME:
                             }
                             let writer = Writer::new(path.to_path_buf(), &patcher);
-                            let text = match writer.patch_preview(color) {
+                            let text = match writer.patch_preview(color, delete) {
                                 Ok(text) => text,
                                 Err(_) => continue, // FIXME:
                             };
@@ -50,7 +50,7 @@ impl App {
                                 return Ok(()); // FIXME:
                             }
                             let writer = Writer::new(path, &patcher);
-                            if let Err(_) = writer.write_file() {
+                            if let Err(_) = writer.write_file(delete) {
                                 return Ok(()); // FIXME:
                             }
                         }
