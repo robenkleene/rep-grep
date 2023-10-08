@@ -46,7 +46,7 @@ impl Edit {
     }
 
     fn edit_from_line(line: String) -> Result<Edit, Error> {
-        let re = Regex::new("^([^:]+):([[:digit:]]+):(.*)$").unwrap();
+        let re = Regex::new("^([^:]+):([[:digit:]]+):([[:digit:]]+:)?(.*)$").unwrap();
         let caps = re.captures(&line);
         let caps = match caps {
             Some(caps) => caps,
@@ -64,7 +64,8 @@ impl Edit {
             Ok(number) => number,
             Err(_) => return Err(Error::Match),
         };
-        let mut text = match caps.get(3) {
+        let index = if caps.len() < 5 { 3 } else { 4 };
+        let mut text = match caps.get(index) {
             Some(text) => text.as_str().to_string(),
             None => return Err(Error::Match),
         };
