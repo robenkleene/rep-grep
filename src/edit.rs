@@ -65,20 +65,10 @@ impl Edit {
             Err(_) => return Err(Error::Match),
         };
         let index = if caps.len() < 5 { 3 } else { 4 };
-        let mut text = match caps.get(index) {
+        let text = match caps.get(index) {
             Some(text) => text.as_str().to_string(),
             None => return Err(Error::Match),
         };
-
-        // Check for the optional column and discard it if present
-        let text_re = Regex::new("^([[:digit:]]+):(.*)$").unwrap();
-        let text_caps = text_re.captures(&line);
-        if let Some(text_caps) = text_caps {
-            text = match text_caps.get(2) {
-                Some(text) => text.as_str().to_string(),
-                None => text,
-            };
-        }
 
         return Ok(Edit::new(
             file,
