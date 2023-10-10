@@ -8,7 +8,7 @@ use indexmap::IndexMap;
 pub(crate) struct Edit {
     pub(crate) file: PathBuf,
     pub(crate) text: String,
-    pub(crate) number: u32
+    pub(crate) line_number: u32
 }
 
 #[derive(Debug)]
@@ -19,8 +19,8 @@ pub enum Error {
 }
 
 impl Edit {
-    pub(crate) fn new(file: PathBuf, text: String, number: u32) -> Edit {
-        Edit { file, text, number }
+    pub(crate) fn new(file: PathBuf, text: String, line_number: u32) -> Edit {
+        Edit { file, text, line_number }
     }
 
     pub(crate) fn parse (
@@ -112,7 +112,7 @@ mod tests {
             Err(_) => panic!("Error getting edit from line"),
         };
         assert_eq!(edit.file, PathBuf::from("aaa.txt"));
-        assert_eq!(edit.number, 1);
+        assert_eq!(edit.line_number, 1);
         assert_eq!(edit.text, "text");
     }
 }

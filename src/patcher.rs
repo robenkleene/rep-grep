@@ -22,7 +22,7 @@ impl<'a> Patcher<'a> {
 
     pub(crate) fn patch(&self, mut lines: Vec<String>, delete: bool) -> Result<String, Error> {
         if delete {
-            let indexes: &Vec<u32> = &self.edits.iter().map(|e| e.number)
+            let indexes: &Vec<u32> = &self.edits.iter().map(|e| e.line_number)
                 .rev()
                 .collect();
             // Subtract `1` from the line number because line numbers start from `1` and array
@@ -40,9 +40,9 @@ impl<'a> Patcher<'a> {
         for edit in &self.edits {
             // Subtract `1` from the line number because line numbers start from `1` and array
             // indices start from `0`
-            let index = usize::try_from(edit.number).unwrap() - 1;
+            let index = usize::try_from(edit.line_number).unwrap() - 1;
             if index >= lines.len().try_into().unwrap() {
-                return Err(Error::LineNumber(edit.number));
+                return Err(Error::LineNumber(edit.line_number));
             }
             if let Some(replacer) = &self.replacer {
                 let replaced = &replacer.replace(edit.text.as_bytes());
@@ -70,12 +70,12 @@ mod tests {
         let patcher = Patcher::new(vec![
             Edit {
                 file: PathBuf::from("f"),
-                number: 1,
+                line_number: 1,
                 text: "foo".to_string(),
             },
             Edit {
                 file: PathBuf::from("f"),
-                number: 3,
+                line_number: 3,
                 text: "bar".to_string(),
             },
         ], None);
@@ -89,12 +89,12 @@ mod tests {
         let patcher = Patcher::new(vec![
             Edit {
                 file: PathBuf::from("f"),
-                number: 2,
+                line_number: 2,
                 text: "foo".to_string(),
             },
             Edit {
                 file: PathBuf::from("f"),
-                number: 3,
+                line_number: 3,
                 text: "bar".to_string(),
             },
         ], None);
