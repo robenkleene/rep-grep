@@ -46,6 +46,8 @@ impl Edit {
     }
 
     fn edit_from_line(line: String) -> Result<Edit, Error> {
+        // The last `([[:digit:]]+:)?` capture group is for the optional column, which we only
+        // discard
         let re = Regex::new("^([^:]+):([[:digit:]]+):([[:digit:]]+:)?(.*)$").unwrap();
         let caps = re.captures(&line);
         let caps = match caps {
@@ -64,6 +66,7 @@ impl Edit {
             Ok(number) => number,
             Err(_) => return Err(Error::Match),
         };
+        // If `caps.len() > 4`, then the optional column was present
         let index = if caps.len() < 5 { 3 } else { 4 };
         let text = match caps.get(index) {
             Some(text) => text.as_str().to_string(),
