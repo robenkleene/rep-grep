@@ -38,7 +38,7 @@ impl<'a> Patcher<'a> {
             return Ok(lines.join("\n"));
         }
         for edit in &self.edits {
-            // Subtract `1` from the line number because line numbers start from `1` and array
+            // Subtract `1` from the line number because line numbers start from `1` but array
             // indices start from `0`
             let index = usize::try_from(edit.line_number).unwrap() - 1;
             if index >= lines.len().try_into().unwrap() {
