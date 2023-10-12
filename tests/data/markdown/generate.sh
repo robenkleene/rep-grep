@@ -19,3 +19,6 @@ sed -i '' '463s/.*/@@ -880,7 +880,7 @@\n/' markdown-markup.patch
 
 sed -i '' 's/Markdown/Markup/g' markdown-to-markup-grep.txt
 wc -l < markdown-to-markup-grep.txt | xargs > grep-count.txt
+
+rg --vimgrep Markdown markdown-syntax.md > markdown-to-markup-vimgrep.txt
+sed -i '' 's/Markdown/Markup/g' markdown-to-markup-vimgrep.txt
