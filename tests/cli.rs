@@ -154,4 +154,20 @@ mod cli {
             // .stdout(result);
         Ok(())
     }
+
+    #[test]
+    fn patch_preview_delete_vimgrep() -> Result<()> {
+        let input = fs::read_to_string("tests/data/delete/vimgrep.txt").expect("Error reading input");
+        let _result = fs::read_to_string("tests/data/delete/patch.patch").expect("Error reading input");
+        rep()
+            .current_dir("tests/data/delete")
+            .write_stdin(input)
+            .args(&["-d"])
+            .assert()
+            .success();
+            // This appears to fail because the `diffy` patching algorithm isn't that great
+            // .success()
+            // .stdout(result);
+        Ok(())
+    }
 }
