@@ -32,3 +32,5 @@ line_fix='$a\
 '
 sed -i.bak "${line_fix}" patch.patch
 rm patch.patch.bak
+
+rg --vimgrep delete 1.txt 2.txt 3.txt > vimgrep.txt
