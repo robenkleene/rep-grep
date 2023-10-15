@@ -22,6 +22,7 @@ impl<'a> Patcher<'a> {
 
     pub(crate) fn patch(&self, mut lines: Vec<String>, delete: bool) -> Result<String, Error> {
         if delete {
+            // TODO: Convert this to a set of line numbers instead of a `Vec`
             let indexes: &Vec<u32> = &self.edits.iter().map(|e| e.line_number)
                 .rev()
                 .collect();
