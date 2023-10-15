@@ -26,5 +26,5 @@ diff --unified original.txt \
   <(sed /bomp/d original.txt) > delete.patch || true
 sed -i '' '1s/.*/--- a\/original.txt/' delete.patch
 sed -i '' '2s/.*/+++ b\/original.txt/' delete.patch
-sed -i '' '3s/-1,2 +1,2/-1 +1/' delete.patch
+sed -i '' '3s/-1,2 +1/-1 +0,0/' delete.patch
 sed -i '' '5d' delete.patch
