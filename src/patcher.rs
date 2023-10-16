@@ -1,8 +1,10 @@
 use crate::edit::Edit;
 use crate::replacer::Replacer;
+use std::collections::HashSet;
 use std::convert::TryFrom;
 use std::convert::TryInto;
 use std::str;
+use sorted_iter::SortedIterator;
 
 pub(crate) struct Patcher<'a> {
     edits: Vec<Edit>,
@@ -22,13 +24,10 @@ impl<'a> Patcher<'a> {
 
     pub(crate) fn patch(&self, mut lines: Vec<String>, delete: bool) -> Result<String, Error> {
         if delete {
-            // TODO: Convert this to a set of line numbers instead of a `Vec`
-            let indexes: &Vec<u32> = &self.edits.iter().map(|e| e.line_number)
-                .rev()
-                .collect();
+            let indexes_set: &HashSet<u32> = &self.edits.into_iter().map(|e| e.line_number).collect();
             // Subtract `1` from the line number because line numbers start from `1` and array
             // indices start from `0`
-            for index in indexes {
+            for index in indexes_set.sorted_iter().rev() {
                 let index_cloned = index.clone();
                 let index_size = usize::try_from(index_cloned).unwrap() - 1;
                 if index_size >= lines.len().try_into().unwrap() {
