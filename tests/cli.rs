@@ -41,6 +41,20 @@ mod cli {
     }
 
     #[test]
+    fn patch_preview_markdown_delete() -> Result<()> {
+        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-vimgrep.txt").expect("Error reading input");
+        let result = fs::read_to_string("tests/data/markdown/delete.patch").expect("Error reading input");
+        rep()
+            .current_dir("tests/data/markdown")
+            .args(&["-d"])
+            .write_stdin(input)
+            .assert()
+            .success()
+            .stdout(result);
+        Ok(())
+    }
+
+    #[test]
     fn patch_preview_simple() -> Result<()> {
         let input = fs::read_to_string("tests/data/simple/grep.txt").expect("Error reading input");
         let result = fs::read_to_string("tests/data/simple/patch.patch").expect("Error reading input");
