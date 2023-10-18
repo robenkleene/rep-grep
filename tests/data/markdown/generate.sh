@@ -26,3 +26,9 @@ wc -l < markdown-to-markup-grep.txt | xargs > grep-count.txt
 # markdown-to-markup-vimgrep.txt
 rg --vimgrep Markdown markdown-syntax.md > markdown-to-markup-vimgrep.txt
 sed -i '' 's/Markdown/Markup/g' markdown-to-markup-vimgrep.txt
+
+# delete.patch
+diff --unified markdown-syntax.md \
+  <(sed /Markdown/d markdown-syntax.md) > delete.patch || true
+sed -i '' '1s/.*/--- a\/markdown-syntax.md/' markdown-markup.patch
+sed -i '' '2s/.*/+++ b\/markdown-syntax.md/' markdown-markup.patch
