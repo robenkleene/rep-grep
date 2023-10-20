@@ -30,5 +30,13 @@ sed -i '' 's/Markdown/Markup/g' markdown-to-markup-vimgrep.txt
 # delete.patch
 diff --unified markdown-syntax.md \
   <(sed /Markdown/d markdown-syntax.md) > delete.patch || true
-sed -i '' '1s/.*/--- a\/markdown-syntax.md/' markdown-markup.patch
-sed -i '' '2s/.*/+++ b\/markdown-syntax.md/' markdown-markup.patch
+sed -i '' '1s/.*/--- a\/markdown-syntax.md/' delete.patch
+sed -i '' '2s/.*/+++ b\/markdown-syntax.md/' delete.patch
+sed -i '' '242s/.*/@@ -458,10 +406,8 @@\n/' delete.patch
+sed -i '' '244d' delete.patch
+sed -i '' '253i\
+@@ -468,7 +414,6 @@\
+' delete.patch
+sed -i '' '379s/.*/@@ -872,8 +799,6 @@\n/' delete.patch
+sed -i '' '380d' delete.patch
+sed -i '' '388s/.*/@@ -880,7 +805,6 @@\n/' delete.patch

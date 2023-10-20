@@ -1,5 +1,5 @@
---- markdown-syntax.md	2023-03-13 05:23:05
-+++ /dev/fd/63	2023-10-18 05:29:30
+--- a/markdown-syntax.md
++++ b/markdown-syntax.md
 @@ -1,12 +1,7 @@
 -Markdown: Syntax
  ================
@@ -239,8 +239,8 @@
  lazy:
  
      *   This is a list item with two paragraphs.
-@@ -458,17 +406,14 @@
- 
+@@ -458,10 +406,8 @@
+
  Pre-formatted code blocks are used for writing about programming or
  markup source code. Rather than forming normal paragraphs, the lines
 -of a code block are interpreted literally. Markdown wraps a code block
@@ -250,6 +250,7 @@
  block by at least 4 spaces or 1 tab. For example, given this input:
  
      This is a normal paragraph:
+@@ -468,7 +414,6 @@
  
          This is a code block.
  
@@ -375,7 +376,7 @@
  
      <address@example.com>
  
-@@ -872,15 +799,12 @@
+@@ -872,8 +799,6 @@
  
  <h3 id="backslash">Backslash Escapes</h3>
  
@@ -384,7 +385,8 @@
  formatting syntax. For example, if you wanted to surround a word
  with literal asterisks (instead of an HTML `<em>` tag), you can use
  backslashes before the asterisks, like this:
- 
+@@ -880,7 +805,6 @@
+
      \*literal asterisks\*
  
 -Markdown provides backslash escapes for the following characters:
