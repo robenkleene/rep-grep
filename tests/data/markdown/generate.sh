@@ -10,6 +10,7 @@ grep --line-number --with-filename Markdown markdown-syntax.md > markdown-to-mar
 # markdown-markup.patch
 diff --unified markdown-syntax.md \
   <(sed s/Markdown/Markup/g markdown-syntax.md) > markdown-markup.patch || true
+# Fix single space lines
 sed -i '' 's/^ $//' markdown-markup.patch
 sed -i '' '1s/.*/--- a\/markdown-syntax.md/' markdown-markup.patch
 sed -i '' '2s/.*/+++ b\/markdown-syntax.md/' markdown-markup.patch
@@ -30,6 +31,8 @@ sed -i '' 's/Markdown/Markup/g' markdown-to-markup-vimgrep.txt
 # delete.patch
 diff --unified markdown-syntax.md \
   <(sed /Markdown/d markdown-syntax.md) > delete.patch || true
+# Fix single space lines
+sed -i '' 's/^ $//' delete.patch
 sed -i '' '1s/.*/--- a\/markdown-syntax.md/' delete.patch
 sed -i '' '2s/.*/+++ b\/markdown-syntax.md/' delete.patch
 sed -i '' '242s/.*/@@ -458,10 +406,8 @@\n/' delete.patch
