@@ -8,7 +8,7 @@ use indexmap::IndexMap;
 pub(crate) struct Edit {
     pub(crate) file: PathBuf,
     pub(crate) text: String,
-    pub(crate) number: u32
+    pub(crate) line_number: u32
 }
 
 #[derive(Debug)]
@@ -19,8 +19,8 @@ pub enum Error {
 }
 
 impl Edit {
-    pub(crate) fn new(file: PathBuf, text: String, number: u32) -> Edit {
-        Edit { file, text, number }
+    pub(crate) fn new(file: PathBuf, text: String, line_number: u32) -> Edit {
+        Edit { file, text, line_number }
     }
 
     pub(crate) fn parse (
@@ -46,7 +46,9 @@ impl Edit {
     }
 
     fn edit_from_line(line: String) -> Result<Edit, Error> {
-        let re = Regex::new("^([^:]+):([[:digit:]]+):(.*)$").unwrap();
+        // The last `([[:digit:]]+:)?` capture group is for the optional column, which we only
+        // discard
+        let re = Regex::new("^([^:]+):([[:digit:]]+):([[:digit:]]+:)?(.*)$").unwrap();
         let caps = re.captures(&line);
         let caps = match caps {
             Some(caps) => caps,
@@ -64,20 +66,12 @@ impl Edit {
             Ok(number) => number,
             Err(_) => return Err(Error::Match),
         };
-        let mut text = match caps.get(3) {
+        // If `caps.len() > 4`, then the optional column was present
+        let index = if caps.len() < 5 { 3 } else { 4 };
+        let text = match caps.get(index) {
             Some(text) => text.as_str().to_string(),
             None => return Err(Error::Match),
         };
-
-        // Check for the optional column and discard it if present
-        let text_re = Regex::new("^([[:digit:]]+):(.*)$").unwrap();
-        let text_caps = text_re.captures(&line);
-        if let Some(text_caps) = text_caps {
-            text = match text_caps.get(2) {
-                Some(text) => text.as_str().to_string(),
-                None => text,
-            };
-        }
 
         return Ok(Edit::new(
             file,
@@ -118,7 +112,7 @@ mod tests {
             Err(_) => panic!("Error getting edit from line"),
         };
         assert_eq!(edit.file, PathBuf::from("aaa.txt"));
-        assert_eq!(edit.number, 1);
+        assert_eq!(edit.line_number, 1);
         assert_eq!(edit.text, "text");
     }
 }

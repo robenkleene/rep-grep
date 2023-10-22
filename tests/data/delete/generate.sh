@@ -4,7 +4,10 @@ set -euo pipefail
 
 cd "$(dirname "$0")" || exit 1
 
+# grep.txt
 grep --line-number --with-filename delete 1.txt 2.txt 3.txt > grep.txt
+
+# patch.patch
 diff --unified 1.txt \
   <(sed /delete/d 1.txt) > patch.patch || true
 diff --unified 2.txt \
@@ -32,3 +35,6 @@ line_fix='$a\
 '
 sed -i.bak "${line_fix}" patch.patch
 rm patch.patch.bak
+
+# vimgrep.txt
+rg --vimgrep delete 1.txt 2.txt 3.txt > vimgrep.txt
