@@ -554,7 +554,7 @@ dependencies = [
 
 [[package]]
 name = "rep-grep"
-version = "0.0.4"
+version = "0.0.5"
 dependencies = [
  "ansi_term",
  "anyhow",
