@@ -1,24 +1,24 @@
 # Rep Grep
 
-`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep)-formatted lines on standard in, and can perform a find-and-replace on them, preview the changes as a [`diff`](https://en.wikipedia.org/wiki/Diff), and then write the changes to the source files.
+`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep)-formatted lines via standard input, and performs a find-and-replace on them. By default, it outputs a [`diff`](https://en.wikipedia.org/wiki/Diff)-preview of the changes to standard output, and can write the changes to the in place with a flag.
 
 [![Find & replace with `rep`](rep.gif)](https://www.youtube.com/embed/QIOKKTnC9-I)
 
 ## Example
 
-Output a diff to standard output of a replacement of `foo` with `bar`:
+Output a diff to standard output replacing `foo` with `bar`:
 
 ```
 grep -n foo *` | rep foo bar
 ```
 
-Write the changes to the files with matches:
+Write the changes to the files in place:
 
 ```
 grep -n foo *` | rep foo bar -w
 ```
 
-The `-n` (`--line-number`) option is necessary so `grep` outputs the line number of each match.
+The `-n` (`--line-number`) option is required so that `grep` outputs the line number for each match.
 
 ## Help
 
