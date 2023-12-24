@@ -26,7 +26,7 @@ The `-n` (`--line-number`) option is required so that `grep` outputs the line nu
 
 ## Acknowledgements
 
-- The idea for `rep` was inspired by [`wgrep`](https://github.com/mhayashi1120/Emacs-wgrep) for Emacs, which allows editing of a `grep` results in a buffer, and writing those changes to the source files.
-- The structure of the source code, and much of the functionality, was borrowed from [`sd`](https://github.com/chmln/sd), `rep` began as a fork of `sd`.
-- The code for specifying a custom pager for both `rep` and `ren` came from the source code for [delta`](https://github.com/dandavison/delta).
+- `rep` was inspired by [`wgrep`](https://github.com/mhayashi1120/Emacs-wgrep) for Emacs, which allows editing `grep` results in an Emacs buffer and then writing those changes to the source files.
+- Much of the functionality, and the overall structure of the source code, was borrowed [`sd`](https://github.com/chmln/sd). `rep` began as a fork of `sd`.
+- The code for specifying a custom pager for `rep` was borrowed from [delta`](https://github.com/dandavison/delta).
 
