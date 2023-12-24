@@ -1,5 +1,32 @@
 # Rep Grep
 
-wgrep/write-grep CLI
+`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep)-formatted lines via standard input, and performs a find-and-replace on them. By default, it outputs a [`diff`](https://en.wikipedia.org/wiki/Diff)-preview of the changes to standard output, and can write the changes to the in place with a flag.
 
 [![Find & replace with `rep`](rep.gif)](https://www.youtube.com/embed/QIOKKTnC9-I)
+
+## Example
+
+Output a diff to standard output replacing `foo` with `bar`:
+
+```
+grep -n foo *` | rep foo bar
+```
+
+Write the changes to the files in place:
+
+```
+grep -n foo *` | rep foo bar -w
+```
+
+The `-n` (`--line-number`) option is required so that `grep` outputs the line number for each match.
+
+## Help
+
+`grep --help` (or `grep -h`) will list help for all the command-line flags.
+
+## Acknowledgements
+
+- The idea for `rep` was inspired by [`wgrep`](https://github.com/mhayashi1120/Emacs-wgrep) for Emacs, which allows editing of a `grep` results in a buffer, and writing those changes to the source files.
+- The structure of the source code, and much of the functionality, was borrowed from [`sd`](https://github.com/chmln/sd), `rep` began as a fork of `sd`.
+- The code for specifying a custom pager for both `rep` and `ren` came from the source code for [delta`](https://github.com/dandavison/delta).
+
