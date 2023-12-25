@@ -22,7 +22,7 @@ The `-n` (`--line-number`) option is required so that `grep` outputs the line nu
 
 ## Help
 
-`grep --help` (or `grep -h`) will list help for all the command-line flags.
+`rep --help` (or `rep -h`) will list help for all the command-line flags.
 
 ## Acknowledgements
 
