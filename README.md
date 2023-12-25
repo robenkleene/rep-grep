@@ -1,6 +1,6 @@
 # Rep Grep
 
-`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep)-formatted lines via standard input, and performs a find-and-replace on them. By default, it outputs a [`diff`](https://en.wikipedia.org/wiki/Diff)-preview of the changes to standard output, and it can write the changes to the files in place with a flag.
+`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep)-formatted lines via standard input, and performs a find-and-replace on them. By default, it outputs a [`diff`](https://en.wikipedia.org/wiki/Diff)-preview of the changes to standard output, and with a flag it can write the changes to the files in place.
 
 [![Find & replace with `rep`](rep.gif)](https://www.youtube.com/embed/QIOKKTnC9-I)
 
@@ -12,7 +12,7 @@ Output a diff to standard output replacing `foo` with `bar`:
 grep -n foo *` | rep foo bar
 ```
 
-Write the changes to the files in place:
+Add the `-w` flag to write the changes to the files in place:
 
 ```
 grep -n foo *` | rep foo bar -w
@@ -22,7 +22,7 @@ The `-n` (`--line-number`) option is required so that `grep` outputs the line nu
 
 ## Help
 
-`grep --help` (or `grep -h`) will list help for all the command-line flags.
+`rep -h` (or `rep --help`) will list help for all the command-line flags.
 
 ## Acknowledgements
 
