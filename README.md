@@ -12,7 +12,7 @@ Output a diff to standard output replacing `foo` with `bar`:
 grep -n foo *` | rep foo bar
 ```
 
-Write the changes to the files in place:
+Add the `-w` flag to write the changes to the files in place:
 
 ```
 grep -n foo *` | rep foo bar -w
