@@ -22,7 +22,7 @@ The `-n` (`--line-number`) option is required so that `grep` outputs the line nu
 
 ## Installation
 
-`rep` is only available via [`cargo`](https://github.com/rust-lang/cargo):
+`rep` is available via [`cargo`](https://github.com/rust-lang/cargo):
 
 ```
 cargo install rep-grep
