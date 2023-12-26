@@ -20,6 +20,14 @@ grep -n foo *` | rep foo bar -w
 
 The `-n` (`--line-number`) option is required so that `grep` outputs the line number for each match.
 
+## Installation
+
+`rep` is only available via [`cargo`](https://github.com/rust-lang/cargo):
+
+```
+cargo install rep-grep
+```
+
 ## Help
 
 `rep -h` (or `rep --help`) will list help for all the command-line flags.
