@@ -5,7 +5,6 @@ mod edit;
 mod patcher;
 mod writer;
 mod output;
-// FIXME: Look at `pub(crate)` calls are all these necessary?
 pub(crate) mod replacer;
 pub(crate) mod utils;
 mod less;
