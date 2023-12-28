@@ -8,7 +8,7 @@ use structopt::{clap::AppSettings, StructOpt};
 )]
 pub(crate) struct Options {
     #[structopt(short = "w", long = "write")]
-    /// 
+    ///
     /** Write the output to files directly (instead of outputting a patch)
 
 If this flag is not present, and a patch is output, then the default pager is `less`. The
