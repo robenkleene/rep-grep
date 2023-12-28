@@ -28,9 +28,13 @@ The `-n` (`--line-number`) option is required so that `grep` outputs the line nu
 cargo install rep-grep
 ```
 
+## Configuration
+
+The default pager is `less`, the `REP_PAGER` environment variable can be used to override the pager (e.g., `export REP_PAGER=delta` in Bash).
+
 ## Help
 
-`rep -h` (or `rep --help`) will list help for all the command-line flags.
+`rep -h` (or `rep --help`, `--help` provides slightly longer explanations of some options) will list help for all the command-line flags.
 
 ## Acknowledgements
 
