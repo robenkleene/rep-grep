@@ -36,6 +36,10 @@ environment variable REP_PAGER can be used to override the pager.
     /// Disable color
     pub no_color: bool,
 
+    #[structopt(long = "stdout")]
+    /// Force printing to standard output without using a pager
+    pub stdout: bool,
+
     #[structopt(short = "f", long = "flags", verbatim_doc_comment)]
     #[rustfmt::skip]
     /** Regex flags. May be combined (like `-f mc`)

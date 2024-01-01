@@ -11,15 +11,19 @@ impl App {
         Self { replacer }
     }
 
-    pub(crate) fn run(&self, preview: bool, delete: bool, color: bool, pager: Option<String>) -> Result<()> {
+    pub(crate) fn run(&self, preview: bool, delete: bool, color: bool, stdout: bool, pager: Option<String>) -> Result<()> {
         {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
 
             // FIXME: Instantiating `output_type` and `write` should only happen if `preview` is true
-            let mut output_type = match OutputType::for_pager(pager, true) {
-                Ok(output_type) => output_type,
-                Err(_) => return Ok(()), // FIXME:
+            let mut output_type = if stdout {
+                OutputType::stdout()
+            } else {
+                match OutputType::for_pager(pager, true) {
+                    Ok(output_type) => output_type,
+                    Err(_) => return Ok(()), // FIXME:
+                }
             };
 
             let write = match output_type.handle() {

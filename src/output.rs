@@ -68,7 +68,7 @@ impl OutputType {
         })
     }
 
-    fn stdout() -> Self {
+    pub fn stdout() -> Self {
         OutputType::Stdout(io::stdout())
     }
 
