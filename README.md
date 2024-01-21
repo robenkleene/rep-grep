@@ -40,5 +40,5 @@ The default pager is `less`, the `REP_PAGER` environment variable can be used to
 
 - `rep` was inspired by [`wgrep`](https://github.com/mhayashi1120/Emacs-wgrep) for Emacs, which allows editing `grep` results in an Emacs buffer and then writing those changes to the source files.
 - Much of the functionality, and the overall structure of the source code, was borrowed [`sd`](https://github.com/chmln/sd). `rep` began as a fork of `sd`.
-- The code for specifying a custom pager for `rep` was borrowed from [delta`](https://github.com/dandavison/delta).
+- The code for specifying a custom pager for `rep` was borrowed from [`delta`](https://github.com/dandavison/delta).
 
