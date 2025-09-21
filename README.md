@@ -20,6 +20,17 @@ grep -n foo *` | rep foo bar -w
 
 The `-n` (`--line-number`) option is required so that `grep` outputs the line number for each match.
 
+## Writing by Editing Standard Input
+
+Like [`wgrep`](https://github.com/mhayashi1120/Emacs-wgrep) for Emacs, writing to files can also be accomplished by editing the contents of the `grep` output itself (and omitting the find and replace arguments).
+
+This means for example a workflow like this will work:
+
+1. `grep -n foo * > tmp`
+2. `sed -i '' s/foo/bar/g tmp`
+3. `rep < tmp`
+4. `rep -w < tmp`
+
 ## Flow
 
 The flow `rep` uses when making a change looks like this:
@@ -27,6 +38,8 @@ The flow `rep` uses when making a change looks like this:
 1. The input line is broken up into these parts: `<file-path>:<line-number>:[<column-number>:]<line-content>`.
 2. The the substitution (e.g., the first and second [find and replace] arguments) are applied to the `<line-contents>`.
 3. The result is written to the `<file-path>`.
+
+These means editing standard input first, and then applying a find and replace to the resulting grep-formatted lines, will work.
 
 ## Installation
 
