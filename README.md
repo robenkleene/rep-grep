@@ -4,7 +4,7 @@
 
 [![Find & replace with `rep`](rep.gif)](https://www.youtube.com/embed/QIOKKTnC9-I)
 
-## Example
+## Simple Example
 
 Output a diff to standard output replacing `foo` with `bar`:
 
@@ -19,6 +19,14 @@ grep -n foo *` | rep foo bar -w
 ```
 
 The `-n` (`--line-number`) option is required so that `grep` outputs the line number for each match.
+
+## Flow
+
+The flow `rep` uses when making a change looks like this:
+
+1. The input line is broken up into these parts: `<file-path>:<line-number>:[<column-number>:]<line-content>`.
+2. The the substitution (e.g., the first and second [find and replace] arguments) are applied to the `<line-contents>`.
+3. The result is written to the `<file-path>`.
 
 ## Installation
 
