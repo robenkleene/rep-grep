@@ -22,7 +22,7 @@ fn create_man_page() {
         .flag(Flag::new().short("-w").long("--write").help(
             r#"Write the output to files directly (instead of outputting a patch)
 
-If this flag is not present, and a patch is output, then the default pager is `less`. The
+If this flag is not present, the output will be the changes in patch format and the default pager will be `less`. The
 environment variable REP_PAGER can be used to override the pager.
 "#,
         ))
