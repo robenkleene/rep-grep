@@ -6,7 +6,7 @@ use std::str;
 
 pub(crate) struct Patcher<'a> {
     edits: Vec<Edit>,
-    replacer: Option<&'a Replacer>
+    replacer: Option<&'a Replacer>,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -69,18 +69,21 @@ mod tests {
 
     #[test]
     fn patch_bad_number() {
-        let patcher = Patcher::new(vec![
-            Edit {
-                file: PathBuf::from("f"),
-                line_number: 1,
-                text: "foo".to_string(),
-            },
-            Edit {
-                file: PathBuf::from("f"),
-                line_number: 3,
-                text: "bar".to_string(),
-            },
-        ], None);
+        let patcher = Patcher::new(
+            vec![
+                Edit {
+                    file: PathBuf::from("f"),
+                    line_number: 1,
+                    text: "foo".to_string(),
+                },
+                Edit {
+                    file: PathBuf::from("f"),
+                    line_number: 3,
+                    text: "bar".to_string(),
+                },
+            ],
+            None,
+        );
         let lines = vec!["a".to_string(), "b".to_string()];
         let result = patcher.patch(lines, false);
         assert!(matches!(result, Err(Error::LineNumber(3))));
@@ -88,18 +91,21 @@ mod tests {
 
     #[test]
     fn patch() {
-        let patcher = Patcher::new(vec![
-            Edit {
-                file: PathBuf::from("f"),
-                line_number: 2,
-                text: "foo".to_string(),
-            },
-            Edit {
-                file: PathBuf::from("f"),
-                line_number: 3,
-                text: "bar".to_string(),
-            },
-        ], None);
+        let patcher = Patcher::new(
+            vec![
+                Edit {
+                    file: PathBuf::from("f"),
+                    line_number: 2,
+                    text: "foo".to_string(),
+                },
+                Edit {
+                    file: PathBuf::from("f"),
+                    line_number: 3,
+                    text: "bar".to_string(),
+                },
+            ],
+            None,
+        );
         let lines = vec!["a".to_string(), "b".to_string(), "c".to_string()];
         let result = patcher.patch(lines, false);
         assert!(result.is_ok());

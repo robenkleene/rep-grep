@@ -1,6 +1,6 @@
 use crate::patcher::Patcher;
-use std::{fs, fs::File, io::prelude::*, path::PathBuf, io::BufReader};
 use diffy_fork_filenames::{create_file_patch, PatchFormatter};
+use std::{fs, fs::File, io::prelude::*, io::BufReader, path::PathBuf};
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
@@ -24,11 +24,16 @@ impl<'a> Writer<'a> {
         Self { path, patcher }
     }
 
-    pub(crate) fn patch_preview(&self, color: bool, delete: bool) -> Result<String, crate::writer::Error> {
+    pub(crate) fn patch_preview(
+        &self,
+        color: bool,
+        delete: bool,
+    ) -> Result<String, crate::writer::Error> {
         // TODO: Review error handling
         let file = File::open(self.path.clone()).expect("Error opening file");
         let buf = BufReader::new(file);
-        let lines: Vec<String> = buf.lines()
+        let lines: Vec<String> = buf
+            .lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
         let original = lines.join("\n");
@@ -42,7 +47,12 @@ impl<'a> Writer<'a> {
         };
         let original_filename = format!("a/{}", filename);
         let modified_filename = format!("b/{}", filename);
-        let patch = create_file_patch(&original, &modified, original_filename.as_str(), modified_filename.as_str());
+        let patch = create_file_patch(
+            &original,
+            &modified,
+            original_filename.as_str(),
+            modified_filename.as_str(),
+        );
         let f = match color {
             true => PatchFormatter::new().with_color(),
             false => PatchFormatter::new(),
@@ -57,7 +67,8 @@ impl<'a> Writer<'a> {
         let source = File::open(self.path.clone())?;
         let meta = fs::metadata(self.path.clone())?;
         let mmap_source = unsafe { Mmap::map(&source)? };
-        let lines = mmap_source.lines()
+        let lines = mmap_source
+            .lines()
             .map(|l| l.expect("Error getting line"))
             .collect();
         let mut replaced = match self.patcher.patch(lines, delete) {
@@ -69,7 +80,8 @@ impl<'a> Writer<'a> {
         }
 
         let target = tempfile::NamedTempFile::new_in(
-            self.path.parent()
+            self.path
+                .parent()
                 .ok_or_else(|| Error::InvalidPath(self.path.to_path_buf()))?,
         )?;
         let file = target.as_file();

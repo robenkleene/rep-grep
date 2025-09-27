@@ -19,11 +19,7 @@ fn main() {
 fn create_man_page() {
     use man::prelude::*;
     let page = Manual::new("rep")
-        .flag(
-            Flag::new()
-                .short("-w")
-                .long("--write")
-                .help(
+        .flag(Flag::new().short("-w").long("--write").help(
             r#"Write the output to files directly (instead of outputting a patch)
 
 If this flag is not present, and a patch is output, then the default pager is `less`. The
@@ -42,11 +38,7 @@ environment variable REP_PAGER can be used to override the pager.
                 .long("--string-mode")
                 .help("Treat expressions as non-regex strings."),
         )
-        .flag(
-            Flag::new()
-                .long("--no-color")
-                .help("Disable color."),
-        )
+        .flag(Flag::new().long("--no-color").help("Disable color."))
         .flag(
             Flag::new()
                 .long("--color")
@@ -72,8 +64,7 @@ w - match full words only
         .arg(Arg::new("replace_with"))
         .render();
 
-    let mut man_path =
-        std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
+    let mut man_path = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
     man_path.push("rep.1");
     std::fs::write(man_path, page).expect("Error writing man page");
 }
