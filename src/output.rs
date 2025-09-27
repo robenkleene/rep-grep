@@ -5,8 +5,7 @@ use std::process::{Child, Command, Stdio};
 
 use super::less::retrieve_less_version;
 
-#[derive(Debug)]
-#[derive(thiserror::Error)]
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error("Could not parse pager command")]
     ParseError(String),
@@ -28,10 +27,7 @@ pub enum OutputType {
 }
 
 impl OutputType {
-    pub fn for_pager(
-        pager: Option<String>,
-        quit_if_one_screen: bool,
-    ) -> Result<Self, Error>  {
+    pub fn for_pager(pager: Option<String>, quit_if_one_screen: bool) -> Result<Self, Error> {
         let replace_arguments_to_less = pager.is_none();
         let pager = pager.unwrap_or_else(|| String::from("less"));
         let pagerflags = match shell_words::split(&pager) {
@@ -79,7 +75,7 @@ impl OutputType {
                     Some(stdin) => return Ok(stdin),
                     None => return Err(Error::PagerError),
                 };
-            },
+            }
             OutputType::Stdout(ref mut handle) => Ok(handle),
         }
     }

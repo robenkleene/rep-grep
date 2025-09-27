@@ -1,19 +1,19 @@
 mod cli;
+mod edit;
 mod error;
 mod input;
-mod edit;
-mod patcher;
-mod writer;
+mod less;
 mod output;
+mod patcher;
 pub(crate) mod replacer;
 pub(crate) mod utils;
-mod less;
+mod writer;
 
-use std::process;
-use std::env;
 pub(crate) use self::input::App;
 pub(crate) use error::Result;
 use replacer::Replacer;
+use std::env;
+use std::process;
 
 fn main() -> Result<()> {
     use structopt::StructOpt;
@@ -33,15 +33,13 @@ fn main() -> Result<()> {
     let pager = env::var("REP_PAGER").ok();
 
     if let (Some(find), Some(replace_with)) = (options.find, options.replace_with) {
-        App::new(
-            Some(Replacer::new(
-                find,
-                replace_with,
-                options.literal_mode,
-                options.flags,
-                options.replacements,
-            )?),
-        )
+        App::new(Some(Replacer::new(
+            find,
+            replace_with,
+            options.literal_mode,
+            options.flags,
+            options.replacements,
+        )?))
         .run(!options.write, options.delete, color, options.stdout, pager)?;
     } else {
         App::new(None).run(!options.write, options.delete, color, options.stdout, pager)?;

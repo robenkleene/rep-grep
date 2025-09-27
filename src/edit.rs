@@ -1,30 +1,33 @@
-use std::path::PathBuf;
-use std::io::StdinLock;
+use indexmap::IndexMap;
 use regex::Regex;
 use std::io::prelude::*;
-use indexmap::IndexMap;
+use std::io::StdinLock;
+use std::path::PathBuf;
 
 #[derive(Debug)]
 pub(crate) struct Edit {
     pub(crate) file: PathBuf,
     pub(crate) text: String,
-    pub(crate) line_number: u32
+    pub(crate) line_number: u32,
 }
 
-#[derive(Debug)]
-#[derive(thiserror::Error)]
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
-  #[error("No file, number, and text matches")]
-  Match,
+    #[error("No file, number, and text matches")]
+    Match,
 }
 
 impl Edit {
     pub(crate) fn new(file: PathBuf, text: String, line_number: u32) -> Edit {
-        Edit { file, text, line_number }
+        Edit {
+            file,
+            text,
+            line_number,
+        }
     }
 
-    pub(crate) fn parse (
-        reader: StdinLock<'_>
+    pub(crate) fn parse(
+        reader: StdinLock<'_>,
     ) -> Result<IndexMap<PathBuf, Vec<Edit>>, std::io::Error> {
         let mut path_to_edits = IndexMap::new();
         for line in reader.lines() {
@@ -73,11 +76,7 @@ impl Edit {
             None => return Err(Error::Match),
         };
 
-        return Ok(Edit::new(
-            file,
-            text,
-            number,
-        ))
+        return Ok(Edit::new(file, text, number));
     }
 }
 

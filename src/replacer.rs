@@ -63,10 +63,7 @@ impl Replacer {
         })
     }
 
-    pub(crate) fn replace<'a>(
-        &'a self,
-        content: &'a [u8],
-    ) -> std::borrow::Cow<'a, [u8]> {
+    pub(crate) fn replace<'a>(&'a self, content: &'a [u8]) -> std::borrow::Cow<'a, [u8]> {
         if self.is_literal {
             self.regex.replacen(
                 &content,
@@ -74,11 +71,8 @@ impl Replacer {
                 regex::bytes::NoExpand(&self.replace_with),
             )
         } else {
-            self.regex.replacen(
-                &content,
-                self.replacements,
-                &*self.replace_with,
-            )
+            self.regex
+                .replacen(&content, self.replacements, &*self.replace_with)
         }
     }
 }

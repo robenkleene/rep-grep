@@ -6,9 +6,9 @@ mod cli {
     use assert_cmd::Command;
     use std::fs;
     use std::fs::File;
-    use std::path::{Path, PathBuf};
     use std::io::Read;
     use std::io::Seek;
+    use std::path::{Path, PathBuf};
 
     fn rep() -> Command {
         Command::cargo_bin("rep").expect("Error invoking rep")
@@ -16,8 +16,10 @@ mod cli {
 
     #[test]
     fn patch_preview_markdown() -> Result<()> {
-        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-grep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/markdown/markdown-markup.patch").expect("Error reading input");
+        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-grep.txt")
+            .expect("Error reading input");
+        let result = fs::read_to_string("tests/data/markdown/markdown-markup.patch")
+            .expect("Error reading input");
         rep()
             .current_dir("tests/data/markdown")
             .write_stdin(input)
@@ -29,8 +31,10 @@ mod cli {
 
     #[test]
     fn patch_preview_markdown_vimgrep() -> Result<()> {
-        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-vimgrep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/markdown/markdown-markup.patch").expect("Error reading input");
+        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-vimgrep.txt")
+            .expect("Error reading input");
+        let result = fs::read_to_string("tests/data/markdown/markdown-markup.patch")
+            .expect("Error reading input");
         rep()
             .current_dir("tests/data/markdown")
             .write_stdin(input)
@@ -42,8 +46,10 @@ mod cli {
 
     #[test]
     fn patch_preview_markdown_delete() -> Result<()> {
-        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-grep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/markdown/delete.patch").expect("Error reading input");
+        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-grep.txt")
+            .expect("Error reading input");
+        let result =
+            fs::read_to_string("tests/data/markdown/delete.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/markdown")
             .args(&["-d"])
@@ -56,8 +62,10 @@ mod cli {
 
     #[test]
     fn patch_preview_markdown_delete_vimgrep() -> Result<()> {
-        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-vimgrep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/markdown/delete.patch").expect("Error reading input");
+        let input = fs::read_to_string("tests/data/markdown/markdown-to-markup-vimgrep.txt")
+            .expect("Error reading input");
+        let result =
+            fs::read_to_string("tests/data/markdown/delete.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/markdown")
             .args(&["-d"])
@@ -71,7 +79,8 @@ mod cli {
     #[test]
     fn patch_preview_simple() -> Result<()> {
         let input = fs::read_to_string("tests/data/simple/grep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/simple/patch.patch").expect("Error reading input");
+        let result =
+            fs::read_to_string("tests/data/simple/patch.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/simple")
             .write_stdin(input)
@@ -83,8 +92,10 @@ mod cli {
 
     #[test]
     fn patch_preview_simple_vimgrep() -> Result<()> {
-        let input = fs::read_to_string("tests/data/simple/vimgrep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/simple/patch.patch").expect("Error reading input");
+        let input =
+            fs::read_to_string("tests/data/simple/vimgrep.txt").expect("Error reading input");
+        let result =
+            fs::read_to_string("tests/data/simple/patch.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/simple")
             .write_stdin(input)
@@ -97,7 +108,8 @@ mod cli {
     #[test]
     fn patch_preview_simple_delete() -> Result<()> {
         let input = fs::read_to_string("tests/data/simple/grep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/simple/delete.patch").expect("Error reading input");
+        let result =
+            fs::read_to_string("tests/data/simple/delete.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/simple")
             .write_stdin(input)
@@ -110,8 +122,10 @@ mod cli {
 
     #[test]
     fn patch_preview_simple_delete_vimgrep() -> Result<()> {
-        let input = fs::read_to_string("tests/data/simple/vimgrep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/simple/delete.patch").expect("Error reading input");
+        let input =
+            fs::read_to_string("tests/data/simple/vimgrep.txt").expect("Error reading input");
+        let result =
+            fs::read_to_string("tests/data/simple/delete.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/simple")
             .write_stdin(input)
@@ -124,8 +138,10 @@ mod cli {
 
     #[test]
     fn patch_preview_files_stdin() -> Result<()> {
-        let input = fs::read_to_string("tests/data/files/changes-to-altered-grep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/files/patch.patch").expect("Error reading input");
+        let input = fs::read_to_string("tests/data/files/changes-to-altered-grep.txt")
+            .expect("Error reading input");
+        let result =
+            fs::read_to_string("tests/data/files/patch.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/files")
             .write_stdin(input)
@@ -138,7 +154,8 @@ mod cli {
     #[test]
     fn patch_preview_files_args() -> Result<()> {
         let input = fs::read_to_string("tests/data/files/grep.txt").expect("Error reading input");
-        let result = fs::read_to_string("tests/data/files/patch.patch").expect("Error reading input");
+        let result =
+            fs::read_to_string("tests/data/files/patch.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/files")
             .write_stdin(input)
@@ -151,7 +168,8 @@ mod cli {
 
     #[test]
     fn write_line_endings() -> Result<()> {
-        let input = fs::read_to_string("tests/data/line-endings/grep.txt").expect("Error reading input");
+        let input =
+            fs::read_to_string("tests/data/line-endings/grep.txt").expect("Error reading input");
         let ending_path = Path::new("tests/data/line-endings/ending.txt");
         let noending_path = Path::new("tests/data/line-endings/noending.txt");
         let ending_file_name = ending_path.file_name().expect("Error getting filename");
@@ -198,32 +216,35 @@ mod cli {
     #[test]
     fn patch_preview_delete() -> Result<()> {
         let input = fs::read_to_string("tests/data/delete/grep.txt").expect("Error reading input");
-        let _result = fs::read_to_string("tests/data/delete/patch.patch").expect("Error reading input");
+        let _result =
+            fs::read_to_string("tests/data/delete/patch.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/delete")
             .write_stdin(input)
             .args(&["-d"])
             .assert()
             .success();
-            // This appears to fail because the `diffy` patching algorithm isn't that great
-            // .success()
-            // .stdout(result);
+        // This appears to fail because the `diffy` patching algorithm isn't that great
+        // .success()
+        // .stdout(result);
         Ok(())
     }
 
     #[test]
     fn patch_preview_delete_vimgrep() -> Result<()> {
-        let input = fs::read_to_string("tests/data/delete/vimgrep.txt").expect("Error reading input");
-        let _result = fs::read_to_string("tests/data/delete/patch.patch").expect("Error reading input");
+        let input =
+            fs::read_to_string("tests/data/delete/vimgrep.txt").expect("Error reading input");
+        let _result =
+            fs::read_to_string("tests/data/delete/patch.patch").expect("Error reading input");
         rep()
             .current_dir("tests/data/delete")
             .write_stdin(input)
             .args(&["-d"])
             .assert()
             .success();
-            // This appears to fail because the `diffy` patching algorithm isn't that great
-            // .success()
-            // .stdout(result);
+        // This appears to fail because the `diffy` patching algorithm isn't that great
+        // .success()
+        // .stdout(result);
         Ok(())
     }
 }

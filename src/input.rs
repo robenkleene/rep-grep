@@ -1,9 +1,9 @@
-use crate::{Replacer, Result, edit::Edit, patcher::Patcher, writer::Writer, output::OutputType};
-use std::io::prelude::*;
+use crate::{edit::Edit, output::OutputType, patcher::Patcher, writer::Writer, Replacer, Result};
 use std::fs::File;
+use std::io::prelude::*;
 
 pub(crate) struct App {
-    replacer: Option<Replacer>
+    replacer: Option<Replacer>,
 }
 
 impl App {
@@ -11,7 +11,14 @@ impl App {
         Self { replacer }
     }
 
-    pub(crate) fn run(&self, preview: bool, delete: bool, color: bool, stdout: bool, pager: Option<String>) -> Result<()> {
+    pub(crate) fn run(
+        &self,
+        preview: bool,
+        delete: bool,
+        color: bool,
+        stdout: bool,
+        pager: Option<String>,
+    ) -> Result<()> {
         {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
@@ -37,7 +44,7 @@ impl App {
                         for (path, edits) in path_to_edits {
                             let patcher = Patcher::new(edits, self.replacer.as_ref());
                             if let Err(_) = Self::check_not_empty(File::open(&path)?) {
-                                continue // FIXME:
+                                continue; // FIXME:
                             }
                             let writer = Writer::new(path.to_path_buf(), &patcher);
                             let text = match writer.patch_preview(color, delete) {
@@ -59,10 +66,10 @@ impl App {
                             }
                         }
                     }
-                },
+                }
                 Err(_) => {
                     return Ok(()); // FIXME:
-                },
+                }
             }
             drop(output_type);
         }
