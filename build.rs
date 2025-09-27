@@ -64,6 +64,14 @@ w - match full words only
         .arg(Arg::new("replace_with"))
         .section(Section::new("STANDARD INPUT").text(
             r#"
+Writing to files can also be accomplished by editing the contents of the grep output itself (and omitting the find and replace arguments).
+
+This means for example a workflow like this will work:
+
+1. grep -n foo * > tmp
+2. sed -i '' s/foo/bar/g tmp
+3. rep < tmp
+4. rep -w < tmp
             "#))
         .section(Section::new("FLOW").text(
             r#"
