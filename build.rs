@@ -84,7 +84,6 @@ The flow rep uses when making a change looks like this:
 These means editing standard input first, and then applying a find and replace to the resulting grep-formatted lines, will work.
             "#))
         .render();
-        .render();
 
     let mut man_path = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
     man_path.push("rep.1");
