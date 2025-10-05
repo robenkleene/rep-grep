@@ -1,6 +1,9 @@
 use structopt::{clap::AppSettings, StructOpt};
 
 #[derive(Debug, StructOpt)]
+// Specify `#[allow(dead_code)]` because the build script (`build.rs`) includes `cli.rs` but doesn't
+// use these options which emits a warning.
+#[allow(dead_code)]
 #[structopt(
     setting(AppSettings::ColoredHelp),
     setting(AppSettings::NextLineHelp),
