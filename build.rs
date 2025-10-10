@@ -11,7 +11,6 @@ fn main() {
     fs::create_dir_all(&out_dir).unwrap();
     let out_path = std::path::Path::new(&out_dir);
 
-    // Generate completions for common shells
     generate_to(shells::Bash, &mut cmd, "rep", out_path).unwrap();
     generate_to(shells::Zsh, &mut cmd, "rep", out_path).unwrap();
     generate_to(shells::Fish, &mut cmd, "rep", out_path).unwrap();
