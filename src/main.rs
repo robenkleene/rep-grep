@@ -16,8 +16,8 @@ use std::env;
 use std::process;
 
 fn main() -> Result<()> {
-    use structopt::StructOpt;
-    let options = cli::Options::from_args();
+    use clap::Parser;
+    let options = cli::Options::parse();
 
     let is_tty = atty::is(atty::Stream::Stdout);
     let color = if options.color {

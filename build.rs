@@ -1,17 +1,21 @@
 include!("src/cli.rs");
 
 fn main() {
-    use std::{env::var, fs, str::FromStr};
-    use structopt::clap::Shell;
+    use std::{env::var, fs};
+    use clap::CommandFactory;
+    use clap_complete::{generate_to, shells};
 
-    let mut app = Options::clap();
+    let mut cmd = Options::command();
     let out_dir = var("SHELL_COMPLETIONS_DIR").or(var("OUT_DIR")).unwrap();
 
     fs::create_dir_all(&out_dir).unwrap();
+    let out_path = std::path::Path::new(&out_dir);
 
-    Shell::variants().iter().for_each(|shell| {
-        app.gen_completions("rep", Shell::from_str(shell).unwrap(), &out_dir);
-    });
+    generate_to(shells::Bash, &mut cmd, "rep", out_path).unwrap();
+    generate_to(shells::Zsh, &mut cmd, "rep", out_path).unwrap();
+    generate_to(shells::Fish, &mut cmd, "rep", out_path).unwrap();
+    generate_to(shells::PowerShell, &mut cmd, "rep", out_path).unwrap();
+    generate_to(shells::Elvish, &mut cmd, "rep", out_path).unwrap();
 
     create_man_page();
 }

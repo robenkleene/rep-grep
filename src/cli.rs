@@ -1,16 +1,15 @@
-use structopt::{clap::AppSettings, StructOpt};
+use clap::Parser;
 
-#[derive(Debug, StructOpt)]
+#[derive(Debug, Parser)]
 // Specify `#[allow(dead_code)]` because the build script (`build.rs`) includes `cli.rs` but doesn't
 // use these options which emits a warning.
 #[allow(dead_code)]
-#[structopt(
-    setting(AppSettings::ColoredHelp),
-    setting(AppSettings::NextLineHelp),
-    setting(AppSettings::UnifiedHelpMessage)
+#[clap(
+    disable_help_subcommand = true,
+    next_line_help = true,
 )]
 pub(crate) struct Options {
-    #[structopt(short = "w", long = "write")]
+    #[clap(short = 'w', long = "write")]
     ///
     /** Write the output to files directly (instead of outputting a patch)
 
@@ -19,31 +18,31 @@ pub(crate) struct Options {
         */
     pub write: bool,
 
-    #[structopt(short = "d", long = "delete-lines")]
+    #[clap(short = 'd', long = "delete-lines")]
     /// Delete matching lines
     pub delete: bool,
 
-    #[structopt(short = "s", long = "string-mode")]
+    #[clap(short = 's', long = "string-mode")]
     /// Treat expressions as non-regex strings
     pub literal_mode: bool,
 
-    #[structopt(short = "n")]
+    #[clap(short = 'n')]
     /// Limit the number of replacements per line
     pub replacements: Option<usize>,
 
-    #[structopt(long = "color")]
+    #[clap(long = "color")]
     /// Enable color (the default if the output is a TTY)
     pub color: bool,
 
-    #[structopt(long = "no-color")]
+    #[clap(long = "no-color")]
     /// Disable color
     pub no_color: bool,
 
-    #[structopt(long = "stdout")]
+    #[clap(long = "stdout")]
     /// Force printing to standard output without using a pager
     pub stdout: bool,
 
-    #[structopt(short = "f", long = "flags", verbatim_doc_comment)]
+    #[clap(short = 'f', long = "flags")]
     #[rustfmt::skip]
     /** Regex flags. May be combined (like `-f mc`)
 
