@@ -8,6 +8,7 @@ fn main() {
     // Rebuild when command-line options change
     println!("cargo:rerun-if-changed=src/cli.rs");
 
+    // `generate_to` from `Clap` requires a mutable reference
     let mut cmd = Options::command();
     // Allowing scripts to override the `OUT_DIR` with an `SHELL_COMPLETIONS_DIR` is a convention
     // for Rust packages
@@ -24,10 +25,10 @@ fn main() {
     generate_to(shells::PowerShell, &mut cmd, "rep", out_path).expect("Failed to generate Powershell completion");
     generate_to(shells::Elvish, &mut cmd, "rep", out_path).expect("Failed to generate Elvish completion");
 
-    create_man_page(&mut cmd);
+    create_man_page(cmd);
 }
 
-fn create_man_page(cmd: &mut clap::Command) {
+fn create_man_page(cmd: clap::Command) {
     use man::prelude::*;
 
     // Build a Manual from the clap Command so help text stays in sync
