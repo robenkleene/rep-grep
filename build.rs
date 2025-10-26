@@ -5,70 +5,81 @@ fn main() {
     use clap::CommandFactory;
     use clap_complete::{generate_to, shells};
 
-    let mut cmd = Options::command();
-    let out_dir = var("SHELL_COMPLETIONS_DIR").or(var("OUT_DIR")).unwrap();
+    // Rebuild when command-line options change
+    println!("cargo:rerun-if-changed=src/cli.rs");
 
-    fs::create_dir_all(&out_dir).unwrap();
+    // `generate_to` from `Clap` requires a mutable reference
+    let mut cmd = Options::command();
+    // Allowing scripts to override the `OUT_DIR` with an `SHELL_COMPLETIONS_DIR` is a convention
+    // for Rust packages
+    let out_dir = var("SHELL_COMPLETIONS_DIR")
+        .or(var("OUT_DIR"))
+        .expect("Either SHELL_COMPLETIONS_DIR or OUT_DIR environment variable must be set");
+
+    fs::create_dir_all(&out_dir).expect("Failed to create completions output directory");
     let out_path = std::path::Path::new(&out_dir);
 
-    generate_to(shells::Bash, &mut cmd, "rep", out_path).unwrap();
-    generate_to(shells::Zsh, &mut cmd, "rep", out_path).unwrap();
-    generate_to(shells::Fish, &mut cmd, "rep", out_path).unwrap();
-    generate_to(shells::PowerShell, &mut cmd, "rep", out_path).unwrap();
-    generate_to(shells::Elvish, &mut cmd, "rep", out_path).unwrap();
+    generate_to(shells::Bash, &mut cmd, "rep", out_path).expect("Failed to generate Bash completion");
+    generate_to(shells::Zsh, &mut cmd, "rep", out_path).expect("Failed to generate Zsh completion");
+    generate_to(shells::Fish, &mut cmd, "rep", out_path).expect("Failed to generate Fish completion");
+    generate_to(shells::PowerShell, &mut cmd, "rep", out_path).expect("Failed to generate Powershell completion");
+    generate_to(shells::Elvish, &mut cmd, "rep", out_path).expect("Failed to generate Elvish completion");
 
-    create_man_page();
+    create_man_page(cmd);
 }
 
-fn create_man_page() {
+fn create_man_page(cmd: clap::Command) {
     use man::prelude::*;
-    let page = Manual::new("rep")
-        .flag(Flag::new().short("-w").long("--write").help(
-            r#"Write the output to files directly (instead of outputting a patch)
 
-If this flag is not present, and a patch is output, then the default pager is `less`. The
-environment variable REP_PAGER can be used to override the pager.
-"#,
-        ))
-        .flag(
-            Flag::new()
-                .short("-d")
-                .long("--delete-lines")
-                .help("Delete matching lines."),
-        )
-        .flag(
-            Flag::new()
-                .short("-s")
-                .long("--string-mode")
-                .help("Treat expressions as non-regex strings."),
-        )
-        .flag(Flag::new().long("--no-color").help("Disable color."))
-        .flag(
-            Flag::new()
-                .long("--color")
-                .help("Enable color (the default if the output is a TTY)."),
-        )
-        .flag(
-            Flag::new()
-                .short("-V")
-                .long("--version")
-                .help("Prints version information."),
-        )
-        .flag(Flag::new().short("-f").long("--flags").help(
-            r#"Treat expressions as non-regex strings.
-/** Regex flags. May be combined (like `-f mc`).
+    let name = cmd.get_name().to_string();
+    let mut manual = Manual::new(&name);
 
-c - case-sensitive
-i - case-insensitive
-m - multi-line matching
-w - match full words only
-"#,
-        ))
-        .arg(Arg::new("find"))
-        .arg(Arg::new("replace_with"))
-        .render();
+    // Store owned strings so we can pass stable `&str` references
+    let mut owned: Vec<String> = Vec::new();
 
-    let mut man_path = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
-    man_path.push("rep.1");
+    if let Some(about) = cmd.get_about() {
+        owned.push(about.to_string());
+        manual = manual.about(owned.last().unwrap().as_str());
+    } else if let Some(long_about) = cmd.get_long_about() {
+        owned.push(long_about.to_string());
+        manual = manual.about(owned.last().unwrap().as_str());
+    }
+
+    for arg in cmd.get_arguments() {
+        let id = arg.get_id().to_string();
+
+        // Positional arguments (e.g., `rep "foo" "bar"`)
+        if arg.get_index().is_some() {
+            manual = manual.arg(Arg::new(&id));
+            continue;
+        }
+
+        // Flags (e.g., `rep -h`)
+        let mut flag = Flag::new();
+
+        if let Some(s) = arg.get_short() {
+            owned.push(format!("-{}", s));
+            flag = flag.short(owned.last().unwrap().as_str());
+        }
+        if let Some(l) = arg.get_long() {
+            owned.push(format!("--{}", l));
+            flag = flag.long(owned.last().unwrap().as_str());
+        }
+
+        if let Some(help) = arg.get_help() {
+            owned.push(help.to_string());
+            flag = flag.help(owned.last().unwrap().as_str());
+        } else if let Some(long_help) = arg.get_long_help() {
+            owned.push(long_help.to_string());
+            flag = flag.help(owned.last().unwrap().as_str());
+        }
+
+        manual = manual.flag(flag);
+    }
+
+    let page = manual.render();
+
+    let mut man_path = std::path::PathBuf::from(std::env::var("OUT_DIR").expect("OUT_DIR not set"));
+    man_path.push(format!("{}.1", name));
     std::fs::write(man_path, page).expect("Error writing man page");
 }
