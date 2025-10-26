@@ -34,7 +34,7 @@ fn create_man_page(cmd: clap::Command) {
     let name = cmd.get_name().to_string();
     let mut manual = Manual::new(&name);
 
-    // Store owned strings so we can pass stable &str references into the man API
+    // Store owned strings so we can pass stable `&str` references
     let mut owned: Vec<String> = Vec::new();
 
     if let Some(about) = cmd.get_about() {
