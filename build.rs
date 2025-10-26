@@ -31,14 +31,12 @@ fn main() {
 fn create_man_page(cmd: clap::Command) {
     use man::prelude::*;
 
-    // Build a Manual from the clap Command so help text stays in sync
     let name = cmd.get_name().to_string();
     let mut manual = Manual::new(&name);
 
     // Store owned strings so we can pass stable &str references into the man API
     let mut owned: Vec<String> = Vec::new();
 
-    // Add a brief synopsis / about text if available
     if let Some(about) = cmd.get_about() {
         owned.push(about.to_string());
         manual = manual.about(owned.last().unwrap().as_str());
@@ -47,18 +45,16 @@ fn create_man_page(cmd: clap::Command) {
         manual = manual.about(owned.last().unwrap().as_str());
     }
 
-    // Iterate arguments and flags from the clap Command and add them to the man page
     for arg in cmd.get_arguments() {
-        // Skip internal clap args (like help) if they have no visible name
         let id = arg.get_id().to_string();
 
+        // Positional arguments (e.g., `rep "foo" "bar"`)
         if arg.get_index().is_some() {
-            // Positional argument
             manual = manual.arg(Arg::new(&id));
             continue;
         }
 
-        // Options / flags
+        // Flags (e.g., `rep -h`)
         let mut flag = Flag::new();
 
         if let Some(s) = arg.get_short() {
