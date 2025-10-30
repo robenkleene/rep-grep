@@ -1,6 +1,18 @@
 # Rep
 
-`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep)-formatted lines via standard input, and performs a find-and-replace on the matches. By default, it outputs a [`diff`](https://en.wikipedia.org/wiki/Diff)-preview of the changes to standard output, and with a flag it can write the changes to the files in place.
+command-line find and replace with your editor
+
+![logo](logo.png "logo")
+
+`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep) or [`ripgrep`](https://github.com/BurntSushi/ripgrep)-formatted lines and applies a find-and-replace on the matches. You can do basic find-and-replace right from the command line, or edit grep output manually with your favorite editor and apply the changes.
+
+This is incredibly powerful - you can use all the features of your editor including things like multiple cursors, regex replace, sorting, etc. and then apply the changes. For example:
+
+1. `rg -n "(BananaStand|banana[_-]stand)" > /tmp/out.txt`
+2. spend five happy minutes editing out.txt in vscode to turn banana stand into lemonade stand
+3. `rep -w /tmp/out.txt`
+
+## Screenshot
 
 [![Find & replace with `rep`](rep.gif)](https://www.youtube.com/embed/QIOKKTnC9-I)
 
