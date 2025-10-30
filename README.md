@@ -1,22 +1,23 @@
 # Rep
 
-command-line find and replace with your editor
+Command-line find and replace with a text editor
 
-![logo](logo.png "logo")
+![Rep](rep.png)
 
-`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep) or [`ripgrep`](https://github.com/BurntSushi/ripgrep)-formatted lines and applies a find-and-replace on the matches. You can do basic find-and-replace right from the command line, or edit grep output manually with your favorite editor and apply the changes.
+`rep` is a command-line utility that takes [`grep`](https://en.wikipedia.org/wiki/Grep)-formatted lines (e.g., from [`ripgrep`](https://github.com/BurntSushi/ripgrep)) and applies a find and replace on the matches. It does basic find and replace right on the command line, or the `grep` output can be edited manually with a text editor, and then the changes can be applied.
 
-This is incredibly powerful - you can use all the features of your editor including things like multiple cursors, regex replace, sorting, etc. and then apply the changes. For example:
+This means you can use all the features of a text editor including multiple cursors, find and replace, sorting, etc., and then apply the changes. For example:
 
 1. `rg -n "(BananaStand|banana[_-]stand)" > /tmp/out.txt`
-2. spend five happy minutes editing out.txt in vscode to turn banana stand into lemonade stand
-3. `rep -w /tmp/out.txt`
-
-## Screenshot
-
-[![Find & replace with `rep`](rep.gif)](https://www.youtube.com/embed/QIOKKTnC9-I)
+2. Edit `/tmp/out.txt` in a text editor turning banana stand into lemonade stand
+3. `rep < /tmp/out.txt` to review the changes as a diff
+4. `rep -w < /tmp/out.txt` to write the changes
 
 ## Simple Example
+
+`rep` can also perform a find and replace from `grep` output without using a text editor.
+
+[![Find & replace with `rep`](demo.gif)](https://www.youtube.com/embed/QIOKKTnC9-I)
 
 Output a diff to standard output replacing `foo` with `bar`:
 
