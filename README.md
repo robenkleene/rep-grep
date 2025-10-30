@@ -13,11 +13,11 @@ This means you can use all the features of a text editor including multiple curs
 3. `rep < /tmp/out.txt` to review the changes as a diff
 4. `rep -w < /tmp/out.txt` to write the changes
 
-## Screenshot
+## Simple Example
+
+`rep` can also perform a find and replace from `grep` output without using a text editor.
 
 [![Find & replace with `rep`](demo.gif)](https://www.youtube.com/embed/QIOKKTnC9-I)
-
-## Simple Example
 
 Output a diff to standard output replacing `foo` with `bar`:
 
