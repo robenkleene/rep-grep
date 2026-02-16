@@ -33,6 +33,12 @@ grep -n foo *` | rep foo bar -w
 
 The `-n` (`--line-number`) option is required so that `grep` outputs the line number for each match.
 
+Use `--` to separate options from arguments when the pattern starts with a hyphen:
+
+```
+grep -n -- --foo * | rep -- '--foo' '--bar'
+```
+
 ## Writing by Editing Standard Input
 
 Like [`wgrep`](https://github.com/mhayashi1120/Emacs-wgrep) for Emacs, writing to files can also be accomplished by editing the contents of the `grep` output itself (and omitting the find and replace arguments).
