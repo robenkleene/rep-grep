@@ -1,7 +1,5 @@
 use crate::edit::Edit;
 use crate::replacer::Replacer;
-use std::convert::TryFrom;
-use std::convert::TryInto;
 use std::str;
 
 pub(crate) struct Patcher<'a> {
@@ -13,6 +11,8 @@ pub(crate) struct Patcher<'a> {
 pub enum Error {
     #[error("Invalid line number {0}")]
     LineNumber(u32),
+    #[error("invalid UTF-8 in replacement: {0}")]
+    Utf8(#[from] std::str::Utf8Error),
 }
 
 impl<'a> Patcher<'a> {
@@ -30,10 +30,9 @@ impl<'a> Patcher<'a> {
             // Subtract `1` from the line number because line numbers start from `1` and array
             // indices start from `0`
             for index in indexes {
-                let index_cloned = index.clone();
-                let index_size = usize::try_from(index_cloned).unwrap() - 1;
-                if index_size >= lines.len().try_into().unwrap() {
-                    return Err(Error::LineNumber(index_cloned));
+                let index_size = index as usize - 1;
+                if index_size >= lines.len() {
+                    return Err(Error::LineNumber(index));
                 }
                 lines.remove(index_size);
             }
@@ -42,23 +41,19 @@ impl<'a> Patcher<'a> {
         for edit in &self.edits {
             // Subtract `1` from the line number because line numbers start from `1` but array
             // indices start from `0`
-            let index = usize::try_from(edit.line_number).unwrap() - 1;
-            if index >= lines.len().try_into().unwrap() {
+            let index = edit.line_number as usize - 1;
+            if index >= lines.len() {
                 return Err(Error::LineNumber(edit.line_number));
             }
             if let Some(replacer) = &self.replacer {
                 let replaced = &replacer.replace(edit.text.as_bytes());
-                let result = str::from_utf8(replaced);
-                let text = match result {
-                    Ok(result) => result,
-                    Err(err) => panic!("Error replacing: {}", err), // FIXME:
-                };
+                let text = str::from_utf8(replaced)?;
                 lines[index] = text.to_string();
             } else {
                 lines[index] = edit.text.clone();
             }
         }
-        return Ok(lines.join("\n"));
+        Ok(lines.join("\n"))
     }
 }
 

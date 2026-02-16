@@ -1,7 +1,7 @@
 [package]
 name = "rep-grep"
 version = "0.0.7"
-edition = "2018"
+edition = "2021"
 authors = ["Roben Kleene <contact@robenkleene.com>"]
 description = "wgrep/write-grep CLI"
 readme = "README.md"
@@ -18,15 +18,10 @@ path = "src/main.rs"
 [dependencies]
 regex = "1.4.3"
 clap = { version = "4", features = ["derive"] }
-rayon = "1.5.0"
 unescape = "0.1.0"
-memmap = "0.7.0"
+memmap2 = "0.9"
 tempfile = "3.2.0"
 thiserror = "1.0.24"
-globwalk = "0.8.1"
-atty = "0.2.14"
-ignore = "0.4.17"
-ansi_term = "0.12.1"
 diffy-fork-filenames = "0.4.0"
 indexmap = "1.9.2"
 shell-words = "1.1.0"

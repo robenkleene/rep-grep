@@ -23,55 +23,44 @@ impl App {
             let stdin = std::io::stdin();
             let handle = stdin.lock();
 
-            // FIXME: Instantiating `output_type` and `write` should only happen if `preview` is true
-            let mut output_type = if stdout {
-                OutputType::stdout()
-            } else {
-                match OutputType::for_pager(pager, true) {
-                    Ok(output_type) => output_type,
-                    Err(_) => return Ok(()), // FIXME:
-                }
-            };
+            let path_to_edits = Edit::parse(handle)?;
 
-            let write = match output_type.handle() {
-                Ok(write) => write,
-                Err(_) => return Ok(()), // FIXME:
-            };
+            if preview {
+                let mut output_type = if stdout {
+                    OutputType::stdout()
+                } else {
+                    OutputType::for_pager(pager, true)?
+                };
 
-            match Edit::parse(handle) {
-                Ok(path_to_edits) => {
-                    if preview {
-                        for (path, edits) in path_to_edits {
-                            let patcher = Patcher::new(edits, self.replacer.as_ref());
-                            if let Err(_) = Self::check_not_empty(File::open(&path)?) {
-                                continue; // FIXME:
-                            }
-                            let writer = Writer::new(path.to_path_buf(), &patcher);
-                            let text = match writer.patch_preview(color, delete) {
-                                Ok(text) => text,
-                                Err(_) => continue, // FIXME:
-                            };
+                let write = output_type.handle()?;
 
-                            write!(write, "{}", text)?;
-                        }
-                    } else {
-                        for (path, edits) in path_to_edits {
-                            let patcher = Patcher::new(edits, self.replacer.as_ref());
-                            if let Err(_) = Self::check_not_empty(File::open(&path)?) {
-                                return Ok(()); // FIXME:
-                            }
-                            let writer = Writer::new(path, &patcher);
-                            if let Err(_) = writer.write_file(delete) {
-                                return Ok(()); // FIXME:
-                            }
-                        }
+                for (path, edits) in path_to_edits {
+                    let patcher = Patcher::new(edits, self.replacer.as_ref());
+                    if Self::check_not_empty(File::open(&path)?).is_err() {
+                        continue;
                     }
+                    let writer = Writer::new(path.to_path_buf(), &patcher);
+                    let text = match writer.patch_preview(color, delete) {
+                        Ok(text) => text,
+                        Err(e) => {
+                            eprintln!("{}", e);
+                            continue;
+                        }
+                    };
+
+                    write!(write, "{}", text)?;
                 }
-                Err(_) => {
-                    return Ok(()); // FIXME:
+                drop(output_type);
+            } else {
+                for (path, edits) in path_to_edits {
+                    let patcher = Patcher::new(edits, self.replacer.as_ref());
+                    if Self::check_not_empty(File::open(&path)?).is_err() {
+                        continue;
+                    }
+                    let writer = Writer::new(path, &patcher);
+                    writer.write_file(delete)?;
                 }
             }
-            drop(output_type);
         }
         Ok(())
     }
