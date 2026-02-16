@@ -52,7 +52,7 @@ The flow `rep` uses when making a change looks like this:
 2. The substitution (e.g., the first and second [find and replace] arguments) are applied to the `<line-contents>`.
 3. The result is written to the `<file-path>`.
 
-These means editing standard input first, *and then also applying a find and replace via `rep`*, will also work (e.g., `rep bar baz < tmp`).
+This means editing standard input first, *and then also applying a find and replace via `rep`*, will also work (e.g., `rep bar baz < tmp`).
 
 ## Installation
 
