@@ -11,12 +11,16 @@ pub(crate) struct Writer<'a> {
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("Invalid path")]
+    #[error("Invalid path: {0}")]
     InvalidPath(std::path::PathBuf),
     #[error(transparent)]
     File(#[from] std::io::Error),
     #[error("failed to move file: {0}")]
     TempfilePersist(#[from] tempfile::PersistError),
+    #[error(transparent)]
+    Patcher(#[from] crate::patcher::Error),
+    #[error("invalid UTF-8 in replacement: {0}")]
+    Utf8(#[from] std::str::Utf8Error),
 }
 
 impl<'a> Writer<'a> {
@@ -29,18 +33,13 @@ impl<'a> Writer<'a> {
         color: bool,
         delete: bool,
     ) -> Result<String, crate::writer::Error> {
-        // TODO: Review error handling
-        let file = File::open(self.path.clone()).expect("Error opening file");
+        let file = File::open(self.path.clone())?;
         let buf = BufReader::new(file);
         let lines: Vec<String> = buf
             .lines()
-            .map(|l| l.expect("Error getting line"))
-            .collect();
+            .collect::<std::result::Result<_, _>>()?;
         let original = lines.join("\n");
-        let modified = match self.patcher.patch(lines, delete) {
-            Ok(replaced) => replaced,
-            Err(err) => panic!("Error patching lines: {}", err), // FIXME:
-        };
+        let modified = self.patcher.patch(lines, delete)?;
         let filename = match self.path.to_str() {
             Some(filename) => filename,
             None => return Err(Error::InvalidPath(self.path.clone())),
@@ -57,11 +56,12 @@ impl<'a> Writer<'a> {
             true => PatchFormatter::new().with_color(),
             false => PatchFormatter::new(),
         };
-        return Ok(f.fmt_patch(&patch).to_string());
+        let result = f.fmt_patch(&patch).to_string();
+        Ok(result)
     }
 
     pub(crate) fn write_file(&self, delete: bool) -> Result<()> {
-        use memmap::{Mmap, MmapMut};
+        use memmap2::{Mmap, MmapMut};
         use std::ops::DerefMut;
 
         let source = File::open(self.path.clone())?;
@@ -69,14 +69,10 @@ impl<'a> Writer<'a> {
         let mmap_source = unsafe { Mmap::map(&source)? };
         let lines = mmap_source
             .lines()
-            .map(|l| l.expect("Error getting line"))
-            .collect();
-        let mut replaced = match self.patcher.patch(lines, delete) {
-            Ok(replaced) => replaced,
-            Err(_) => panic!("Error patching lines"), // FIXME:
-        };
+            .collect::<std::result::Result<Vec<_>, _>>()?;
+        let mut replaced = self.patcher.patch(lines, delete)?;
         if mmap_source.ends_with("\n".as_bytes()) {
-            replaced.push_str("\n");
+            replaced.push('\n');
         }
 
         let target = tempfile::NamedTempFile::new_in(
@@ -89,8 +85,8 @@ impl<'a> Writer<'a> {
         file.set_permissions(meta.permissions())?;
 
         if !replaced.is_empty() {
-            let mut mmap_target = unsafe { MmapMut::map_mut(&file)? };
-            mmap_target.deref_mut().write_all(&replaced.as_bytes())?;
+            let mut mmap_target = unsafe { MmapMut::map_mut(file)? };
+            mmap_target.deref_mut().write_all(replaced.as_bytes())?;
             mmap_target.flush_async()?;
         }
 
