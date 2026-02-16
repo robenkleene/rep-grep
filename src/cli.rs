@@ -23,6 +23,9 @@ use clap::Parser;
         INPUT FORMAT:\n  \
           Each input line has the format: <file>:<line>:[<column>:]<text>\n  \
           The -n (--line-number) grep flag is required for correct line numbers.\n\n\
+        SPECIAL CHARACTERS:\n  \
+          Use -- to separate options from arguments when the pattern starts\n  \
+          with a hyphen (e.g., rep -- '--foo' '--bar').\n\n\
         PAGER:\n  \
           The default pager is less. Set the REP_PAGER environment variable to\n  \
           override (e.g., export REP_PAGER=delta).",
