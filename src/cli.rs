@@ -5,6 +5,7 @@ use clap::Parser;
 // use these options which emits a warning.
 #[allow(dead_code)]
 #[clap(
+    version,
     disable_help_subcommand = true,
     next_line_help = true,
 )]
