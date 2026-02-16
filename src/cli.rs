@@ -6,6 +6,26 @@ use clap::Parser;
 #[allow(dead_code)]
 #[clap(
     version,
+    about = "Find and replace on grep output, or edit grep output to apply changes",
+    long_about = "Find and replace on grep output, or edit grep output to apply changes.\n\n\
+        rep takes grep-formatted lines (e.g., from ripgrep) and applies find and\n\
+        replace on the matches.\n\n\
+        EXAMPLES:\n  \
+          grep -n foo * | rep foo bar       Show diff replacing foo with bar\n  \
+          grep -n foo * | rep foo bar -w    Write the replacements to files\n\n\
+        EDITING STANDARD INPUT:\n  \
+          Changes can also be made by editing the grep output directly, without\n  \
+          passing find and replace arguments:\n    \
+            1. grep -n foo * > tmp           Save grep matches to a file\n    \
+            2. Edit tmp in a text editor     Make changes to the matched lines\n    \
+            3. rep < tmp                     Preview the diff\n    \
+            4. rep -w < tmp                  Write the changes\n\n\
+        INPUT FORMAT:\n  \
+          Each input line has the format: <file>:<line>:[<column>:]<text>\n  \
+          The -n (--line-number) grep flag is required for correct line numbers.\n\n\
+        PAGER:\n  \
+          The default pager is less. Set the REP_PAGER environment variable to\n  \
+          override (e.g., export REP_PAGER=delta).",
     disable_help_subcommand = true,
     next_line_help = true,
 )]
