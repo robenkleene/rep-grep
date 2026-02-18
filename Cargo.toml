@@ -35,7 +35,7 @@ anyhow = "1.0.38"
 [build-dependencies]
 clap = { version = "4", features = ["derive"] }
 clap_complete = "4"
-man = "0.3.0"
+clap_mangen = "0.2"
 
 [profile.release]
 opt-level = 3
