@@ -25,61 +25,9 @@ fn main() {
     generate_to(shells::PowerShell, &mut cmd, "rep", out_path).expect("Failed to generate Powershell completion");
     generate_to(shells::Elvish, &mut cmd, "rep", out_path).expect("Failed to generate Elvish completion");
 
-    create_man_page(cmd);
-}
-
-fn create_man_page(cmd: clap::Command) {
-    use man::prelude::*;
-
-    let name = cmd.get_name().to_string();
-    let mut manual = Manual::new(&name);
-
-    // Store owned strings so we can pass stable `&str` references
-    let mut owned: Vec<String> = Vec::new();
-
-    if let Some(about) = cmd.get_about() {
-        owned.push(about.to_string());
-        manual = manual.about(owned.last().unwrap().as_str());
-    } else if let Some(long_about) = cmd.get_long_about() {
-        owned.push(long_about.to_string());
-        manual = manual.about(owned.last().unwrap().as_str());
-    }
-
-    for arg in cmd.get_arguments() {
-        let id = arg.get_id().to_string();
-
-        // Positional arguments (e.g., `rep "foo" "bar"`)
-        if arg.get_index().is_some() {
-            manual = manual.arg(Arg::new(&id));
-            continue;
-        }
-
-        // Flags (e.g., `rep -h`)
-        let mut flag = Flag::new();
-
-        if let Some(s) = arg.get_short() {
-            owned.push(format!("-{}", s));
-            flag = flag.short(owned.last().unwrap().as_str());
-        }
-        if let Some(l) = arg.get_long() {
-            owned.push(format!("--{}", l));
-            flag = flag.long(owned.last().unwrap().as_str());
-        }
-
-        if let Some(help) = arg.get_help() {
-            owned.push(help.to_string());
-            flag = flag.help(owned.last().unwrap().as_str());
-        } else if let Some(long_help) = arg.get_long_help() {
-            owned.push(long_help.to_string());
-            flag = flag.help(owned.last().unwrap().as_str());
-        }
-
-        manual = manual.flag(flag);
-    }
-
-    let page = manual.render();
-
-    let mut man_path = std::path::PathBuf::from(std::env::var("OUT_DIR").expect("OUT_DIR not set"));
-    man_path.push(format!("{}.1", name));
-    std::fs::write(man_path, page).expect("Error writing man page");
+    let man = clap_mangen::Man::new(cmd);
+    let mut man_path = std::path::PathBuf::from(var("OUT_DIR").unwrap());
+    man_path.push("rep.1");
+    let mut out = std::fs::File::create(man_path).unwrap();
+    man.render(&mut out).unwrap();
 }
