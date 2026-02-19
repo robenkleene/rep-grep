@@ -67,17 +67,10 @@ pub(crate) struct Options {
     pub stdout: bool,
 
     #[clap(short = 'f', long = "flags")]
-    #[rustfmt::skip]
-    /** Regex flags. May be combined (like `-f mc`)
-
-c - case-sensitive
-e - disable multi-line matching
-i - case-insensitive
-m - multi-line matching
-s - make `.` match newlines
-w - match full words only
-{n}{n}
-    */
+    /// Regex flags. May be combined (like `-f mc`).
+    /// c - case-sensitive, e - disable multi-line matching,
+    /// i - case-insensitive, m - multi-line matching,
+    /// s - make `.` match newlines, w - match full words only.
     pub flags: Option<String>,
 
     /// The regexp or string (if -s) to search for.
