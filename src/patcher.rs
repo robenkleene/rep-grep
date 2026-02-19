@@ -30,21 +30,19 @@ impl<'a> Patcher<'a> {
             // Subtract `1` from the line number because line numbers start from `1` and array
             // indices start from `0`
             for index in indexes {
-                let index_size = index as usize - 1;
-                if index_size >= lines.len() {
+                if index == 0 || index as usize > lines.len() {
                     return Err(Error::LineNumber(index));
                 }
+                let index_size = index as usize - 1;
                 lines.remove(index_size);
             }
             return Ok(lines.join("\n"));
         }
         for edit in &self.edits {
-            // Subtract `1` from the line number because line numbers start from `1` but array
-            // indices start from `0`
-            let index = edit.line_number as usize - 1;
-            if index >= lines.len() {
+            if edit.line_number == 0 || edit.line_number as usize > lines.len() {
                 return Err(Error::LineNumber(edit.line_number));
             }
+            let index = edit.line_number as usize - 1;
             if let Some(replacer) = &self.replacer {
                 let replaced = &replacer.replace(edit.text.as_bytes());
                 let text = str::from_utf8(replaced)?;

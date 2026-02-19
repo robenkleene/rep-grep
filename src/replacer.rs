@@ -22,16 +22,26 @@ impl Replacer {
             (
                 look_for,
                 utils::unescape(&replace_with)
-                    .unwrap_or_else(|| replace_with)
+                    .unwrap_or(replace_with)
                     .into_bytes(),
             )
+        };
+
+        let look_for = if let Some(ref flags) = flags {
+            if flags.contains('w') {
+                format!("\\b{}\\b", look_for)
+            } else {
+                look_for
+            }
+        } else {
+            look_for
         };
 
         let mut regex = regex::bytes::RegexBuilder::new(&look_for);
         regex.multi_line(true);
 
         if let Some(flags) = flags {
-            flags.chars().for_each(|c| {
+            for c in flags.chars() {
                 #[rustfmt::skip]
                 match c {
                     'c' => { regex.case_insensitive(false); },
@@ -39,20 +49,17 @@ impl Replacer {
                     'm' => {},
                     'e' => { regex.multi_line(false); },
                     's' => {
-                        if !flags.contains("m") {
+                        if !flags.contains('m') {
                             regex.multi_line(false);
                         }
                         regex.dot_matches_new_line(true);
                     },
-                    'w' => {
-                        regex = regex::bytes::RegexBuilder::new(&format!(
-                            "\\b{}\\b",
-                            look_for
-                        ));
+                    'w' => {},
+                    _ => {
+                        eprintln!("Warning: unknown flag '{}'", c);
                     },
-                    _ => {},
                 };
-            });
+            }
         };
 
         Ok(Self {
@@ -66,13 +73,13 @@ impl Replacer {
     pub(crate) fn replace<'a>(&'a self, content: &'a [u8]) -> std::borrow::Cow<'a, [u8]> {
         if self.is_literal {
             self.regex.replacen(
-                &content,
+                content,
                 self.replacements,
                 regex::bytes::NoExpand(&self.replace_with),
             )
         } else {
             self.regex
-                .replacen(&content, self.replacements, &*self.replace_with)
+                .replacen(content, self.replacements, &*self.replace_with)
         }
     }
 }

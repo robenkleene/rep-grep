@@ -25,10 +25,8 @@ fn main() -> Result<()> {
         true
     } else if options.no_color {
         false
-    } else if is_tty {
-        true
     } else {
-        false
+        is_tty
     };
 
     let pager = env::var("REP_PAGER").ok();
