@@ -145,4 +145,10 @@ mod tests {
     fn full_word_replace() {
         replace("abc", "def", false, Some("w"), "abcd abc", "abcd def");
     }
+
+    #[test]
+    fn full_word_case_insensitive() {
+        replace("abc", "def", false, Some("iw"), "abcd ABC", "abcd def");
+        replace("abc", "def", false, Some("wi"), "abcd ABC", "abcd def");
+    }
 }
