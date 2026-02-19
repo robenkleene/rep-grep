@@ -19,7 +19,9 @@ use clap::Parser;
             1. grep -n foo * > tmp           Save grep matches to a file\n    \
             2. Edit tmp in a text editor     Make changes to the matched lines\n    \
             3. rep < tmp                     Preview the diff\n    \
-            4. rep -w < tmp                  Write the changes\n\n\
+            4. rep -w < tmp                  Write the changes\n  \
+          Editing standard input and applying a find and replace can also be\n  \
+          combined (e.g., rep bar baz < tmp).\n\n\
         INPUT FORMAT:\n  \
           Each input line has the format: <file>:<line>:[<column>:]<text>\n  \
           The -n (--line-number) grep flag is required for correct line numbers.\n\n\
@@ -34,12 +36,7 @@ use clap::Parser;
 )]
 pub(crate) struct Options {
     #[clap(short = 'w', long = "write")]
-    ///
-    /** Write the output to files directly (instead of outputting a patch)
-
-    If this flag is not present, and a patch is output, then the default pager is `less`. The
-    environment variable REP_PAGER can be used to override the pager.
-        */
+    /// Write the output to files directly (instead of outputting a patch). If this flag is not present, and a patch is output, then the default pager is 'less'. The environment variable REP_PAGER can be used to override the pager
     pub write: bool,
 
     #[clap(short = 'd', long = "delete-lines")]
@@ -67,23 +64,12 @@ pub(crate) struct Options {
     pub stdout: bool,
 
     #[clap(short = 'f', long = "flags")]
-    #[rustfmt::skip]
-    /** Regex flags. May be combined (like `-f mc`)
-
-c - case-sensitive
-e - disable multi-line matching
-i - case-insensitive
-m - multi-line matching
-s - make `.` match newlines
-w - match full words only
-{n}{n}
-    */
+    /// Regex flags, may be combined (like '-f mc'). 'c': case-sensitive, 'e': disable multi-line matching, 'i': case-insensitive, 'm': multi-line matching, 's': make '.' match newlines, 'w': match full words only
     pub flags: Option<String>,
 
-    /// The regexp or string (if -s) to search for.
+    /// The regexp or string (if -s) to search for
     pub find: Option<String>,
 
-    /// What to replace each match with. Unless in string mode, you may
-    /// use captured values like $1, $2, etc.
+    /// What to replace each match with. Unless in string mode, you may use captured values like $1, $2, etc
     pub replace_with: Option<String>,
 }
