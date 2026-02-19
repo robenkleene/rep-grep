@@ -22,13 +22,13 @@ This means you can use all the features of a text editor including multiple curs
 Output a diff to standard output replacing `foo` with `bar`:
 
 ```
-grep -n foo *` | rep foo bar
+grep -n foo * | rep foo bar
 ```
 
 Add the `-w` flag to write the changes to the files in place:
 
 ```
-grep -n foo *` | rep foo bar -w
+grep -n foo * | rep foo bar -w
 ```
 
 The `-n` (`--line-number`) option is required so that `grep` outputs the line number for each match.

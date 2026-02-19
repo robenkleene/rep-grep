@@ -3,6 +3,11 @@ use regex::Regex;
 use std::io::prelude::*;
 use std::io::StdinLock;
 use std::path::PathBuf;
+use std::sync::LazyLock;
+
+static EDIT_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new("^([^:]+):([[:digit:]]+):([[:digit:]]+:)?(.*)$").unwrap()
+});
 
 #[derive(Debug)]
 pub(crate) struct Edit {
@@ -45,38 +50,22 @@ impl Edit {
             }
             path_to_edits.get_mut(key).unwrap().push(line);
         }
-        return Ok(path_to_edits);
+        Ok(path_to_edits)
     }
 
     fn edit_from_line(line: String) -> Result<Edit, Error> {
-        // The last `([[:digit:]]+:)?` capture group is for the optional column, which we only
-        // discard
-        let re = Regex::new("^([^:]+):([[:digit:]]+):([[:digit:]]+:)?(.*)$").unwrap();
-        let caps = re.captures(&line);
-        let caps = match caps {
-            Some(caps) => caps,
-            None => return Err(Error::Match),
-        };
-        let file = match caps.get(1) {
-            Some(file) => PathBuf::from(file.as_str()),
-            None => return Err(Error::Match),
-        };
-        let number = match caps.get(2) {
-            Some(number) => number.as_str(),
-            None => return Err(Error::Match),
-        };
-        let number = match number.parse::<u32>() {
-            Ok(number) => number,
-            Err(_) => return Err(Error::Match),
-        };
-        // If `caps.len() > 4`, then the optional column was present
-        let index = if caps.len() < 5 { 3 } else { 4 };
-        let text = match caps.get(index) {
-            Some(text) => text.as_str().to_string(),
-            None => return Err(Error::Match),
-        };
+        let caps = EDIT_RE.captures(&line).ok_or(Error::Match)?;
+        let file = PathBuf::from(caps.get(1).ok_or(Error::Match)?.as_str());
+        let number = caps
+            .get(2)
+            .ok_or(Error::Match)?
+            .as_str()
+            .parse::<u32>()
+            .map_err(|_| Error::Match)?;
+        // Group 4 is always the text; group 3 is the optional column (discarded)
+        let text = caps.get(4).ok_or(Error::Match)?.as_str().to_string();
 
-        return Ok(Edit::new(file, text, number));
+        Ok(Edit::new(file, text, number))
     }
 }
 

@@ -70,12 +70,10 @@ impl OutputType {
 
     pub fn handle(&mut self) -> Result<&mut dyn Write, crate::output::Error> {
         match *self {
-            OutputType::Pager(ref mut command) => {
-                match command.stdin.as_mut() {
-                    Some(stdin) => return Ok(stdin),
-                    None => return Err(Error::PagerError),
-                };
-            }
+            OutputType::Pager(ref mut command) => match command.stdin.as_mut() {
+                Some(stdin) => Ok(stdin),
+                None => Err(Error::PagerError),
+            },
             OutputType::Stdout(ref mut handle) => Ok(handle),
         }
     }
