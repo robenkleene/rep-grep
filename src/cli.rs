@@ -19,7 +19,9 @@ use clap::Parser;
             1. grep -n foo * > tmp           Save grep matches to a file\n    \
             2. Edit tmp in a text editor     Make changes to the matched lines\n    \
             3. rep < tmp                     Preview the diff\n    \
-            4. rep -w < tmp                  Write the changes\n\n\
+            4. rep -w < tmp                  Write the changes\n  \
+          Editing standard input and applying a find and replace can also be\n  \
+          combined (e.g., rep bar baz < tmp).\n\n\
         INPUT FORMAT:\n  \
           Each input line has the format: <file>:<line>:[<column>:]<text>\n  \
           The -n (--line-number) grep flag is required for correct line numbers.\n\n\
