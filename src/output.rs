@@ -13,14 +13,6 @@ pub enum Error {
     PagerError,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[allow(dead_code)]
-pub enum PagingMode {
-    Always,
-    QuitIfOneScreen,
-    Never,
-}
-
 pub enum OutputType {
     Pager(Child),
     Stdout(io::Stdout),

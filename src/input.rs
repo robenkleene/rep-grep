@@ -36,7 +36,14 @@ impl App {
 
                 for (path, edits) in path_to_edits {
                     let patcher = Patcher::new(edits, self.replacer.as_ref());
-                    if Self::check_not_empty(File::open(&path)?).is_err() {
+                    let file = match File::open(&path) {
+                        Ok(f) => f,
+                        Err(e) => {
+                            eprintln!("{}: {}", path.display(), e);
+                            continue;
+                        }
+                    };
+                    if Self::check_not_empty(file).is_err() {
                         continue;
                     }
                     let writer = Writer::new(path.to_path_buf(), &patcher);
@@ -54,7 +61,14 @@ impl App {
             } else {
                 for (path, edits) in path_to_edits {
                     let patcher = Patcher::new(edits, self.replacer.as_ref());
-                    if Self::check_not_empty(File::open(&path)?).is_err() {
+                    let file = match File::open(&path) {
+                        Ok(f) => f,
+                        Err(e) => {
+                            eprintln!("{}: {}", path.display(), e);
+                            continue;
+                        }
+                    };
+                    if Self::check_not_empty(file).is_err() {
                         continue;
                     }
                     let writer = Writer::new(path, &patcher);
