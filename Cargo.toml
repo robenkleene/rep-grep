@@ -26,7 +26,6 @@ diffy-fork-filenames = "0.4.0"
 indexmap = "1.9.2"
 shell-words = "1.1.0"
 grep-cli = "0.1.7"
-ctrlc = "3.2.5"
 
 [dev-dependencies]
 assert_cmd = "1.0.3"
