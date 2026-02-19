@@ -1,4 +1,4 @@
 .PHONY: show-man
 
 show-man:
-	man target/debug/build/rep-grep-*/out/rep.1
+	man $$(ls -t target/debug/build/rep-grep-*/out/rep.1 | head -1)
