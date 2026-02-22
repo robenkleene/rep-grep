@@ -1,6 +1,6 @@
 [package]
 name = "rep-grep"
-version = "0.0.7"
+version = "0.0.8"
 edition = "2021"
 authors = ["Roben Kleene <contact@robenkleene.com>"]
 description = "wgrep/write-grep CLI"
