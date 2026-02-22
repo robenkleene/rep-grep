@@ -23,12 +23,17 @@ cargo build
 make show-man
 ```
 
-5. Commit, tag, and push:
+5. Commit and merge the version bump on a branch, then tag on `main`:
 
 ```sh
 git add -A && git commit -m "<version>"
+```
+
+After the branch is merged:
+
+```sh
 git tag <version>
-git push && git push --tags
+git push --tags
 ```
 
 6. Publish to [crates.io](https://crates.io):
