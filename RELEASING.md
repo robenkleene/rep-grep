@@ -14,13 +14,14 @@ cargo update --workspace
 cargo test
 ```
 
-3. Review the man page:
+3. Update the version number in `Cargo.toml`.
+
+4. Review the man page (verify the version number matches `Cargo.toml`):
 
 ```sh
+cargo build
 make show-man
 ```
-
-4. Update the version number in `Cargo.toml`.
 
 5. Commit, tag, and push:
 
