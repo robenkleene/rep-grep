@@ -62,7 +62,14 @@ This means editing standard input first, *and then also applying a find and repl
 
 ## Installation
 
-`rep` is available via [`cargo`](https://github.com/rust-lang/cargo):
+### Homebrew
+
+```
+brew tap robenkleene/tap
+brew install rep-grep
+```
+
+### Cargo
 
 ```
 cargo install rep-grep
